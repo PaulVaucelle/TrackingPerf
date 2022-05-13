@@ -483,7 +483,7 @@ class TrackingPerf : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       std::vector<float>           tree_simtrack_pca_dxy;
       std::vector<float>           tree_simtrack_pca_dz   ; 
       std::vector<std::vector<int> > tree_simtrack_trkIdx;  
-      
+      std::vector<float>           tree_simtrack_isRecoMatched_pt;
       //--------------------------------
       // Beam spot infos ------- 
       //--------------------------------
@@ -545,7 +545,31 @@ class TrackingPerf : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
       //added by Paul 
 
-      std::vector<float> tree_Mva_displacedTrack; /*!danger!*/
+      /* about generated LLPs (top is used as the physics process first studied is lookinf for tops coming from neutralinos)*/
+      std::vector<float> tree_top1_x;
+      std::vector<float> tree_top1_y;
+      std::vector<float> tree_top1_z;
+      std::vector<float> tree_top2_x;
+      std::vector<float> tree_top2_y;
+      std::vector<float> tree_top2_z;
+
+      std::vector<float> tree_top1_pt;
+      std::vector<float> tree_top1_eta;
+      std::vector<float> tree_top1_phi;
+
+      std::vector<float> tree_top2_pt;
+      std::vector<float> tree_top2_eta;
+      std::vector<float> tree_top2_phi;
+      std::vector<int> tree_ntop;
+
+      std::vector<float> tree_simtrack_genVertexPosDiff_top1_X;
+      std::vector<float> tree_simtrack_genVertexPosDiff_top1_Y;
+      std::vector<float> tree_simtrack_genVertexPosDiff_top1_Z;
+      std::vector<float> tree_simtrack_genVertexPosDiff_top1_dV;
+      std::vector<float> tree_simtrack_genVertexPosDiff_top2_X;
+      std::vector<float> tree_simtrack_genVertexPosDiff_top2_Y;
+      std::vector<float> tree_simtrack_genVertexPosDiff_top2_Z;
+      std::vector<float> tree_simtrack_genVertexPosDiff_top2_dV;
       //--------------------------------
       // jet infos ------- 
       //--------------------------------
@@ -866,7 +890,7 @@ TrackingPerf::TrackingPerf(const edm::ParameterSet& iConfig):
   smalltree->Branch("tree_secondaryVtx_isValid", &tree_secondaryVtx_isValid); 
   smalltree->Branch("tree_secondaryVtx_NChi2",   &tree_secondaryVtx_NChi2); 
   
-  smalltree->Branch("tree_Mva_displacedTrack", &tree_Mva_displacedTrack); /*!danger!*/
+  
   //// iterative 
   
   smalltree->Branch("tree_secondaryVtx_iterative_X"      ,    &tree_secondaryVtx_iterative_X); 
@@ -893,6 +917,8 @@ TrackingPerf::TrackingPerf(const edm::ParameterSet& iConfig):
   smalltree->Branch("tree_simtrack_pca_dxy",            &tree_simtrack_pca_dxy);
   smalltree->Branch("tree_simtrack_pca_dz",             &tree_simtrack_pca_dz);
   smalltree->Branch("tree_simtrack_trkIdx",             &tree_simtrack_trkIdx); 
+
+  smalltree->Branch("tree_simtrack_isRecoMatched_pt",&tree_simtrack_isRecoMatched_pt);/*!*/
 
   smalltree->Branch("tree_AK4Slimmedjet_E"  ,       &tree_AK4Slimmedjet_E);
   smalltree->Branch("tree_AK4Slimmedjet_pt"  ,      &tree_AK4Slimmedjet_pt);
@@ -994,8 +1020,33 @@ TrackingPerf::TrackingPerf(const edm::ParameterSet& iConfig):
   smalltree->Branch("tree_slimmedmuon_CutBasedIdMediumPrompt", &tree_slimmedmuon_CutBasedIdMediumPrompt );
   smalltree->Branch("tree_slimmedmuon_CutBasedIdTight",        &tree_slimmedmuon_CutBasedIdTight        );
 
-  
-  
+  smalltree->Branch("tree_top1_x",&tree_top1_x);
+  smalltree->Branch("tree_top1_y",&tree_top1_y);
+  smalltree->Branch("tree_top1_z",&tree_top1_z);    
+  smalltree->Branch("tree_top2_x",&tree_top2_x);
+  smalltree->Branch("tree_top2_y",&tree_top2_y);
+  smalltree->Branch("tree_top2_z",&tree_top2_z);
+
+  smalltree->Branch("tree_top1_pt",&tree_top1_pt);
+  smalltree->Branch("tree_top1_eta",&tree_top1_eta);
+  smalltree->Branch("tree_top1_phi",&tree_top1_phi);
+
+  smalltree->Branch("tree_top2_pt",&tree_top2_pt);
+  smalltree->Branch("tree_top2_eta",&tree_top2_eta);
+  smalltree->Branch("tree_top2_phi",&tree_top2_phi);
+  smalltree->Branch("tree_ntop",&tree_ntop);
+
+  smalltree->Branch("tree_simtrack_genVertexPosDiff_top1_X",&tree_simtrack_genVertexPosDiff_top1_X);
+  smalltree->Branch("tree_simtrack_genVertexPosDiff_top1_X",&tree_simtrack_genVertexPosDiff_top1_Y);
+  smalltree->Branch("tree_simtrack_genVertexPosDiff_top1_X",&tree_simtrack_genVertexPosDiff_top1_Z);
+  smalltree->Branch("tree_simtrack_genVertexPosDiff_top1_dV",&tree_simtrack_genVertexPosDiff_top1_dV);
+  smalltree->Branch("tree_simtrack_genVertexPosDiff_top2_X",&tree_simtrack_genVertexPosDiff_top2_X);
+  smalltree->Branch("tree_simtrack_genVertexPosDiff_top2_Y",&tree_simtrack_genVertexPosDiff_top2_Y);
+  smalltree->Branch("tree_simtrack_genVertexPosDiff_top2_Z",&tree_simtrack_genVertexPosDiff_top2_Z);
+  smalltree->Branch("tree_simtrack_genVertexPosDiff_top2_dV",&tree_simtrack_genVertexPosDiff_top2_dV);
+
+
+
   tree_NbrOfZCand= 0;
   
   runNumber = 0;
@@ -1372,9 +1423,13 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    int ntop = 0;
    float top1_x = 0, top1_y = 0, top1_z = 0; //LLP1
    float top2_x = 0, top2_y = 0, top2_z = 0; //LLP2 avoir ces informations là dnas le NTuple
-   
-   //Avoir LLP1_pt, eta, phi same forLLP2, "mom", x, y,z
+   float top1_pt = -1, top1_eta= -10, top1_phi=-10;
+   float top2_pt = -1, top2_eta= -10, top2_phi=-10;
+  //  //Avoir LLP1_pt, eta, phi same forLLP2, "mom", x, y,z
+   //for mom see below the loops
    //ajouter ntop (nLLP)
+
+   // everything is done here
    //$$
    
    if ( !runOnData_ ) {
@@ -1405,6 +1460,9 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		 top2_x = genParticle.vx();
 		 top2_y = genParticle.vy();
 		 top2_z = genParticle.vz();
+     top2_pt = genParticle.pt();
+     top2_eta = genParticle.eta();
+     top2_phi =genParticle.phi();
 	       } 
 	     } 
 	     if ( ntop == 0 ) {
@@ -1412,11 +1470,27 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	       top1_x = genParticle.vx();
 	       top1_y = genParticle.vy();
 	       top1_z = genParticle.vz();
+         top1_pt = genParticle.pt();
+         top1_eta = genParticle.eta();
+         top1_phi =genParticle.phi();        
 	     } 
 	   } 
 	 } 
 	 //$$
-	 
+	tree_top1_x.push_back(top1_x);
+  tree_top1_y.push_back(top1_y);
+  tree_top1_z.push_back(top1_z);
+  tree_top2_x.push_back(top2_x);
+  tree_top2_y.push_back(top2_y);
+  tree_top2_z.push_back(top2_z);
+
+  tree_top1_pt.push_back(top1_pt);
+  tree_top1_eta.push_back(top1_eta);
+  tree_top1_phi.push_back(top1_phi);
+
+  tree_top2_pt.push_back(top2_pt);
+  tree_top2_eta.push_back(top2_eta);
+  tree_top2_phi.push_back(top2_phi);
 	 //$$
 	 if (genParticle.pt() < 0.9 || fabs(genParticle.eta()) > 4.0) continue; 
 	 //$$
@@ -1439,7 +1513,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      
      //      cout << " ntop " << ntop << "   top1 " << top1_x << " " << top1_y << " " << top1_z  
      //                               << "   top2 " << top2_x << " " << top2_y << " " << top2_z << endl; 
-     
+
      ///GEN JETS 
      
      //       int nGenJets = genJets->size();
@@ -1620,7 +1694,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        //matching to simulated tracks
        //----------------------------
        //matching par hits
-       //comparer les infos de simtrack avec gen
+       
        if ( !runOnData_ ) {
          int nSimHits = 0;
          bool isSimMatched = false;
@@ -1674,18 +1748,46 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             genVertexPos_Z         = tpr->vz();
             
             //$$
+
+            float dV1=0;
+            float dV2=0;
+            float top1_Diff_X = 0;
+            float top1_Diff_Y = 0;
+            float top1_Diff_Z = 0;
+            float top2_Diff_X = 0;
+            float top2_Diff_Y = 0;
+            float top2_Diff_Z = 0;
+
+
             if ( ntop >= 1 ) {
-              float dV = (genVertexPos_X - top1_x)*(genVertexPos_X - top1_x)
+              float dV1 = (genVertexPos_X - top1_x)*(genVertexPos_X - top1_x)
               + (genVertexPos_Y - top1_y)*(genVertexPos_Y - top1_y)
               + (genVertexPos_Z - top1_z)*(genVertexPos_Z - top1_z);
-              if ( dV < 0.01 ) simtrack_isFromLLP = 1;
+              top1_Diff_X = genVertexPos_X - top1_x;
+              top1_Diff_Y = genVertexPos_Y - top1_y;
+              top1_Diff_Z = genVertexPos_Z - top1_z;
+              if ( dV1 < 0.01 ) simtrack_isFromLLP = 1;
             }
             if ( ntop >= 2 && simtrack_isFromLLP != 1 ) {
-              float dV = (genVertexPos_X - top2_x)*(genVertexPos_X - top2_x)
+              float dV2 = (genVertexPos_X - top2_x)*(genVertexPos_X - top2_x)
               + (genVertexPos_Y - top2_y)*(genVertexPos_Y - top2_y)
               + (genVertexPos_Z - top2_z)*(genVertexPos_Z - top2_z);
-              if ( dV < 0.01 ) simtrack_isFromLLP = ntop;
+              top2_Diff_X = genVertexPos_X - top2_x;
+              top2_Diff_Y = genVertexPos_Y - top2_y;
+              top2_Diff_Z = genVertexPos_Z - top2_z;
+              if ( dV2 < 0.01 ) simtrack_isFromLLP = ntop;
             }
+
+            tree_simtrack_genVertexPosDiff_top1_X.push_back(top1_Diff_X);
+            tree_simtrack_genVertexPosDiff_top1_Y.push_back(top1_Diff_Y);
+            tree_simtrack_genVertexPosDiff_top1_Z.push_back(top1_Diff_Z);
+            tree_simtrack_genVertexPosDiff_top1_dV.push_back(dV1);//if ( dV1 < 0.01 ) simtrack_isFromLLP = 1;
+
+            tree_simtrack_genVertexPosDiff_top2_X.push_back(top2_Diff_X);
+            tree_simtrack_genVertexPosDiff_top2_Y.push_back(top2_Diff_Y);
+            tree_simtrack_genVertexPosDiff_top2_Z.push_back(top2_Diff_Z);
+            tree_simtrack_genVertexPosDiff_top2_dV.push_back(dV2);//if ( dV2 < 0.01 ) simtrack_isFromLLP = ntop;
+            //comparer les infos de simtrack avec gen (diff_X,...)
 	   
             //ex: sélectionner les traces venant du premeir top. Regarder à quelles poitns le  vertex se rapprotche du vertex généré
             //aussi pour le deuxieme top
@@ -1701,7 +1803,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 //cout << "genVertexPos_X - top_x " << genVertexPos_X - top_x << endl;
                 //cout << "genVertexPos_Y - top_y " << genVertexPos_Y - top_y << endl;
                 //cout << "genVertexPos_Z - top_z " << genVertexPos_Z - top_z << endl;
-                if( fabs(genVertexPos_X - top_x)< 0.01 && fabs(genVertexPos_Y - top_y) < 0.01 && fabs(genVertexPos_Y - top_y) < 0.01) simtrack_isFromDispTop = true;
+                if( fabs(genVertexPos_X - top_x)< 0.01 && fabs(genVertexPos_Y - top_y) < 0.01 && fabs(genVertexPos_Z - top_z) < 0.01) simtrack_isFromDispTop = true;
               }
             }
           } 
@@ -1759,11 +1861,14 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   
   if ( !runOnData_ ) {
      reco::SimToRecoCollection simRecColl = associatorByHits.associateSimToReco(trackRefs, tpCollection);
-     
+       float NSim=0;/*!*/
+       float NSimtoReco=0;/*!*/
+       float ratio=0;/*!*/
      for(const TrackingParticleRef& tp: tpCollection) 
      {
-       tree_simtrack_simtrack_charge  		     .push_back( tp->charge());	 //infos sur toutes les traces simulées, ex efficacité reco, voir trace sim à trace reco, comparée aux pt de otoutes les traces sim
-       tree_simtrack_simtrack_pt		           .push_back( tp->pt());		 //avec un rapport (attention de bien prendre un pt simulé)
+       tree_simtrack_simtrack_charge  		     .push_back( tp->charge());	 //infos sur toutes les traces simulées, 
+       //ex efficacité reco, voir trace sim à trace reco, comparée aux pt de otoutes les traces sim /*!*///finito
+       tree_simtrack_simtrack_pt		           .push_back( tp->pt());		 //avec un rapport (attention de bien prendre un pt simulé)/*!*/
        tree_simtrack_simtrack_eta		         .push_back( tp->eta());	 
        tree_simtrack_simtrack_phi		         .push_back( tp->phi());	 
        tree_simtrack_simtrack_longLived	     .push_back( tp->longLived());   
@@ -1779,12 +1884,15 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        tree_simtrack_genVertexPos_Z			 .push_back( tp->vz());
        
        bool isRecoMatched = false;
-       
+       NSim = NSim + 1;/*!*/
        std::vector<int> tkIdx;
        auto foundTracks = simRecColl.find(tp);
        if(foundTracks != simRecColl.end()) 
        {
          isRecoMatched = true;
+         NSimtoReco=NSimtoReco+1;/*!*/
+         tree_simtrack_isRecoMatched_pt.push_back(tp->pt());/*!*/ //CHeck the ratio of histos: ptsimtoreco/ptsim(the one from)
+         //simtrack_simtrack is close to 1
          for(const auto trackQuality: foundTracks->val) 
 	       {
 		      tkIdx.push_back(trackQuality.first.key());
@@ -1802,9 +1910,10 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 
 	      tree_simtrack_pca_dxy      .push_back(dxySim);
 	      tree_simtrack_pca_dz	    .push_back(dzSim);
-	 
+
        } //end loop on tracking particles 
-     
+     ratio= NSimtoReco/NSim;/*!*/
+     std::cout<< "ratio of NSimtoReco/Nsim = "<< ratio << std::endl;
    }
    
    
@@ -1903,7 +2012,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    /////SECONDARY VERTEX RECONSTRUCTION USING DISPLACED TRACKS 
     TransientVertex displacedVertex_top1_general;
     TransientVertex displacedVertex_top2_general;
-   if(!runOnData_){
+   if(!runOnData_)
+   {
     if(showlog) cout << "  --------- " <<endl;  
     if(showlog) cout << "SECONDARY VERTEX REFITTING	  "<<endl; 
      
@@ -1925,7 +2035,9 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     float top2_x=0; 
     float top2_y=0; 
-    float top2_z=0; 
+    float top2_z=0;
+
+    //Jérémy's method 
     
     for (auto genIterator=genParticles->begin(); genIterator!=genParticles->end(); genIterator++) //loop on gen particles
     {
@@ -1991,12 +2103,14 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      //AdaptiveVertexFitter  theFitter_top1;    
 	 
 	      TransientVertex displacedVertex_top1 = theFitter_top1.vertex(displacedTracks_top1);  // if you want the beam constraint
-        displacedVertex_top1_general = displacedVertex_top1;
+        displacedVertex_top1_general = displacedVertex_top1;//useless for the moment
 	      //TransientVertex myVertex = theFitter.vertex(mytracks);  // if you don't want the beam constraint
 	      // now you have a new vertex, can e.g. be compared with the original
 	      if (displacedVertex_top1.isValid())
 	      {    
-	      
+          auto lineariser = DefaultLinearizationPointFinder();
+	        auto linearization_point = lineariser.getLinearizationPoint(displacedTracks_top1);
+	        if(showlog) std::cout << "seed top1 is: " << linearization_point.x() << " - " << linearization_point.y() << " - " << linearization_point.z() << '\n';
 		      if(showlog) cout << "------------------------" <<endl;
 		      if(showlog) std::cout << " FIRST TOP DISPLACED VERTEX X POS " << displacedVertex_top1.position().x() << std::endl;//reco
 		      if(showlog) std::cout << " FIRST TOP DISPLACED VERTEX Y POS " << displacedVertex_top1.position().y() << std::endl;
@@ -2004,7 +2118,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		      if(showlog) std::cout << " FIRST TOP DISPLACED VERTEX CHI2/ndof  " << displacedVertex_top1.normalisedChiSquared()<< std::endl; 
 		      if(showlog) std::cout << " NUMBER OF ORIGINAL TRACKS	" << displacedVertex_top1.originalTracks().size() << std::endl; 
 	    
-	        secondaryVtx_diff_X = abs(displacedVertex_top1.position().x()-top1_x);
+	        secondaryVtx_diff_X = abs(displacedVertex_top1.position().x()-top1_x);//Kalman fitted vertex-original genVertex
 	        secondaryVtx_diff_Y = abs(displacedVertex_top1.position().y()-top1_y);
 	        secondaryVtx_diff_Z = abs(displacedVertex_top1.position().z()-top1_z);
 	        secondaryVtx_nTracks = displacedVertex_top1.originalTracks().size();
@@ -2037,11 +2151,10 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
      
     if ( displacedTracks_top2.size() > 1 )
-       { 
+    { 
 	      auto lineariser = DefaultLinearizationPointFinder();
 	      auto linearization_point = lineariser.getLinearizationPoint(displacedTracks_top2);
-	      if(showlog) std::cout << "seed is: " << linearization_point.x() << " - " << linearization_point.y() << " - " << linearization_point.z() << '\n';
-      //linearize????????????????????????????????????
+	      if(showlog) std::cout << "seed top 2 is: " << linearization_point.x() << " - " << linearization_point.y() << " - " << linearization_point.z() << '\n';
 	      KalmanVertexFitter theFitter_top2; 
 	      //AdaptiveVertexFitter  theFitter_top2;
 	 
@@ -2063,7 +2176,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           tree_secondaryVtx_Y.push_back(displacedVertex_top2.position().y()); 
           tree_secondaryVtx_Z.push_back(displacedVertex_top2.position().z()); 
           
-          secondaryVtx_diff_X = abs(displacedVertex_top2.position().x()-top2_x);
+          secondaryVtx_diff_X = abs(displacedVertex_top2.position().x()-top2_x);//Kalman fitted vertex-original genVertex
           secondaryVtx_diff_Y = abs(displacedVertex_top2.position().y()-top2_y);
           secondaryVtx_diff_Z = abs(displacedVertex_top2.position().z()-top2_z);
           secondaryVtx_nTracks = displacedVertex_top2.originalTracks().size();
@@ -2083,145 +2196,150 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           if(showlog) cout << "------------------------" <<endl;
           if(showlog) cout << "Refitted vertex for top 2 is not valid "<<endl;
         }
-       }
+    }
        else
-       {
+    {
          secondaryVtx_isValid=-1;
          tree_secondaryVtx_isValid.push_back(secondaryVtx_isValid);
          //	cout << "------------------------" <<endl;
          //	std::cout << "not enough tracks left for top 2" <<std::endl;
-       }
-       
+    }   
    }
    
-   //////////////////
+  //////////////////
    
-   //------------------------------
-   //selection of displaced tracks
-   //------------------------------
-   if(showlog) cout << "//////////////////////////"<< endl; 
-   if(showlog) cout << "start to select displaced tracks " << endl;
-   vector<reco::TransientTrack> displacedTTracks;
+  //------------------------------
+  //selection of displaced tracks
+  //------------------------------
+  if(showlog) cout << "//////////////////////////"<< endl; 
+  if(showlog) cout << "start to select displaced tracks " << endl;
+  vector<reco::TransientTrack> displacedTTracks;
    
-   //   int n_track=-1; 
-   //   int nn_track=0; 
-   
-   ///// MVA for track selection coming from displaced tops 
+  //   int n_track=-1; 
+  //   int nn_track=0;   
+  ///// MVA for track selection coming from displaced tops 
 
-   //ajouté par Paul /*!*/
-   float drSig,dzSig, isinjet,tmpjet;/*!*/
-   int jet;/*!*/
-   float ntrk10, ntrk1020 ,ntrk20,ntrk2030,ntrk30,ntrk3040,ntrk40,ntrk40XX;/*!*/
-   float firsthit_X, firsthit_Y, firsthit_Z, dxy, dxyError, dz, dzError, pt, eta, NChi2, nhits, algo; /*!*/
-   TMVA::Reader *reader = new TMVA::Reader( "!Color:!Silent" );
+  //ajouté par Paul /*!*/
+  float drSig,dzSig, isinjet,tmpjet;/*!*/
+  int jet;/*!*/
+  float ntrk10, ntrk1020 ,ntrk20,ntrk2030,ntrk30,ntrk3040,ntrk40,ntrk40XX;/*!*/
+  float firsthit_X, firsthit_Y, firsthit_Z, dxy, dxyError, dz, dzError, pt, eta, NChi2, nhits, algo; /*!*/
+  float nTracks_b4sel=trackRefs.size();
+  float nTracks_ADsel=0;
+  float Ratio_b4ADsel=0;
+  double bdtval = -10;
+  TMVA::Reader *reader = new TMVA::Reader( "!Color:!Silent" );
    
-  // reader->AddVariable( "mva_track_firstHit_x", &firsthit_X );//to be exluded
-  // reader->AddVariable( "mva_track_firstHit_y", &firsthit_Y );//to be exluded
-  // reader->AddVariable( "mva_track_firstHit_z", &firsthit_Z );//to be exluded
-  // reader->AddVariable( "mva_track_firstHit_dxy", &dxy );//to be exluded
-  // reader->AddVariable( "mva_track_firstHit_dxyError", &dxyError );//to be exluded
-  // reader->AddVariable( "mva_track_firstHit_dz", &dz );//to be exluded
-  // reader->AddVariable( "mva_track_firstHit_dzError", &dzError );//to be exluded
-   reader->AddVariable( "mva_track_pt", &pt );
-   reader->AddVariable( "mva_track_eta", &eta );
-   reader->AddVariable( "mva_track_nchi2", &NChi2 );
-   reader->AddVariable( "mva_track_nhits", &nhits );
-   reader->AddVariable( "mva_track_algo", &algo); 
-     //add the variables from my BDT(Paul)
+  // reader->AddVariable( "mva_track_firstHit_x", &firsthit_X );//to be exluded if TMVAbgctau50withnhits.xml is chosen
+  // reader->AddVariable( "mva_track_firstHit_y", &firsthit_Y );//to be exluded if TMVAbgctau50withnhits.xml is chosen
+  // reader->AddVariable( "mva_track_firstHit_z", &firsthit_Z );//to be exluded if TMVAbgctau50withnhits.xml is chosen
+  // reader->AddVariable( "mva_track_firstHit_dxy", &dxy );//to be exluded if TMVAbgctau50withnhits.xml is chosen
+  // reader->AddVariable( "mva_track_firstHit_dxyError", &dxyError );//to be exluded if TMVAbgctau50withnhits.xml is chosen
+  // reader->AddVariable( "mva_track_firstHit_dz", &dz );//to be exluded if TMVAbgctau50withnhits.xml is chosen
+  // reader->AddVariable( "mva_track_firstHit_dzError", &dzError );//to be exluded if TMVAbgctau50withnhits.xml is chosen
+  reader->AddVariable( "mva_track_pt", &pt );
+  reader->AddVariable( "mva_track_eta", &eta );
+  reader->AddVariable( "mva_track_nchi2", &NChi2 );
+  reader->AddVariable( "mva_track_nhits", &nhits );
+  reader->AddVariable( "mva_track_algo", &algo); 
+  //add the variables from my BDT(Paul)
   reader->AddVariable( "mva_ntrk10", &ntrk10);
   reader->AddVariable( "mva_drSig", &drSig); /*!*/
   reader->AddVariable( "mva_track_isinjet", &isinjet); /*!*/
   /*!*/
+  //$$
+  reader->BookMVA( "BDTG", weightFile_ );
+  //reader->BookMVA("BDT",weightFile_)/*!*/
+  //$$
+   
+  int counter_track=-1; 
+  int counter_othertrack=-1;///*!*/
+  for (size_t iTrack = 0; iTrack<trackRefs.size(); ++iTrack)//Loop on all the tracks
+    {
+      counter_track++; 
+      const auto& itTrack = trackRefs[iTrack];
+      //double track_sig =  abs(tree_track_dxy[counter_track]/tree_track_dxyError[counter_track]); 
+      firsthit_X = tree_track_firsthit_X[counter_track]; 
+      firsthit_Y = tree_track_firsthit_Y[counter_track]; 
+      firsthit_Z = tree_track_firsthit_Z[counter_track]; 
+      dxy        = tree_track_dxy[counter_track]; 
+      dxyError   = tree_track_dxyError[counter_track]; 
+      dz         = tree_track_dz[counter_track]; 
+      dzError    = tree_track_dzError[counter_track]; 
+      pt         = tree_track_pt[counter_track]; 
+      eta        = tree_track_eta[counter_track]; 
+      NChi2      = tree_track_NChi2[counter_track]; 
+      nhits      = tree_track_nhits[counter_track]; 
+      algo       = tree_track_algo[counter_track]; 
+      //Ajouté par Paul /*!*/
+      if ( dxyError > 0 ) drSig = dxy / dxyError;/*!*/
+      if ( dzError > 0 ) dzSig = dz / dzError;/*!*/
+      jet = tree_track_recoAK4SlimmedJet_idx[counter_track];/*!*/
+      if ( jet >= 0 ) isinjet = 1;/*!*/
+      tmpjet=isinjet+2;//bs
+      if (tmpjet==3){dzSig=dzSig-1;}//bs
+      dzSig=dzSig+1;//bs
+      //Computation of the distances needed for the BDT
+      for (size_t iTrack2=0; iTrack2<trackRefs.size(); ++iTrack2)    // Loop on all the other Tracks/*!*/
+        {
+          
+          counter_othertrack++;
+          if ( counter_othertrack == counter_track ) continue;
+          float pt2  = tree_track_pt[counter_othertrack];
+          float dr2 = abs(tree_track_dxy[counter_othertrack]);
+          float drSig2 = -1.;
+          if ( tree_track_dxyError[counter_othertrack] > 0 ) drSig2 = dr2 / tree_track_dxyError[counter_othertrack];
+          float chi2 = tree_track_NChi2[counter_othertrack];
+          if ( !(pt2 >= 1. && chi2 <= 5. && drSig2 >= 5.) ) continue;//On regarde les autres track_selec[i] qui sont True donc de potnetielles tracks secondaires
+          float x2 = tree_track_firsthit_X[counter_othertrack];
+          float y2 = tree_track_firsthit_Y[counter_othertrack];
+          float z2 = tree_track_firsthit_Z[counter_othertrack];
+          float dist = TMath::Sqrt( (firsthit_X-x2)*(firsthit_X-x2) + (firsthit_Y-y2)*(firsthit_Y-y2) + (firsthit_Z-z2)*(firsthit_Z-z2) );//pour chaque reconstruite, on regarde les autres tracks, 
+          if ( dist < 10. ) {ntrk10++;}
+          if (dist > 10 && dist < 20) {ntrk1020++;}
+          if ( dist < 20. ) {ntrk20++;}
+          if (dist > 20 && dist < 30) {ntrk2030++;} 
+          if ( dist < 30. ) {ntrk30++;} 
+          if (dist > 30 && dist < 40) {ntrk3040++;}
+          if ( dist < 40. ) {ntrk40++;}//used in BDT
+          if (dist > 40) {ntrk40XX++;}
+        }  // end Loop on other Tracks
 
-   
-   //$$
-   reader->BookMVA( "BDTG", weightFile_ );
-   //reader->BookMVA("BDT",weightFile_)/*!*/
-   //$$
-   
-   int counter_track=-1; 
-   int counter_othertrack=-1;//(Paul)
-   for (size_t iTrack = 0; iTrack<trackRefs.size(); ++iTrack)
-     {
-       counter_track++; 
-       const auto& itTrack = trackRefs[iTrack];
-      //    double track_sig =  abs(tree_track_dxy[counter_track]/tree_track_dxyError[counter_track]);
-       
-       firsthit_X = tree_track_firsthit_X[counter_track]; 
-       firsthit_Y = tree_track_firsthit_Y[counter_track]; 
-       firsthit_Z = tree_track_firsthit_Z[counter_track]; 
-       dxy        = tree_track_dxy[counter_track]; 
-       dxyError   = tree_track_dxyError[counter_track]; 
-       dz         = tree_track_dz[counter_track]; 
-       dzError    = tree_track_dzError[counter_track]; 
-       pt         = tree_track_pt[counter_track]; 
-       eta        = tree_track_eta[counter_track]; 
-       NChi2      = tree_track_NChi2[counter_track]; 
-       nhits      = tree_track_nhits[counter_track]; 
-       algo       = tree_track_algo[counter_track]; 
-       //Ajouté par Paul
-       if ( dxyError > 0 ) drSig = dxy / dxyError;
-       if ( dzError > 0 ) dzSig = dz / dzError;
-       jet = tree_track_recoAK4SlimmedJet_idx[counter_track];
-       if ( jet >= 0 ) isinjet = 1;
-       tmpjet=isinjet+2;
-       if (tmpjet==3){dzSig=dzSig-1;}
-      dzSig=dzSig+1;
-    //Distances
-    for (size_t iTrack2=0; iTrack2<trackRefs.size(); ++iTrack2)    // Loop on other Tracks
-     {
-       counter_othertrack++;
-     if ( counter_othertrack == counter_track ) continue;
-       float pt2  = tree_track_pt[counter_othertrack];
-       float dr2 = abs(tree_track_dxy[counter_othertrack]);
-       float drSig2 = -1.;
-       if ( tree_track_dxyError[counter_othertrack] > 0 ) drSig2 = dr2 / tree_track_dxyError[counter_othertrack];
-       float chi2 = tree_track_NChi2[counter_othertrack];
-     if ( !(pt2 >= 1. && chi2 <= 5. && drSig2 >= 5.) ) continue;//On regarde les autres track_selec[i] qui sont True donc de potnetielles tracks secondaires
-       float x2 = tree_track_firsthit_X[counter_othertrack];
-       float y2 = tree_track_firsthit_Y[counter_othertrack];
-       float z2 = tree_track_firsthit_Z[counter_othertrack];
-       float dist = TMath::Sqrt( (firsthit_X-x2)*(firsthit_X-x2) + (firsthit_Y-y2)*(firsthit_Y-y2) + (firsthit_Z-z2)*(firsthit_Z-z2) );//pour chaque reconstruite, on regarde les autres tracks, 
-       if ( dist < 10. ) {ntrk10++;}
-       if (dist > 10 && dist < 20) {ntrk1020++;}
-       if ( dist < 20. ) {ntrk20++;}
-       if (dist > 20 && dist < 30) {ntrk2030++;} 
-       if ( dist < 30. ) {ntrk30++;} 
-       if (dist > 30 && dist < 40) {ntrk3040++;}
-       if ( dist < 40. ) {ntrk40++;}//used in BDT
-       if (dist > 40) {ntrk40XX++;}
-     }  // end Loop on other Tracks
-       double bdtval = reader->EvaluateMVA( "BDTG" );
-       tree_track_MVAval_FromDispTop.push_back(bdtval); //add valeur par défaut, at elast check for it
+       bdtval = reader->EvaluateMVA( "BDTG" );//default value = -10
+       tree_track_MVAval_FromDispTop.push_back(bdtval); 
        //cout << "BDT VAL " << bdtval <<endl; 
        
        if(tree_track_pt[counter_track] < 1 || fabs(tree_track_eta[counter_track]) > 2.4 || tree_track_recoAK4PFJet_idx[counter_track] == -1  || drSig<5 || tree_track_NChi2[counter_track]>5) continue;
-       //if (bdtval < 0.0674  ) continue; //optimal cut for 10 cm, trained on 19k events, <s>=22 and <b>=240
-      //  if (bdtval < 0.07381 ) continue; //optimal cut for 50 cm, trained on 10k events, <s>=15 and <b>=234 
-      if (bdtval< -0.0401) continue; //optimal cut for50 cm ,(Paul BDTG)
+       //if (bdtval < 0.0674  ) continue; //optimal cut for 10 cm, trained on 19k events, <s>=22 and <b>=240 //Jérémy
+       //  if (bdtval < 0.07381 ) continue; //optimal cut for 50 cm, trained on 10k events, <s>=15 and <b>=234 //Jérémy
+       if (bdtval< -0.0401) continue; //optimal cut for 50 cm ,trained on 10k events //Paul, expected to change
+       nTracks_ADsel = nTracks_ADsel+1;
+        
        displacedTTracks.push_back(theTransientTrackBuilder->build(*itTrack));
        //cout << "kept track and it is from displaced top "<<tree_track_simtrack_isFromDispTop[counter_track]<<endl; 
-       tree_Mva_displacedTrack.push_back(displacedTTracks);//need to run to get the ntuples with it
-   }
-   //-----------------------------!!!!!!!!!!!!!!!!---------------------------------//
-   //Add Block here to reduce the number of tracks/vertices to treat as it is taking
+    }  //End loop on all the tracks
+    Ratio_b4ADsel = nTracks_ADsel/nTracks_b4sel;
+    std::cout << " Ratio of tracks before and after sel with tmva = "<< Ratio_b4ADsel << std::endl;
+
+  //-----------------------------!!!!!!!!!!!!!!!!---------------------------------//
+  //Add Block here to reduce the number of tracks/vertices to treat as it is taking
   //  a lot of computing time or add resctrictions in the following loop of reconstruction of
   // seed vertex from pair of tracks
   // add kalman filters.
-   //-----------------------------!!!!!!!!!!!!!!!!---------------------------------//
+  //-----------------------------!!!!!!!!!!!!!!!!---------------------------------//
 
 
-   //   int n_tracks_test=0;
-   //   int n_tracks_selected = 0; 
+  //   int n_tracks_test=0;
+  //   int n_tracks_selected = 0; 
    
-   if(showlog) cout << displacedTTracks.size() << " displaced tracks selected " << endl;
+  if(showlog) cout << displacedTTracks.size() << " displaced tracks selected " << endl;
    
    //------------------------------------------------------------
    //reconstruct seed vertex from pair of tracks
    //select those who have a chi2/ndf < 100
    //------------------------------------------------------------
-   /*!*/ //get all the track for & track (that pass the selection and tmva) for top: comapre to jérémy's method and check the efficiccy loss
-   KalmanVertexFitter theFitter_vertex(kvfPSet);//number of vertex KalmanVertexFitter /*!*/
+   /*!*/ //get all the track for 1 track (that pass the selection and tmva) for 1 top: comapre to jérémy's method and check the efficiccy loss
+   KalmanVertexFitter theFitter_vertex(kvfPSet);//One or less vertex /*!*/
    
    std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > proto_vertex; // container of the vertex and associated tracks
       //Paul implémentation
@@ -2276,11 +2394,11 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        }
      }
    }
-  /*!*/ // Diviser l'event en deux : tmva ou axe sprivilégiés dans l'event (voir root: vectuer o uaxe privilégié)
+  /*!*/ // Diviser l'event en deux : tmva ou axe sprivilégiés dans l'event (voir root: vectuer o uaxe privilégié) pt eta phi?
   /*!*/ // regarder le veteru des muons (corrélés) au  netralino
   // => kalman filter pour chaque hemisphere
   //terminer le rapport là-dessus : efficacité et reconstruction des vertxex des neutralions
-
+  // Daniel is looking at this atm
 
    if(showlog) cout << "-----------------"<<endl; 
   //  if(showlog) cout << proto_vertex.size() << " proto-vertex selected " << endl;
@@ -2655,8 +2773,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   // reader->AddVariable( "mva_track_isinjet", &isinjet); /*!*/
   // /*!*/
   // //-------------- New variables compared to last BDT ------------------------//
-  reader->AddVariable("mva_track_dphi",&dphi);
-  reader->AddVariable("mva_track_dR",&dR);
+  // reader->AddVariable("mva_track_dphi",&dphi);
+  // reader->AddVariable("mva_track_dR",&dR);
 
 
   // //---------------------------------------------------------------------------// //
