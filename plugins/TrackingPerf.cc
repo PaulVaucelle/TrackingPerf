@@ -570,6 +570,14 @@ class TrackingPerf : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       std::vector<float> tree_simtrack_genVertexPosDiff_top2_Y;
       std::vector<float> tree_simtrack_genVertexPosDiff_top2_Z;
       std::vector<float> tree_simtrack_genVertexPosDiff_top2_dV;
+
+      std::vector<int> tree_NSimtoReco;
+      std::vector<int> tree_NSim;
+      std::vector<float> tree_Ratio_NStRNS;
+      std::vector<int> tree_nTracks_ADsel;
+      std::vector<int> tree_nTracks_b4sel;
+      std::vector<float> tree_Ratio_b4ADsel;
+      std::vector<float> tree_displacedTTracks_pt;
       //--------------------------------
       // jet infos ------- 
       //--------------------------------
@@ -1045,7 +1053,13 @@ TrackingPerf::TrackingPerf(const edm::ParameterSet& iConfig):
   smalltree->Branch("tree_simtrack_genVertexPosDiff_top2_Z",&tree_simtrack_genVertexPosDiff_top2_Z);
   smalltree->Branch("tree_simtrack_genVertexPosDiff_top2_dV",&tree_simtrack_genVertexPosDiff_top2_dV);
 
-
+  smalltree->Branch("tree_NSimtoReco",&tree_NSimtoReco);
+  smalltree->Branch("tree_NSim",&tree_NSim);
+  smalltree->Branch("tree_Ratio_NStRNS",&tree_Ratio_NStRNS);
+  smalltree->Branch("tree_nTracks_ADsel",&tree_nTracks_ADsel);
+  smalltree->Branch("tree_nTracks_b4sel",&tree_nTracks_b4sel);
+  smalltree->Branch("tree_Ratio_b4ADsel",&tree_Ratio_b4ADsel);
+  smalltree->Branch("tree_displacedTTracks_pt",&tree_displacedTTracks_pt);
 
   tree_NbrOfZCand= 0;
   
@@ -1439,7 +1453,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      for (auto const & genParticle : *genParticles)
        {
 	 //$$
-	 if ( abs(genParticle.pdgId()) >= 1 && abs(genParticle.pdgId()) <= 6 ) {
+	 if ( abs(genParticle.pdgId()) >= 1 && abs(genParticle.pdgId()) <= 6 ) { //Version de Daniel, less restrective on quarks
 	   const Candidate * mom = genParticle.mother();
 	   if ( abs(mom->pdgId()) == 1000023 ) { // quark from neutralino 
 	     if ( ntop >= 2 ) {
@@ -1558,11 +1572,23 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        tree_electron_energy.push_back(electron.energy());
      }
    
-   /// Muons 
+  //  ///  reco Muons
+
+  //  int nmuon=0;
+  //  float muon1_x = 0, muon1_y = 0, muon1_z = 0; //LLP1
+  //  float muon2_x = 0, muon2_y = 0, muon2_z = 0; //LLP2 avoir ces informations là dnas le NTuple
+  //  float muon1_pt = -1, muon1_eta= -10, muon1_phi=-10;
+  //  float muon2_pt = -1, muon2_eta= -10, muon2_phi=-10;
+  //  float muon2_E = ;float muon2_dxy = ;float muon2_dxyError =  ;float muon2_dz =  ;float muon2_dzError =  ;float muon2_charge =  ;
+  //  bool muon2_PFisoVeryTight = ;bool muon2_PFisoTight = ;bool muon2_PFisoMedium = ;bool muon2_PFisoLoose = ;
+  //  bool muon2_MVAisoLoose = ;bool muon2_MVAisoMedium = ;bool muon2_MVAisoTight = ;bool muon2_isGlobalMuon = ;
+  //  bool muon2_isStandAloneMuon = ;bool muon2_CutBasedIdLoose = ;bool muon2_CutBasedIdMedium = ;
+  //  bool muon2_CutBasedIdMediumPrompt = ;bool muon2_CutBasedIdTight =; 
    
    for (auto const & muon : *slimmedmuons)
      {
        if ( muon.pt() < 3. ) continue;
+       
        tree_slimmedmuon_pt.push_back( muon.pt());
        tree_slimmedmuon_eta.push_back(muon.eta());
        tree_slimmedmuon_phi.push_back(muon.phi());
@@ -1590,9 +1616,149 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        tree_slimmedmuon_CutBasedIdMediumPrompt	  .push_back(	muon.passed(reco::Muon::CutBasedIdMediumPrompt));
        tree_slimmedmuon_CutBasedIdTight		   .push_back(   muon.passed(reco::Muon::CutBasedIdTight));
      }
-   
-   
-   
+       std::cout<< "number of muons first method : " << tree_slimmedmuon_pt.size() << std::endl;
+
+  //  for (auto const & muon : *slimmedmuons)
+  //    {
+  //      if ( muon.pt() < 3. ) continue;
+  //      if  (nmuon >=2)
+  //       {
+  //         float dv1 = (muon.vx() - muon1_x)*(muon.vx() - muon1_x)
+	// 	      + (muon.vy() - muon1_y)*(muon.vy() - muon1_y)
+	// 	      + (muon.vz() - muon1_z)*(muon.vz() - muon1_z);
+	//         float dv2 = (muon.vx() - muon2_x)*(muon.vx() - muon2_x)
+	// 	      + (muon.vy() - muon2_y)*(muon.vy() - muon2_y)
+	// 	      + (muon.vz() - muon2_z)*(muon.vz() - muon2_z);
+	//         if ( dv1 > 0.01 && dv2 > 0.01 ) {nmuon++;}
+  //         else {std::cout<< "muon discarded from selection "<< std::endl;}
+	//       } 
+	//      if ( nmuon == 1 ) 
+  //       {
+	//         float dv = (muon.vx() - muon1_x)*(muon.vx() - muon1_x)
+	// 	      + (muon.vy() - muon1_y)*(muon.vy() - muon1_y)
+	// 	      + (muon.vz() - muon1_z)*(muon.vz() - muon1_z);
+	//         if ( dv > 0.01 ) 
+  //           {
+	// 	          nmuon = 2;
+	// 	          muon2_x = muon.vx();
+	// 	          muon2_y = muon.vy();
+	// 	          muon2_z = muon.vz();
+  //             muon2_pt = muon.pt();
+  //             muon2_eta = muon.eta();
+  //             muon2_phi = muon.phi();
+  //             muon2_E = muon.energy();
+  //             muon2_dxy = muon.bestTrack()->dxy(bs);
+  //             muon2_dxyError =  muon.bestTrack()->dxyError();
+  //             muon2_dz = muon.bestTrack()->dz(bs.position());
+  //             muon2_dzError = muon.bestTrack()->dzError();
+  //             muon2_charge = muon.charge();
+  //             muon2_PFisoVeryTight =muon.passed(reco::Muon::PFIsoVeryTight);
+  //             muon2_PFisoTight =muon.passed(reco::Muon::PFIsoTight) ;
+  //             muon2_PFisoMedium =muon.passed(reco::Muon::PFIsoMedium);
+  //             muon2_PFisoLoose =muon.passed(reco::Muon::PFIsoLoose );
+  //             muon2_MVAisoLoose =muon.passed(reco::Muon::MvaLoose );
+  //             muon2_MVAisoMedium =muon.passed(reco::Muon::MvaMedium);
+  //             muon2_MVAisoTight =muon.passed(reco::Muon::MvaTight );
+  //             muon2_isGlobalMuon =muon.passed(muon.isGlobalMuon());
+  //             muon2_isStandAloneMuon =muon.passed(muon.isStandAloneMuon());
+  //             muon2_CutBasedIdLoose =muon.passed(reco::Muon::CutBasedIdLoose);
+  //             muon2_CutBasedIdMedium =muon.passed(reco::Muon::CutBasedIdMedium);
+  //             muon2_CutBasedIdMediumPrompt =muon.passed(reco::Muon::CutBasedIdMediumPrompt);
+  //             muon2_CutBasedIdTight =muon.passed(reco::Muon::CutBasedIdTight);
+	//           }
+  //           else {std::cout<< "muon discarded from selection "<< std::endl;} 
+	//       } 
+	//      if ( nmuon == 0 ) 
+  //       {
+	//         nmuon = 1;
+	//         muon1_x = muon.vx();
+	//         muon1_y = muon.vy();
+	//         muon1_z = muon.vz();
+  //         muon1_pt = muon.pt();
+  //         muon1_eta = muon.eta();
+  //         muon1_phi = muon.phi();
+  //         muon1_E = muon.energy();
+  //         muon1_dxy = muon.bestTrack()->dxy(bs);
+  //         muon1_dxyError =  muon.bestTrack()->dxyError();
+  //         muon1_dz = muon.bestTrack()->dz(bs.position());
+  //         muon1_dzError = muon.bestTrack()->dzError();
+  //         muon1_charge = muon.charge();
+  //         muon1_PFisoVeryTight =muon.passed(reco::Muon::PFIsoVeryTight);
+  //         muon1_PFisoTight =muon.passed(reco::Muon::PFIsoTight) ;
+  //         muon1_PFisoMedium =muon.passed(reco::Muon::PFIsoMedium);
+  //         muon1_PFisoLoose =muon.passed(reco::Muon::PFIsoLoose );
+  //         muon1_MVAisoLoose =muon.passed(reco::Muon::MvaLoose );
+  //         muon1_MVAisoMedium =muon.passed(reco::Muon::MvaMedium);
+  //         muon1_MVAisoTight =muon.passed(reco::Muon::MvaTight );
+  //         muon1_isGlobalMuon =muon.passed(muon.isGlobalMuon());
+  //         muon1_isStandAloneMuon =muon.passed(muon.isStandAloneMuon());
+  //         muon1_CutBasedIdLoose =muon.passed(reco::Muon::CutBasedIdLoose);
+  //         muon1_CutBasedIdMedium =muon.passed(reco::Muon::CutBasedIdMedium);
+  //         muon1_CutBasedIdMediumPrompt =muon.passed(reco::Muon::CutBasedIdMediumPrompt);
+  //         muon1_CutBasedIdTight =muon.passed(reco::Muon::CutBasedIdTight);
+	//       } 
+	//    }
+    
+  // std::cout<< "number of muons second method : " << nmuon << std::endl;
+  // //$$
+	// tree_slimmedmuon1_vx.push_back(muon1_x);
+  // tree_slimmedmuon1_vy.push_back(muon1_y);
+  // tree_slimmedmuon1_vz.push_back(muon1_z);
+  // tree_slimmedmuon1_pt.push_back(muon1_pt);
+  // tree_slimmedmuon1_eta.push_back(muon1_eta);
+  // tree_slimmedmuon1_phi.push_back(muon1_phi);
+
+  // tree_slimmedmuon1_energy.push_back(   muon1_E);
+  // tree_slimmedmuon1_dxy.push_back(muon1_dxy);
+  // tree_slimmedmuon1_dxyError.push_back( muon1_dxyError);
+  // tree_slimmedmuon1_dz.push_back(	  muon1_dz);
+  // tree_slimmedmuon1_dzError.push_back(  muon1_dzError);
+  // tree_slimmedmuon1_charge.push_back(   muon1_charge); 
+       
+  // tree_slimmedmuon1_PFisoVeryTight.  push_back(   muon1_PFisoVeryTight);
+  // tree_slimmedmuon1_PFisoTight.      push_back(   muon1_PFisoTight );
+  // tree_slimmedmuon1_PFisoMedium.     push_back(   muon1_PFisoMedium);
+  // tree_slimmedmuon1_PFisoLoose.      push_back(  muon1_PFisoLoose);
+  // tree_slimmedmuon1_MVAisoLoose.     push_back(   muon1_MVAisoLoose  );
+  // tree_slimmedmuon1_MVAisoMedium.    push_back(   muon1_MVAisoMedium  );
+  // tree_slimmedmuon1_MVAisoTight.     push_back(   muon1_MVAisoTight  );
+  // tree_slimmedmuon1_isGlobalMuon.    push_back(   muon1_isGlobalMuon	);
+  // tree_slimmedmuon1_isStandAloneMuon.push_back(   muon1_isStandAloneMuon);
+  // tree_slimmedmuon1_CutBasedIdLoose		   .push_back(   muon1_CutBasedIdLoose);
+  // tree_slimmedmuon1_CutBasedIdMedium     .push_back(   muon1_CutBasedIdMedium);
+  // tree_slimmedmuon1_CutBasedIdMediumPrompt	  .push_back(	muon1_CutBasedIdMediumPrompt);
+  // tree_slimmedmuon1_CutBasedIdTight		   .push_back(   muon1_CutBasedIdTight);  
+
+
+  // tree_slimmedmuon2_x.push_back(muon2_x);
+  // tree_slimmedmuon2_y.push_back(muon2_y);
+  // tree_slimmedmuon2_z.push_back(muon2_z);
+  // tree_slimmedmuon2_pt.push_back(muon2_pt);
+  // tree_slimmedmuon2_eta.push_back(muon2_eta);
+  // tree_slimmedmuon2_phi.push_back(muon2_phi);
+  // tree_slimmedmuon2_energy.push_back(   muon2_E);
+  // tree_slimmedmuon2_dxy.push_back(muon2_dxy);
+  // tree_slimmedmuon2_dxyError.push_back( muon2_dxyError);
+  // tree_slimmedmuon2_dz.push_back(	  muon2_dz);
+  // tree_slimmedmuon2_dzError.push_back(  muon2_dzError);
+  // tree_slimmedmuon2_charge.push_back(   muon2_charge); 
+       
+  // tree_slimmedmuon2_PFisoVeryTight.  push_back(   muon2_PFisoVeryTight);
+  // tree_slimmedmuon2_PFisoTight.      push_back(   muon2_PFisoTight );
+  // tree_slimmedmuon2_PFisoMedium.     push_back(   muon2_PFisoMedium);
+  // tree_slimmedmuon2_PFisoLoose.      push_back(  muon2_PFisoLoose);
+  // tree_slimmedmuon2_MVAisoLoose.     push_back(   muon2_MVAisoLoose  );
+  // tree_slimmedmuon2_MVAisoMedium.    push_back(   muon2_MVAisoMedium  );
+  // tree_slimmedmuon2_MVAisoTight.     push_back(   muon2_MVAisoTight  );
+  // tree_slimmedmuon2_isGlobalMuon.    push_back(   muon2_isGlobalMuon	);
+  // tree_slimmedmuon2_isStandAloneMuon.push_back(   muon2_isStandAloneMuon);
+  // tree_slimmedmuon2_CutBasedIdLoose		   .push_back(   muon2_CutBasedIdLoose);
+  // tree_slimmedmuon2_CutBasedIdMedium     .push_back(   muon2_CutBasedIdMedium);
+  // tree_slimmedmuon2_CutBasedIdMediumPrompt	  .push_back(	muon2_CutBasedIdMediumPrompt);
+  // tree_slimmedmuon2_CutBasedIdTight		   .push_back(   muon2_CutBasedIdTight);
+	 //$$
+
+
    //reco::BeamSpot vertexBeamSpot= *recoBeamSpotHandle;
    edm::ESHandle<TransientTrackBuilder> theTransientTrackBuilder;
    iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",theTransientTrackBuilder);
@@ -1624,7 +1790,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        tree_track_pt.push_back(itTrack->pt());
        tree_track_eta.push_back(itTrack->eta());
        tree_track_phi.push_back(itTrack->phi());
-       tree_track_charge.push_back(itTrack->charge()); 
        tree_track_nhits.push_back(itTrack->numberOfValidHits());
        tree_track_NChi2.push_back(itTrack->normalizedChi2());
        tree_track_outerPt.push_back(itTrack->outerPt()); 
@@ -1696,6 +1861,10 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        //matching par hits
        
        if ( !runOnData_ ) {
+         float NReco=0;
+         float NRecotoSim;
+         float ratioReco=0;
+         
          int nSimHits = 0;
          bool isSimMatched = false;
          std::vector<int> tpIdx;
@@ -1793,10 +1962,10 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             //aussi pour le deuxieme top
             //Matcher les informations avec les x y z calculés précédemment
 	   
-            for (auto genIterator=genParticles->begin(); genIterator!=genParticles->end(); genIterator++) //loop on gen particles
+            for (auto genIterator=genParticles->begin(); genIterator!=genParticles->end(); genIterator++) //loop on gen particles (Jérémy's method)
             {
               if (abs(genIterator->pdgId())==6 && genIterator->status()==22) //if the gen particle is a displaced top 
-              { 
+              {  //Doublonde la méthode de  Daniel ligne ~1500//
                 double top_x=genIterator->vx(); 
                 double top_y=genIterator->vy(); 
                 double top_z=genIterator->vz(); 
@@ -1914,8 +2083,11 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        } //end loop on tracking particles 
      ratio= NSimtoReco/NSim;/*!*/
      std::cout<< "ratio of NSimtoReco/Nsim = "<< ratio << std::endl;
+     tree_NSimtoReco.push_back(NSimtoReco);
+     tree_NSim.push_back(NSim);
+     tree_Ratio_NStRNS.push_back(ratio);
    }
-   
+
    
    //////////////////////////////////
    //////////////////////////////////
@@ -2305,7 +2477,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           if (dist > 40) {ntrk40XX++;}
         }  // end Loop on other Tracks
 
-       bdtval = reader->EvaluateMVA( "BDTG" );//default value = -10
+       bdtval = reader->EvaluateMVA( "BDTG" );//default value = -10 (no -10 observed and -999 comes from EvaluateMVA)
        tree_track_MVAval_FromDispTop.push_back(bdtval); 
        //cout << "BDT VAL " << bdtval <<endl; 
        
@@ -2313,13 +2485,17 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        //if (bdtval < 0.0674  ) continue; //optimal cut for 10 cm, trained on 19k events, <s>=22 and <b>=240 //Jérémy
        //  if (bdtval < 0.07381 ) continue; //optimal cut for 50 cm, trained on 10k events, <s>=15 and <b>=234 //Jérémy
        if (bdtval< -0.0401) continue; //optimal cut for 50 cm ,trained on 10k events //Paul, expected to change
-       nTracks_ADsel = nTracks_ADsel+1;
+       nTracks_ADsel++;
         
        displacedTTracks.push_back(theTransientTrackBuilder->build(*itTrack));
+       tree_displacedTTracks_pt.push_back(tree_track_pt[counter_track]);
        //cout << "kept track and it is from displaced top "<<tree_track_simtrack_isFromDispTop[counter_track]<<endl; 
     }  //End loop on all the tracks
     Ratio_b4ADsel = nTracks_ADsel/nTracks_b4sel;
     std::cout << " Ratio of tracks before and after sel with tmva = "<< Ratio_b4ADsel << std::endl;
+    tree_nTracks_ADsel.push_back(nTracks_ADsel);
+    tree_nTracks_b4sel.push_back(nTracks_b4sel);
+    tree_Ratio_b4ADsel.push_back(Ratio_b4ADsel);
 
   //-----------------------------!!!!!!!!!!!!!!!!---------------------------------//
   //Add Block here to reduce the number of tracks/vertices to treat as it is taking
@@ -2338,11 +2514,11 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    //reconstruct seed vertex from pair of tracks
    //select those who have a chi2/ndf < 100
    //------------------------------------------------------------
-   /*!*/ //get all the track for 1 track (that pass the selection and tmva) for 1 top: comapre to jérémy's method and check the efficiccy loss
+   /*!*/ //get all the track for 1 track (that pass the selection and tmva) for 1 top: comapre to Jérémy's method and check the efficiccy loss
    KalmanVertexFitter theFitter_vertex(kvfPSet);//One or less vertex /*!*/
    
    std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > proto_vertex; // container of the vertex and associated tracks
-      //Paul implémentation
+      //Paul implémentation:/*!*/
    Proto PVtx(proto_vertex);/*!*/
 
    for(unsigned int itracks = 0; itracks < displacedTTracks.size(); itracks++){
@@ -2369,7 +2545,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       );
       // !=dd
 
-       // add dR limits 
        //if (dd>40 || dphi>1.4) continue; 
        //if(dist_to_tracks > 30) continue;
        
@@ -2394,13 +2569,14 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        }
      }
    }
+   //displacedTTracks & displacedVertex_vertex
   /*!*/ // Diviser l'event en deux : tmva ou axe sprivilégiés dans l'event (voir root: vectuer o uaxe privilégié) pt eta phi?
-  /*!*/ // regarder le veteru des muons (corrélés) au  netralino
-  // => kalman filter pour chaque hemisphere
+  /*!*/ // regarder le vecteur des muons (corrélés) à celui des neutralinos
+  // => kalman filter pour chaque hemisphere 
   //terminer le rapport là-dessus : efficacité et reconstruction des vertxex des neutralions
   // Daniel is looking at this atm
 
-   if(showlog) cout << "-----------------"<<endl; 
+   if(showlog) cout << "-----------------" <<endl; 
   //  if(showlog) cout << proto_vertex.size() << " proto-vertex selected " << endl;
    if(showlog) cout << PVtx.Size() << " proto-vertex selected " << endl;/*!*/
    //for testing
@@ -2461,7 +2637,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
          pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y()- PVtx.y(idx_proto_vertex), 2) +
          pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().z()- PVtx.z(idx_proto_vertex), 2) 
          , 0.5);
-       cout << "distance check to vertex " << dist_to_vertex << endl;
+      //  cout << "distance check to vertex " << dist_to_vertex << endl;
       // Selection criteria tochange 
        if( //dist_to_vertex < 30 && 
           fabs(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[0].innermostMeasurementState().globalPosition().x()  ) > 0.001 &&  
@@ -2481,7 +2657,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
  
 
    if(showlog)  cout << "-----------------"<<endl; 
-   if(showlog) cout << " number of vertex after adding tracks " << proto_vertex.size() << endl;
+  //  if(showlog) cout << " number of vertex after adding tracks " << proto_vertex.size() << endl;
    if(showlog) cout << " number of vertex after adding tracks " << PVtx.Size() << endl;/*!*/
    //for testing
    /*
@@ -2513,13 +2689,13 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   
    //------------------------------------------------------------
    //loop on all proto-vertex
-   //remove duplicate
+      //remove duplicate
    //------------------------------------------------------------
    
    
    
-   std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > reco_vertex;  
-    Proto RecoVtx(reco_vertex);/*!*/
+  //  std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > reco_vertex;  
+  //   Proto RecoVtx(reco_vertex);/*!*/
     /***************
    for(unsigned int  idx_proto_vertex= 0; idx_proto_vertex < PVtx.Size(); idx_proto_vertex++){
      
@@ -2566,8 +2742,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //  if(!found_vertex_in_list  && !already_in_vect)  RecoVtx.PushBack(PVtx.Pair(idx_proto_vertex));
    }*///////////////////
    
-   if(showlog) cout << reco_vertex.size() << " number of vertex reco after duplicate removal " << endl;
-   if(showlog) cout << RecoVtx.Size() << " number of vertex reco after duplicate removal " << endl;/*!*/
+  //  if(showlog) cout << reco_vertex.size() << " number of vertex reco after duplicate removal " << endl;
+  //  if(showlog) cout << RecoVtx.Size() << " number of vertex reco after duplicate removal " << endl;/*!*/
    ////for testing
    
    /*int n_reco_match_top = 0;
@@ -2601,8 +2777,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 
 
-   std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > selected_vertex;
-  Proto SelVtx(selected_vertex);/*!*/  
+  //  std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > selected_vertex;
+  // Proto SelVtx(selected_vertex);/*!*/  
    /*****
    for(unsigned int  idx_reco_vertex= 0; idx_reco_vertex < reco_vertex.size(); idx_reco_vertex++){
      if( reco_vertex[idx_reco_vertex].second.normalisedChiSquared() < 100 &&  reco_vertex[idx_reco_vertex].second.originalTracks().size() > 3) 
@@ -2653,8 +2829,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    
    //  cout << "-----------------"<<endl; 
    //  cout << selected_vertex.size() <<" number of vertex reco after quality cuts  " << endl;
-   if(showlog)   cout << "number of vertex reco after quality cuts  " << selected_vertex.size() << endl;
-   if(showlog)   cout << "number of vertex reco after quality cuts  " << SelVtx.Size() << endl;/*!*/
+  //  if(showlog)   cout << "number of vertex reco after quality cuts  " << selected_vertex.size() << endl;
+  //  if(showlog)   cout << "number of vertex reco after quality cuts  " << SelVtx.Size() << endl;/*!*/
    
    /****for(unsigned int  idx_proto_vertex= 0; idx_proto_vertex < selected_vertex.size(); idx_proto_vertex++){
 
@@ -3126,7 +3302,42 @@ void TrackingPerf::clearVariables() {
    tree_slimmedmuon_CutBasedIdMediumPrompt.clear();
    tree_slimmedmuon_CutBasedIdTight.clear();
 
+  //added by Paul
 
+  
+  tree_top1_x.clear();
+  tree_top1_y.clear();
+  tree_top1_z.clear();    
+  tree_top2_x.clear();
+  tree_top2_y.clear();
+  tree_top2_z.clear();
+
+  tree_top1_pt.clear();
+  tree_top1_eta.clear();
+  tree_top1_phi.clear();
+
+  tree_top2_pt.clear();
+  tree_top2_eta.clear();
+  tree_top2_phi.clear();
+  tree_ntop.clear();
+
+  tree_simtrack_genVertexPosDiff_top1_X.clear();
+  tree_simtrack_genVertexPosDiff_top1_Y.clear();
+  tree_simtrack_genVertexPosDiff_top1_Z.clear();
+  tree_simtrack_genVertexPosDiff_top1_dV.clear();
+  tree_simtrack_genVertexPosDiff_top2_X.clear();
+  tree_simtrack_genVertexPosDiff_top2_Y.clear();
+  tree_simtrack_genVertexPosDiff_top2_Z.clear();
+  tree_simtrack_genVertexPosDiff_top2_dV.clear();
+
+  tree_NSimtoReco.clear();
+  tree_NSim.clear();
+  tree_Ratio_NStRNS.clear();
+  tree_nTracks_ADsel.clear();
+  tree_nTracks_b4sel.clear();
+  tree_Ratio_b4ADsel.clear();
+  tree_displacedTTracks_pt.clear();
+  tree_simtrack_isRecoMatched_pt.clear();
 
 
  } 
