@@ -2401,10 +2401,21 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //Vertex Reconstruction efficiency : Reconstructed/Reconstructible vertices
     //Reconstrucitble: if more than one track is available for the recosntruction
     //Reconstructed : isValid()
-    float RecoVertex1_Eff = nRecoVertex1/nReconstructibleVertex1;
+    if (nReconstructibleVertex1!=0)
+      {
+        std::cout<<"nrecostrible 1"<< std::endl;
+        float RecoVertex1_Eff = nRecoVertex1/nReconstructibleVertex1;tree_RecoVertex1_Eff.push_back(RecoVertex1_Eff);
+      }
+    else  {tree_RecoVertex1_Eff.push_back(0);
+    std::cout<<"push back 0 pour top1"<< std::endl;}
+
+    if(nReconstructibleVertex2!=0)
+    {std::cout<<"nrecostrible 2"<< std::endl;
     float RecoVertex2_Eff = nRecoVertex2/nReconstructibleVertex2;
-    tree_RecoVertex1_Eff.push_back(RecoVertex1_Eff);
-    tree_RecoVertex2_Eff.push_back(RecoVertex2_Eff);
+    tree_RecoVertex2_Eff.push_back(RecoVertex2_Eff);}
+    else
+    {tree_RecoVertex2_Eff.push_back(0);
+    std::cout<<"push back 0 pour top2"<< std::endl;}
    }
    
   //////////////////
@@ -2774,7 +2785,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      
      if( found_vertex_in_list  && !already_in_vect)  reco_vertex.push_back(proto_vertex[idx_in_list]);
      if(!found_vertex_in_list  && !already_in_vect)  reco_vertex.push_back(proto_vertex[idx_proto_vertex]);
-
     //  if( found_vertex_in_list  && !already_in_vect)  RecoVtx.PushBack(PVtx.Pair(idx_in_list));
     //  if(!found_vertex_in_list  && !already_in_vect)  RecoVtx.PushBack(PVtx.Pair(idx_proto_vertex));
    }*///////////////////
@@ -2870,7 +2880,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   //  if(showlog)   cout << "number of vertex reco after quality cuts  " << SelVtx.Size() << endl;/*!*/
    
    /****for(unsigned int  idx_proto_vertex= 0; idx_proto_vertex < selected_vertex.size(); idx_proto_vertex++){
-
     //dump information for validation
     if(showlog) cout << "------------------------" <<endl;
     if(showlog) std::cout << " Interative Reco  TOP DISPLACED VERTEX X POS      "  << selected_vertex[idx_proto_vertex].second.position().x() << std::endl;
@@ -2878,7 +2887,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if(showlog) std::cout << " Interative Reco  TOP DISPLACED VERTEX Z POS      "  << selected_vertex[idx_proto_vertex].second.position().z() << std::endl; 
     if(showlog) std::cout << " Interative Reco  TOP DISPLACED VERTEX CHI2/ndof  "  << selected_vertex[idx_proto_vertex].second.normalisedChiSquared()<< std::endl; 
     if(showlog) std::cout << " Interative Reco NUMBER OF ORIGINAL TRACKS        "  << selected_vertex[idx_proto_vertex].second.originalTracks().size() << std::endl;
-
   }****/
 
    /*int n_selected_match_top = 0; 
