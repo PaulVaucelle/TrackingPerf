@@ -541,8 +541,8 @@ class TrackingPerf : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       std::vector<float> tree_seedVtx_dphi; 
       std::vector<float> tree_seedVtx_distance2track; 
       std::vector<float> tree_seedVtx_normChi2; 
-
-
+  
+  
       //--------------------------------
       // jet infos ------- 
       //--------------------------------
@@ -676,23 +676,25 @@ class TrackingPerf : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       std::vector<bool>  tree_slimmedmuon_CutBasedIdMediumPrompt;
       std::vector<bool>  tree_slimmedmuon_CutBasedIdTight;
       
+      int nEvent ;
+
       //added by Paul 
 
       /* about generated LLPs (top is used as the physics process first studied is lookinf for tops coming from neutralinos)*/
-      std::vector<float> tree_top1_x;
-      std::vector<float> tree_top1_y;
-      std::vector<float> tree_top1_z;
-      std::vector<float> tree_top2_x;
-      std::vector<float> tree_top2_y;
-      std::vector<float> tree_top2_z;
+      std::vector<float> tree_LLP1_x;
+      std::vector<float> tree_LLP1_y;
+      std::vector<float> tree_LLP1_z;
+      std::vector<float> tree_LLP2_x;
+      std::vector<float> tree_LLP2_y;
+      std::vector<float> tree_LLP2_z;
 
-      std::vector<float> tree_top1_pt;
-      std::vector<float> tree_top1_eta;
-      std::vector<float> tree_top1_phi;
+      std::vector<float> tree_LLP1_pt;
+      std::vector<float> tree_LLP1_eta;
+      std::vector<float> tree_LLP1_phi;
 
-      std::vector<float> tree_top2_pt;
-      std::vector<float> tree_top2_eta;
-      std::vector<float> tree_top2_phi;
+      std::vector<float> tree_LLP2_pt;
+      std::vector<float> tree_LLP2_eta;
+      std::vector<float> tree_LLP2_phi;
       std::vector<int> tree_ntop;
 
       std::vector<float> tree_simtrack_genVertexPosDiff_top1_X;
@@ -738,10 +740,32 @@ class TrackingPerf : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       std::vector<float>                tree_seedVtx_normChi2_top2;
       std::vector<float>                tree_VtxReco_Eff_top2;
 
-      int nEvent ;
+      
       ///////////////////////////////////////////////////////////////////
       //Warning : the following branches need to be added to LLTopAna.h//
       ///////////////////////////////////////////////////////////////////
+      std::vector<float>                tree_track_ntrk10;
+      std::vector<float>                tree_track_ntrk20;
+      std::vector<float>                tree_track_ntrk30;
+      std::vector<unsigned int>         tree_DVertex_top1_nTrks;
+      std::vector<unsigned int>         tree_DVertex_top2_nTrks;
+      std::vector<unsigned int>         tree_DVertex_nTrks;
+      std::vector<float>                tree_GlobalVertex_X;       
+      std::vector<float>                tree_GlobalVertex_Y;
+      std::vector<float>                tree_GlobalVertex_Z;
+      std::vector<float>                tree_GlobalVertex_dr;
+      std::vector<float>                tree_GlobalVertex_dz;        
+      std::vector<float>                tree_GlobalVertex_dd;         
+      std::vector<float>                tree_GlobalVertex_dphi;        
+      std::vector<float>                tree_GlobalVertex_distance2track;         
+      std::vector<float>                tree_GlobalVertex_NChi2;        
+      std::vector<unsigned int>         tree_GlobalVertex_nTrks;
+
+      std::vector<float>                tree_seedVtx_dr_top1;
+      std::vector<float>                tree_seedVtx_dz_top1;
+      std::vector<float>                tree_seedVtx_dr_top2;
+      std::vector<float>                tree_seedVtx_dz_top2;
+  
 };
 
 //
@@ -1058,20 +1082,20 @@ TrackingPerf::TrackingPerf(const edm::ParameterSet& iConfig):
   smalltree->Branch("tree_slimmedmuon_CutBasedIdMediumPrompt", &tree_slimmedmuon_CutBasedIdMediumPrompt );
   smalltree->Branch("tree_slimmedmuon_CutBasedIdTight",        &tree_slimmedmuon_CutBasedIdTight        );
 
-  smalltree->Branch("tree_top1_x",&tree_top1_x);
-  smalltree->Branch("tree_top1_y",&tree_top1_y);
-  smalltree->Branch("tree_top1_z",&tree_top1_z);    
-  smalltree->Branch("tree_top2_x",&tree_top2_x);
-  smalltree->Branch("tree_top2_y",&tree_top2_y);
-  smalltree->Branch("tree_top2_z",&tree_top2_z);
+  smalltree->Branch("tree_LLP1_x",&tree_LLP1_x);
+  smalltree->Branch("tree_LLP1_y",&tree_LLP1_y);
+  smalltree->Branch("tree_LLP1_z",&tree_LLP1_z);    
+  smalltree->Branch("tree_LLP2_x",&tree_LLP2_x);
+  smalltree->Branch("tree_LLP2_y",&tree_LLP2_y);
+  smalltree->Branch("tree_LLP2_z",&tree_LLP2_z);
 
-  smalltree->Branch("tree_top1_pt",&tree_top1_pt);
-  smalltree->Branch("tree_top1_eta",&tree_top1_eta);
-  smalltree->Branch("tree_top1_phi",&tree_top1_phi);
+  smalltree->Branch("tree_LLP1_pt",&tree_LLP1_pt);
+  smalltree->Branch("tree_LLP1_eta",&tree_LLP1_eta);
+  smalltree->Branch("tree_LLP1_phi",&tree_LLP1_phi);
 
-  smalltree->Branch("tree_top2_pt",&tree_top2_pt);
-  smalltree->Branch("tree_top2_eta",&tree_top2_eta);
-  smalltree->Branch("tree_top2_phi",&tree_top2_phi);
+  smalltree->Branch("tree_LLP2_pt",&tree_LLP2_pt);
+  smalltree->Branch("tree_LLP2_eta",&tree_LLP2_eta);
+  smalltree->Branch("tree_LLP2_phi",&tree_LLP2_phi);
   smalltree->Branch("tree_ntop",&tree_ntop);
 
   smalltree->Branch("tree_simtrack_genVertexPosDiff_top1_X",&tree_simtrack_genVertexPosDiff_top1_X);
@@ -1118,7 +1142,32 @@ TrackingPerf::TrackingPerf(const edm::ParameterSet& iConfig):
   smalltree->Branch("                tree_seedVtx_normChi2_top2",&tree_seedVtx_normChi2_top2);
   smalltree->Branch("                tree_VtxReco_Eff_top2",&tree_VtxReco_Eff_top2);
 
+        ///////////////////////////////////////////////////////////////////
+      //Warning : the following branches need to be added to LLTopAna.h//
+      ///////////////////////////////////////////////////////////////////
 
+  smalltree->Branch("                tree_track_ntrk10",&tree_track_ntrk10);
+  smalltree->Branch("                tree_track_ntrk20",&tree_track_ntrk20);
+  smalltree->Branch("                tree_track_ntrk30",&tree_track_ntrk30);
+  smalltree->Branch("                tree_DVertex_top1_nTrks",&tree_DVertex_top1_nTrks);
+  smalltree->Branch("                tree_DVertex_top2_nTrks",&tree_DVertex_top2_nTrks);
+  smalltree->Branch("                tree_DVertex_nTrks",&tree_DVertex_nTrks);
+
+  smalltree->Branch("                tree_GlobalVertex_X",&tree_GlobalVertex_X);        
+  smalltree->Branch("                tree_GlobalVertex_Y",&tree_GlobalVertex_Y);
+  smalltree->Branch("                tree_GlobalVertex_Z",&tree_GlobalVertex_Z);
+  smalltree->Branch("                tree_GlobalVertex_dr",&tree_GlobalVertex_dr);
+  smalltree->Branch("                tree_GlobalVertex_dz",&tree_GlobalVertex_dz);            
+  smalltree->Branch("                tree_GlobalVertex_dd",&tree_GlobalVertex_dd);          
+  smalltree->Branch("                tree_GlobalVertex_dphi",&tree_GlobalVertex_dphi);         
+  smalltree->Branch("                tree_GlobalVertex_distance2track",&tree_GlobalVertex_distance2track);          
+  smalltree->Branch("                tree_GlobalVertex_NChi2",&tree_GlobalVertex_NChi2);         
+  smalltree->Branch("                tree_GlobalVertex_nTrk",&tree_GlobalVertex_nTrks);
+
+  smalltree->Branch("                tree_seedVtx_dr_top1",&tree_seedVtx_dr_top1);
+  smalltree->Branch("                tree_seedVtx_dz_top1",&tree_seedVtx_dz_top1);
+  smalltree->Branch("                tree_seedVtx_dr_top2",&tree_seedVtx_dr_top2);
+  smalltree->Branch("                tree_seedVtx_dz_top2",&tree_seedVtx_dz_top2);
 
   tree_NbrOfZCand= 0;
   
@@ -1494,15 +1543,12 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    
    //$$
    int ntop = 0;
+   int nLLP = 0;
    float top1_x = -1000, top1_y = -1000, top1_z = -1000; //LLP1
    float top2_x = -1000, top2_y = -1000, top2_z = -1000; //LLP2 avoir ces informations là dnas le NTuple
    float top1_pt = -10, top1_eta= -10, top1_phi=-10;
    float top2_pt = -10, top2_eta= -10, top2_phi=-10;
-  //  //Avoir LLP1_pt, eta, phi same forLLP2, "mom", x, y,z
-   //for mom see below the loops
-   //ajouter ntop (nLLP)
-
-   // everything is done here
+   //Avoir LLP1_pt, eta, phi same forLLP2, x, y,z
    //$$
    
    if ( !runOnData_ ) {
@@ -1512,60 +1558,66 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      for (auto const & genParticle : *genParticles)
        {
 	 //$$
-	 if ( abs(genParticle.pdgId()) >= 1 && abs(genParticle.pdgId()) <= 6 ) { //Version de Daniel, less restrective on quarks
+	 if ( abs(genParticle.pdgId()) >= 1 && abs(genParticle.pdgId()) <= 6 ) { //Version de Daniel, less restrective on quarks, 
 	   const Candidate * mom = genParticle.mother();
 	   if ( abs(mom->pdgId()) == 1000023 ) { // quark from neutralino 
-	     if ( ntop >= 2 ) {
+	     if ( nLLP >= 2 ) {
 	       float dV1 = (genParticle.vx() - top1_x)*(genParticle.vx() - top1_x)
-		 + (genParticle.vy() - top1_y)*(genParticle.vy() - top1_y)
-		 + (genParticle.vz() - top1_z)*(genParticle.vz() - top1_z);
+		      + (genParticle.vy() - top1_y)*(genParticle.vy() - top1_y)
+		      + (genParticle.vz() - top1_z)*(genParticle.vz() - top1_z);
 	       float dV2 = (genParticle.vx() - top2_x)*(genParticle.vx() - top2_x)
-		 + (genParticle.vy() - top2_y)*(genParticle.vy() - top2_y)
-		 + (genParticle.vz() - top2_z)*(genParticle.vz() - top2_z);
-	       if ( dV1 > 0.01 && dV2 > 0.01 ) ntop++;
+		      + (genParticle.vy() - top2_y)*(genParticle.vy() - top2_y)
+		      + (genParticle.vz() - top2_z)*(genParticle.vz() - top2_z);
+	       if ( dV1 > 0.01 && dV2 > 0.01 ) 
+         {
+           nLLP++;
+           if (abs(genParticle.pdgId()) == 6) ntop++;
+         }
 	     } 
-	     if ( ntop == 1 ) {
+	     if ( nLLP == 1 ) {
 	       float dV = (genParticle.vx() - top1_x)*(genParticle.vx() - top1_x)
 		 + (genParticle.vy() - top1_y)*(genParticle.vy() - top1_y)
 		 + (genParticle.vz() - top1_z)*(genParticle.vz() - top1_z);
 	       if ( dV > 0.01 ) {
-		 ntop = 2;
+		 nLLP = 2;
 		 top2_x = genParticle.vx();
 		 top2_y = genParticle.vy();
 		 top2_z = genParticle.vz();
      top2_pt = genParticle.pt();
      top2_eta = genParticle.eta();
      top2_phi =genParticle.phi();
+     if (abs(genParticle.pdgId()) == 6) {ntop=2;}
 	       } 
 	     } 
-	     if ( ntop == 0 ) {
-	       ntop = 1;
+	     if ( nLLP == 0 ) {
+	       nLLP = 1;
+         if (abs(genParticle.pdgId()) == 6) ntop = 1;
 	       top1_x = genParticle.vx();
 	       top1_y = genParticle.vy();
 	       top1_z = genParticle.vz();
          top1_pt = genParticle.pt();
          top1_eta = genParticle.eta();
-         top1_phi =genParticle.phi();        
+         top1_phi = genParticle.phi();        
 	     } 
 	   } 
 	 } 
-	 //$$
-	tree_top1_x.push_back(top1_x);
-  tree_top1_y.push_back(top1_y);
-  tree_top1_z.push_back(top1_z);
-  tree_top2_x.push_back(top2_x);
-  tree_top2_y.push_back(top2_y);
-  tree_top2_z.push_back(top2_z);
+	 //$$ Pas seulement des top car on considère tous les quarks dans cette partie du code
+	tree_LLP1_x.push_back(top1_x);
+  tree_LLP1_y.push_back(top1_y);
+  tree_LLP1_z.push_back(top1_z);
+  tree_LLP2_x.push_back(top2_x);
+  tree_LLP2_y.push_back(top2_y);
+  tree_LLP2_z.push_back(top2_z);
 
-  tree_top1_pt.push_back(top1_pt);
-  tree_top1_eta.push_back(top1_eta);
-  tree_top1_phi.push_back(top1_phi);
+  tree_LLP1_pt.push_back(top1_pt);
+  tree_LLP1_eta.push_back(top1_eta);
+  tree_LLP1_phi.push_back(top1_phi);
 
-  tree_top2_pt.push_back(top2_pt);
-  tree_top2_eta.push_back(top2_eta);
-  tree_top2_phi.push_back(top2_phi);
+  tree_LLP2_pt.push_back(top2_pt);
+  tree_LLP2_eta.push_back(top2_eta);
+  tree_LLP2_phi.push_back(top2_phi);
 	 //$$
-	 if (genParticle.pt() < 0.9 || fabs(genParticle.eta()) > 4.0) continue; 
+	 if (genParticle.pt() < 0.9 || fabs(genParticle.eta()) > 4.0) continue; //Conditions on all quarks, not only on top
 	 //$$
 	 tree_genParticle_pt.push_back(genParticle.pt());
 	 tree_genParticle_eta.push_back(genParticle.eta());
@@ -1578,12 +1630,13 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 tree_genParticle_mass.push_back(genParticle.mass());
 	 tree_genParticle_statusCode.push_back(genParticle.status()); 
 	 const Candidate * mom = genParticle.mother();
-	 tree_genParticle_mother_pdgId.push_back( mom ? mom->pdgId() :  -1 );
+	 tree_genParticle_mother_pdgId.push_back( mom ? mom->pdgId() :  -1 );// top donne neutralino, peut faire des masse sinvariantes si besoin
 	 tree_genParticle_mother_pt.push_back( mom ? mom->pt() :  -1 );
 	 tree_genParticle_mother_eta.push_back( mom ? mom->eta() :  -10 );
 	 tree_genParticle_mother_phi.push_back( mom ? mom->phi() :  -10 );
+   tree_ntop.push_back(ntop);
        }
-    tree_ntop.push_back(ntop);
+    
      
      //      cout << " ntop " << ntop << "   top1 " << top1_x << " " << top1_y << " " << top1_z  
      //                               << "   top2 " << top2_x << " " << top2_y << " " << top2_z << endl; 
@@ -1648,7 +1701,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    for (auto const & muon : *slimmedmuons)
      {
        if ( muon.pt() < 3. ) continue;
-       
        tree_slimmedmuon_pt.push_back( muon.pt());
        tree_slimmedmuon_eta.push_back(muon.eta());
        tree_slimmedmuon_phi.push_back(muon.phi());
@@ -1678,146 +1730,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      }
        std::cout<< "number of muons first method : " << tree_slimmedmuon_pt.size() << std::endl;
 
-  //  for (auto const & muon : *slimmedmuons)
-  //    {
-  //      if ( muon.pt() < 3. ) continue;
-  //      if  (nmuon >=2)
-  //       {
-  //         float dv1 = (muon.vx() - muon1_x)*(muon.vx() - muon1_x)
-	// 	      + (muon.vy() - muon1_y)*(muon.vy() - muon1_y)
-	// 	      + (muon.vz() - muon1_z)*(muon.vz() - muon1_z);
-	//         float dv2 = (muon.vx() - muon2_x)*(muon.vx() - muon2_x)
-	// 	      + (muon.vy() - muon2_y)*(muon.vy() - muon2_y)
-	// 	      + (muon.vz() - muon2_z)*(muon.vz() - muon2_z);
-	//         if ( dv1 > 0.01 && dv2 > 0.01 ) {nmuon++;}
-  //         else {std::cout<< "muon discarded from selection "<< std::endl;}
-	//       } 
-	//      if ( nmuon == 1 ) 
-  //       {
-	//         float dv = (muon.vx() - muon1_x)*(muon.vx() - muon1_x)
-	// 	      + (muon.vy() - muon1_y)*(muon.vy() - muon1_y)
-	// 	      + (muon.vz() - muon1_z)*(muon.vz() - muon1_z);
-	//         if ( dv > 0.01 ) 
-  //           {
-	// 	          nmuon = 2;
-	// 	          muon2_x = muon.vx();
-	// 	          muon2_y = muon.vy();
-	// 	          muon2_z = muon.vz();
-  //             muon2_pt = muon.pt();
-  //             muon2_eta = muon.eta();
-  //             muon2_phi = muon.phi();
-  //             muon2_E = muon.energy();
-  //             muon2_dxy = muon.bestTrack()->dxy(bs);
-  //             muon2_dxyError =  muon.bestTrack()->dxyError();
-  //             muon2_dz = muon.bestTrack()->dz(bs.position());
-  //             muon2_dzError = muon.bestTrack()->dzError();
-  //             muon2_charge = muon.charge();
-  //             muon2_PFisoVeryTight =muon.passed(reco::Muon::PFIsoVeryTight);
-  //             muon2_PFisoTight =muon.passed(reco::Muon::PFIsoTight) ;
-  //             muon2_PFisoMedium =muon.passed(reco::Muon::PFIsoMedium);
-  //             muon2_PFisoLoose =muon.passed(reco::Muon::PFIsoLoose );
-  //             muon2_MVAisoLoose =muon.passed(reco::Muon::MvaLoose );
-  //             muon2_MVAisoMedium =muon.passed(reco::Muon::MvaMedium);
-  //             muon2_MVAisoTight =muon.passed(reco::Muon::MvaTight );
-  //             muon2_isGlobalMuon =muon.passed(muon.isGlobalMuon());
-  //             muon2_isStandAloneMuon =muon.passed(muon.isStandAloneMuon());
-  //             muon2_CutBasedIdLoose =muon.passed(reco::Muon::CutBasedIdLoose);
-  //             muon2_CutBasedIdMedium =muon.passed(reco::Muon::CutBasedIdMedium);
-  //             muon2_CutBasedIdMediumPrompt =muon.passed(reco::Muon::CutBasedIdMediumPrompt);
-  //             muon2_CutBasedIdTight =muon.passed(reco::Muon::CutBasedIdTight);
-	//           }
-  //           else {std::cout<< "muon discarded from selection "<< std::endl;} 
-	//       } 
-	//      if ( nmuon == 0 ) 
-  //       {
-	//         nmuon = 1;
-	//         muon1_x = muon.vx();
-	//         muon1_y = muon.vy();
-	//         muon1_z = muon.vz();
-  //         muon1_pt = muon.pt();
-  //         muon1_eta = muon.eta();
-  //         muon1_phi = muon.phi();
-  //         muon1_E = muon.energy();
-  //         muon1_dxy = muon.bestTrack()->dxy(bs);
-  //         muon1_dxyError =  muon.bestTrack()->dxyError();
-  //         muon1_dz = muon.bestTrack()->dz(bs.position());
-  //         muon1_dzError = muon.bestTrack()->dzError();
-  //         muon1_charge = muon.charge();
-  //         muon1_PFisoVeryTight =muon.passed(reco::Muon::PFIsoVeryTight);
-  //         muon1_PFisoTight =muon.passed(reco::Muon::PFIsoTight) ;
-  //         muon1_PFisoMedium =muon.passed(reco::Muon::PFIsoMedium);
-  //         muon1_PFisoLoose =muon.passed(reco::Muon::PFIsoLoose );
-  //         muon1_MVAisoLoose =muon.passed(reco::Muon::MvaLoose );
-  //         muon1_MVAisoMedium =muon.passed(reco::Muon::MvaMedium);
-  //         muon1_MVAisoTight =muon.passed(reco::Muon::MvaTight );
-  //         muon1_isGlobalMuon =muon.passed(muon.isGlobalMuon());
-  //         muon1_isStandAloneMuon =muon.passed(muon.isStandAloneMuon());
-  //         muon1_CutBasedIdLoose =muon.passed(reco::Muon::CutBasedIdLoose);
-  //         muon1_CutBasedIdMedium =muon.passed(reco::Muon::CutBasedIdMedium);
-  //         muon1_CutBasedIdMediumPrompt =muon.passed(reco::Muon::CutBasedIdMediumPrompt);
-  //         muon1_CutBasedIdTight =muon.passed(reco::Muon::CutBasedIdTight);
-	//       } 
-	//    }
-    
-  // std::cout<< "number of muons second method : " << nmuon << std::endl;
-  // //$$
-	// tree_slimmedmuon1_vx.push_back(muon1_x);
-  // tree_slimmedmuon1_vy.push_back(muon1_y);
-  // tree_slimmedmuon1_vz.push_back(muon1_z);
-  // tree_slimmedmuon1_pt.push_back(muon1_pt);
-  // tree_slimmedmuon1_eta.push_back(muon1_eta);
-  // tree_slimmedmuon1_phi.push_back(muon1_phi);
-
-  // tree_slimmedmuon1_energy.push_back(   muon1_E);
-  // tree_slimmedmuon1_dxy.push_back(muon1_dxy);
-  // tree_slimmedmuon1_dxyError.push_back( muon1_dxyError);
-  // tree_slimmedmuon1_dz.push_back(	  muon1_dz);
-  // tree_slimmedmuon1_dzError.push_back(  muon1_dzError);
-  // tree_slimmedmuon1_charge.push_back(   muon1_charge); 
-       
-  // tree_slimmedmuon1_PFisoVeryTight.  push_back(   muon1_PFisoVeryTight);
-  // tree_slimmedmuon1_PFisoTight.      push_back(   muon1_PFisoTight );
-  // tree_slimmedmuon1_PFisoMedium.     push_back(   muon1_PFisoMedium);
-  // tree_slimmedmuon1_PFisoLoose.      push_back(  muon1_PFisoLoose);
-  // tree_slimmedmuon1_MVAisoLoose.     push_back(   muon1_MVAisoLoose  );
-  // tree_slimmedmuon1_MVAisoMedium.    push_back(   muon1_MVAisoMedium  );
-  // tree_slimmedmuon1_MVAisoTight.     push_back(   muon1_MVAisoTight  );
-  // tree_slimmedmuon1_isGlobalMuon.    push_back(   muon1_isGlobalMuon	);
-  // tree_slimmedmuon1_isStandAloneMuon.push_back(   muon1_isStandAloneMuon);
-  // tree_slimmedmuon1_CutBasedIdLoose		   .push_back(   muon1_CutBasedIdLoose);
-  // tree_slimmedmuon1_CutBasedIdMedium     .push_back(   muon1_CutBasedIdMedium);
-  // tree_slimmedmuon1_CutBasedIdMediumPrompt	  .push_back(	muon1_CutBasedIdMediumPrompt);
-  // tree_slimmedmuon1_CutBasedIdTight		   .push_back(   muon1_CutBasedIdTight);  
-
-
-  // tree_slimmedmuon2_x.push_back(muon2_x);
-  // tree_slimmedmuon2_y.push_back(muon2_y);
-  // tree_slimmedmuon2_z.push_back(muon2_z);
-  // tree_slimmedmuon2_pt.push_back(muon2_pt);
-  // tree_slimmedmuon2_eta.push_back(muon2_eta);
-  // tree_slimmedmuon2_phi.push_back(muon2_phi);
-  // tree_slimmedmuon2_energy.push_back(   muon2_E);
-  // tree_slimmedmuon2_dxy.push_back(muon2_dxy);
-  // tree_slimmedmuon2_dxyError.push_back( muon2_dxyError);
-  // tree_slimmedmuon2_dz.push_back(	  muon2_dz);
-  // tree_slimmedmuon2_dzError.push_back(  muon2_dzError);
-  // tree_slimmedmuon2_charge.push_back(   muon2_charge); 
-       
-  // tree_slimmedmuon2_PFisoVeryTight.  push_back(   muon2_PFisoVeryTight);
-  // tree_slimmedmuon2_PFisoTight.      push_back(   muon2_PFisoTight );
-  // tree_slimmedmuon2_PFisoMedium.     push_back(   muon2_PFisoMedium);
-  // tree_slimmedmuon2_PFisoLoose.      push_back(  muon2_PFisoLoose);
-  // tree_slimmedmuon2_MVAisoLoose.     push_back(   muon2_MVAisoLoose  );
-  // tree_slimmedmuon2_MVAisoMedium.    push_back(   muon2_MVAisoMedium  );
-  // tree_slimmedmuon2_MVAisoTight.     push_back(   muon2_MVAisoTight  );
-  // tree_slimmedmuon2_isGlobalMuon.    push_back(   muon2_isGlobalMuon	);
-  // tree_slimmedmuon2_isStandAloneMuon.push_back(   muon2_isStandAloneMuon);
-  // tree_slimmedmuon2_CutBasedIdLoose		   .push_back(   muon2_CutBasedIdLoose);
-  // tree_slimmedmuon2_CutBasedIdMedium     .push_back(   muon2_CutBasedIdMedium);
-  // tree_slimmedmuon2_CutBasedIdMediumPrompt	  .push_back(	muon2_CutBasedIdMediumPrompt);
-  // tree_slimmedmuon2_CutBasedIdTight		   .push_back(   muon2_CutBasedIdTight);
-	 //$$
-
 
    //reco::BeamSpot vertexBeamSpot= *recoBeamSpotHandle;
    edm::ESHandle<TransientTrackBuilder> theTransientTrackBuilder;
@@ -1827,7 +1739,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    //prepare association to tracks by hit
    reco::RecoToSimCollection recSimColl ;
    if(!runOnData_) recSimColl= associatorByHits.associateRecoToSim(trackRefs, tpCollection);
-   //fale rate determiantion : when a reco track has no matched simtrack
+   //fake rate determination : when a reco track has no matched simtrack
    
    int nTracks = 0; 
    //    int nUnmatchTrack_fromPU = 0;
@@ -1838,7 +1750,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    //---------------
    //loops on tracks 
    //---------------
-   
+
    for (size_t iTrack = 0; iTrack<trackRefs.size(); ++iTrack) 
      {
        const auto& itTrack = trackRefs[iTrack];
@@ -1920,7 +1832,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        //matching to simulated tracks
        //----------------------------
        //matching par hits
-       
+
        if ( !runOnData_ ) {
          float NReco=trackRefs.size();
          float NRecotoSim=0;
@@ -1953,7 +1865,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
          int   simtrack_isFromLLP            = 0;
          
          auto foundTPs = recSimColl.find(itTrack);
-         if ( foundTPs != recSimColl.end() ) {
+         if ( foundTPs != recSimColl.end() ) 
+         {
            //if (!foundTPs->val.empty()) {
             isSimMatched = true;
             TrackingParticleRef tpr = foundTPs->val[0].first;
@@ -1979,7 +1892,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             
             //$$
 
-
             float top1_Diff_X = 0;
             float top1_Diff_Y = 0;
             float top1_Diff_Z = 0;
@@ -1987,15 +1899,14 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             float top2_Diff_Y = 0;
             float top2_Diff_Z = 0;
 
-
-            if ( ntop >= 1 ) {
+            if ( ntop == 1 ) {//>=?
               float dV1 = (genVertexPos_X - top1_x)*(genVertexPos_X - top1_x)
               + (genVertexPos_Y - top1_y)*(genVertexPos_Y - top1_y)
               + (genVertexPos_Z - top1_z)*(genVertexPos_Z - top1_z);
-              top1_Diff_X = genVertexPos_X - top1_x;
+              top1_Diff_X = genVertexPos_X - top1_x;//recsim coll genVertexPosX
               top1_Diff_Y = genVertexPos_Y - top1_y;
               top1_Diff_Z = genVertexPos_Z - top1_z;
-              tree_simtrack_genVertexPosDiff_top1_dV.push_back(dV1);//if ( dV1 < 0.01 ) simtrack_isFromLLP = 1;
+              tree_simtrack_genVertexPosDiff_top1_dV.push_back(dV1);//if ( dV1 < 0.01 ) simtrack_isFromLLP = 1; distribution piquée en 0
               if ( dV1 < 0.01 ) simtrack_isFromLLP = 1;
             }
             if ( ntop >= 2 && simtrack_isFromLLP != 1 ) {
@@ -2012,21 +1923,19 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             tree_simtrack_genVertexPosDiff_top1_X.push_back(top1_Diff_X);
             tree_simtrack_genVertexPosDiff_top1_Y.push_back(top1_Diff_Y);
             tree_simtrack_genVertexPosDiff_top1_Z.push_back(top1_Diff_Z);
-            
 
             tree_simtrack_genVertexPosDiff_top2_X.push_back(top2_Diff_X);
             tree_simtrack_genVertexPosDiff_top2_Y.push_back(top2_Diff_Y);
             tree_simtrack_genVertexPosDiff_top2_Z.push_back(top2_Diff_Z);
-            
-            //comparer les infos de simtrack avec gen (diff_X,...)
 	   
             //ex: sélectionner les traces venant du premeir top. Regarder à quelles poitns le  vertex se rapprotche du vertex généré
             //aussi pour le deuxieme top
             //Matcher les informations avec les x y z calculés précédemment
-	   
-            for (auto genIterator=genParticles->begin(); genIterator!=genParticles->end(); genIterator++) //loop on gen particles (Jérémy's method)
+
+            for (auto genIterator=genParticles->begin(); genIterator!=genParticles->end(); genIterator++)
             {
-              if (abs(genIterator->pdgId())==6 && genIterator->status()==22) //if the gen particle is a displaced top 
+              // if (abs(genIterator->pdgId())==6 && genIterator->status()==22) //if the gen particle is a displaced top 
+              if (abs(genIterator->pdgId())<=6 && abs(genIterator->pdgId())>=1)
               {  //Doublon de la méthode de  Daniel ligne ~1500//
                 double top_x=genIterator->vx(); 
                 double top_y=genIterator->vy(); 
@@ -2034,10 +1943,11 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 //cout << "genVertexPos_X - top_x " << genVertexPos_X - top_x << endl;
                 //cout << "genVertexPos_Y - top_y " << genVertexPos_Y - top_y << endl;
                 //cout << "genVertexPos_Z - top_z " << genVertexPos_Z - top_z << endl;
-                if( fabs(genVertexPos_X - top_x)< 0.01 && fabs(genVertexPos_Y - top_y) < 0.01 && fabs(genVertexPos_Z - top_z) < 0.01) simtrack_isFromDispTop = true;
+                if( fabs(genVertexPos_X - top_x)< 0.01 && fabs(genVertexPos_Y - top_y) < 0.01 && fabs(genVertexPos_Y - top_y) < 0.01) simtrack_isFromDispTop = true;
               }
             }
           } 
+
           ratioReco = NRecotoSim/NReco;  
           tree_FakeRate.push_back(ratioReco);
           tree_track_simtrack_charge 	            .push_back(simtrack_charge);	     
@@ -2078,7 +1988,9 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         //     tree_track_reco08CaloJet_idx.push_back(trackTo08CaloJetMap[iTrack]); 
         
   } //end loop on tracks
-  
+
+
+
   /*std::cout << "---------------------"  << std::endl;
   std::cout << "nUnmatchTrack_fromPU " << nUnmatchTrack_fromPU << std::endl;
   std::cout << "nUnmatchTrack_fromPV " << nUnmatchTrack_fromPV << std::endl;
@@ -2124,15 +2036,13 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        {
          isRecoMatched = true;
          NSimtoReco=NSimtoReco+1;/*!*/
-         tree_simtrack_isRecoMatched_pt.push_back(tp->pt());/*!*/ //CHeck the ratio of histos: ptsimtoreco/ptsim(the one from)
-         //simtrack_simtrack is close to 1
          for(const auto trackQuality: foundTracks->val) 
 	       {
 		      tkIdx.push_back(trackQuality.first.key());
 	       }
         }
         
-        tree_simtrack_isRecoMatched.push_back(isRecoMatched);
+        tree_simtrack_isRecoMatched.push_back(isRecoMatched);//tree_simtrack_pt when isRecoMatched =true
 	      //Calcualte the impact parameters w.r.t. PCA
 	      tree_simtrack_trkIdx.push_back(tkIdx);
 	 
@@ -2149,7 +2059,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      std::cout<< "ratio of NSimtoReco/Nsim = "<< ratio << std::endl;
      tree_NSimtoReco.push_back(NSimtoReco);
      tree_NSim.push_back(NSim);
-     tree_RecoEfficiency.push_back(ratio);
+     tree_RecoEfficiency.push_back(ratio);//change en fonction du pt et êta
    }
 
    
@@ -2247,7 +2157,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    
    //Nothing is done in Daniel's code to treat secondary. This is treated
    //in the next part by Jérémy, this is why there are "doublons"
-   /////SECONDARY VERTEX RECONSTRUCTION USING DISPLACED TRACKS (Jérémy's method)
+   /////SECONDARY VERTEX RECONSTRUCTION USING DISPLACED TRACKS (Jérémy's method) here LLPs are only tops
     TransientVertex displacedVertex_top1_general;
     TransientVertex displacedVertex_top2_general;
 
@@ -2276,18 +2186,19 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     float top2_x=0; 
     float top2_y=0; 
     float top2_z=0;
-    
+    // genParticle.pdgId()
     for (auto genIterator=genParticles->begin(); genIterator!=genParticles->end(); genIterator++) //loop on gen particles
     {
-      if (abs(genIterator->pdgId())==6 && genIterator->status()==22) //if the gen particle is a displaced top 
+      if (abs(genIterator->pdgId())==6 && genIterator->status()==22) //if the gen particle is a displaced top ,
+      // if ( abs(genIterator->pdgId()) >= 1 && abs(genIterator->pdgId()) <= 6 )//daniel's condition, taking into account all quarks
 	      { 
 	        n_displacedtop++; 
 	        int num_track=-1; 
 	        if (n_displacedtop==1) 
           {
-            top1_x=genIterator->vx(); //doublon ligne 1450 : loop on genParticles
+            top1_x=genIterator->vx(); //doublon ligne 1450 : loop on genParticles 
             top1_y=genIterator->vy(); // but here it is more restrective 
-            top1_z=genIterator->vz(); // as all final quarks are cosnidered
+            top1_z=genIterator->vz(); // as all final quarks are not cosnidered and we are considering only top and not all LLPs
             if(showlog) cout << "FIRST TOP GEN VERTEX X "<<genIterator->vx()<<endl; 
             if(showlog) cout << "FIRST TOP GEN VERTEX Y "<<genIterator->vy()<<endl; 
             if(showlog) cout << "FIRST TOP GEN VERTEX Z "<<genIterator->vz()<<endl; 
@@ -2301,7 +2212,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           {
             top2_x=genIterator->vx();  //doublon ligne 1450 : loop on genParticles
             top2_y=genIterator->vy();  // but here it is more restrective 
-            top2_z=genIterator->vz();  // as all final quarks are cosnidered
+            top2_z=genIterator->vz();  // as all final quarks are cosnidered and we are considering only top and not all LLPs
             if(showlog) cout << "------------------------" <<endl; 
             if(showlog) cout << "SECOND TOP GEN VERTEX X "<<genIterator->vx()<<endl; 
             if(showlog) cout << "SECOND TOP GEN VERTEX Y "<<genIterator->vy()<<endl; 
@@ -2311,8 +2222,11 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             tree_genTop_Z.push_back(top2_z);
             tree_genTop_charge.push_back(genIterator->charge());//only 0s??
           }
-	     
-          //        cout << "------------------------" <<endl; 
+          if (n_displacedtop>2)
+            {
+              std::cout<<"More than two tops for this event : "<< n_displacedtop <<std::endl;
+            }
+                 cout << "------------------------" <<endl; 
           
           //using gen information for vertex refitting
 	       for (auto trackIterator=tracks.begin(); trackIterator!=tracks.end(); trackIterator++) //loop on reco tracks
@@ -2350,7 +2264,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         displacedVertex_top1_general = displacedVertex_top1;//useless for the moment
 	      //TransientVertex myVertex = theFitter.vertex(mytracks);  // if you don't want the beam constraint
 	      // now you have a new vertex, can e.g. be compared with the original
-	      if (displacedVertex_top1.isValid())
+	      if (displacedVertex_top1.isValid()) // NotValid if the max number of steps has been exceedeor the fitted position is out of tracker bounds.
 	      {    
           nRecoVertex1++;
           auto lineariser = DefaultLinearizationPointFinder();
@@ -2408,7 +2322,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         displacedVertex_top2_general = displacedVertex_top2;
         //TransientVertex myVertex = theFitter.vertex(mytracks);  // if you don't want the beam constraint
         // now you have a new vertex, can e.g. be compared with the original
-        if (displacedVertex_top2.isValid())
+        if (displacedVertex_top2.isValid()) //NotValid if the max number of steps has been exceedeor the fitted position is out of tracker bounds.
         { 
           nRecoVertex2++;   
           if(showlog)        cout << "------------------------" <<endl;
@@ -2509,10 +2423,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   reader->AddVariable( "mva_ntrk10", &ntrk10);
   reader->AddVariable( "mva_drSig", &drSig); /*!*/
   reader->AddVariable( "mva_track_isinjet", &isinjet); /*!*/
-  /*!*/
   //$$
   reader->BookMVA( "BDTG", weightFile_ );
-  //reader->BookMVA("BDT",weightFile_)/*!*/
   //$$
    
   int counter_track=-1; 
@@ -2521,7 +2433,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     {
       counter_track++; 
       const auto& itTrack = trackRefs[iTrack];
-      //double track_sig =  abs(tree_track_dxy[counter_track]/tree_track_dxyError[counter_track]); 
       firsthit_X = tree_track_firsthit_X[counter_track]; 
       firsthit_Y = tree_track_firsthit_Y[counter_track]; 
       firsthit_Z = tree_track_firsthit_Z[counter_track]; 
@@ -2558,18 +2469,20 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           float y2 = tree_track_firsthit_Y[counter_othertrack];
           float z2 = tree_track_firsthit_Z[counter_othertrack];
           float dist = TMath::Sqrt( (firsthit_X-x2)*(firsthit_X-x2) + (firsthit_Y-y2)*(firsthit_Y-y2) + (firsthit_Z-z2)*(firsthit_Z-z2) );//pour chaque reconstruite, on regarde les autres tracks, 
-          if ( dist < 10. ) {ntrk10++;}
+          if ( dist < 10. ) {ntrk10++;}//les sctocker les 3 , on teste sur une seule couche quand on regarde vers l'avant
           if (dist > 10 && dist < 20) {ntrk1020++;}
-          if ( dist < 20. ) {ntrk20++;}
+          if ( dist < 20. ) {ntrk20++;} 
           if (dist > 20 && dist < 30) {ntrk2030++;} 
           if ( dist < 30. ) {ntrk30++;} 
           if (dist > 30 && dist < 40) {ntrk3040++;}
           if ( dist < 40. ) {ntrk40++;}//used in BDT
           if (dist > 40) {ntrk40XX++;}
         }  // end Loop on other Tracks
-
+       tree_track_ntrk10.push_back(ntrk10);
+       tree_track_ntrk20.push_back(ntrk20);
+       tree_track_ntrk30.push_back(ntrk30);
        bdtval = reader->EvaluateMVA( "BDTG" );//default value = -10 (no -10 observed and -999 comes from EvaluateMVA)
-       tree_track_MVAval_FromDispTop.push_back(bdtval); 
+       tree_track_MVAval_FromDispTop.push_back(bdtval); //isMvaval true or false booléen
        //cout << "BDT VAL " << bdtval <<endl; 
        
        if(tree_track_pt[counter_track] < 1 || fabs(tree_track_eta[counter_track]) > 2.4 || tree_track_recoAK4PFJet_idx[counter_track] == -1  || drSig<5 || tree_track_NChi2[counter_track]>5) continue;
@@ -2579,203 +2492,337 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        nTracks_ADsel++;
         
        displacedTTracks.push_back(theTransientTrackBuilder->build(*itTrack));
-       tree_displacedTTracks_pt.push_back(tree_track_pt[counter_track]);
+       tree_displacedTTracks_pt.push_back(tree_track_pt[counter_track]);//avec le booléen
        //cout << "kept track and it is from displaced top "<<tree_track_simtrack_isFromDispTop[counter_track]<<endl; 
     }  //End loop on all the tracks
+
     if (nTracks_b4sel!=0)
       {Ratio_b4ADsel = nTracks_ADsel/nTracks_b4sel;tree_Ratio_b4ADsel.push_back(Ratio_b4ADsel);}
     else {tree_Ratio_b4ADsel.push_back(0);}
     
     std::cout << " Ratio of tracks before and after sel with tmva = "<< Ratio_b4ADsel << std::endl;
     tree_nTracks_ADsel.push_back(nTracks_ADsel);
-    tree_nTracks_b4sel.push_back(nTracks_b4sel);
-    
+    tree_nTracks_b4sel.push_back(nTracks_b4sel);//plus compliqué
+      if(showlog) cout << displacedTTracks.size() << " displaced tracks selected " << endl;
 
-  //-----------------------------!!!!!!!!!!!!!!!!---------------------------------//
-  //Add Block here to reduce the number of tracks/vertices to treat as it is taking
-  //  a lot of computing time or add resctrictions in the following loop of reconstruction of
-  // seed vertex from pair of tracks
-  // add kalman filters.
-  //-----------------------------!!!!!!!!!!!!!!!!---------------------------------//
+    //---------------------------------------------------------------------------------------//
 
-
-  //   int n_tracks_test=0;
-  //   int n_tracks_selected = 0; 
-   
-  if(showlog) cout << displacedTTracks.size() << " displaced tracks selected " << endl;
-   
-   //------------------------------------------------------------
-   //reconstruct seed vertex from pair of tracks
-   //select those who have a chi2/ndf < 100
-   //------------------------------------------------------------
-   /*!*/ //get all the track for 1 track (that pass the selection and tmva) for 1 top: comapre to Jérémy's method and check the efficiccy loss
-   KalmanVertexFitter theFitter_vertex(kvfPSet);//One or less vertex /*!*/
-   std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > proto_vertex; // container of the vertex and associated tracks
-   Proto PVtx(proto_vertex);/*!*/
-
-   int nVtxIsValid = 0;
-
-   for(unsigned int itracks = 0; itracks < displacedTTracks.size(); itracks++){
+/////////////////////////////
+//Selection of  tracks of quarks coming from an LLP, plus BDT selection//
+/////////////////////////////
+vector<reco::TransientTrack> displacedTracks_LLP1;
+vector<reco::TransientTrack> displacedTracks_LLP2;
+int nOverfullTop=0;
+if ( !runOnData_ ) //selection of displacedTracks using Daniel's method
+  {
+     int nbrLLP=0;
+     int DisplacedTop=0;
      
-     for(unsigned int itracks2 = itracks+1; itracks2 < displacedTTracks.size(); itracks2++){
-       std::vector<reco::TransientTrack> temp_coll_tracks;
-       
-       double r1 = sqrt(pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y(),2)); 
-       double r2 = sqrt(pow(displacedTTracks[itracks2].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTTracks[itracks2].innermostMeasurementState().globalPosition().y(),2)); 
-       double phi1 = TMath::ATan2(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y(),displacedTTracks[itracks].innermostMeasurementState().globalPosition().x());
-       double phi2 = TMath::ATan2(displacedTTracks[itracks2].innermostMeasurementState().globalPosition().y(),displacedTTracks[itracks2].innermostMeasurementState().globalPosition().x());
-       double dr = abs(r1-r2); 
-       double dz = abs(displacedTTracks[itracks].innermostMeasurementState().globalPosition().z()-displacedTTracks[itracks2].innermostMeasurementState().globalPosition().z());
-       double dd = sqrt(pow(dr,2)+pow(dz,2)); 
-       double dphi = 0.; 
-       
-       if (abs(phi1 - phi2) < (TMath::Pi()) ) dphi = abs(phi1 - phi2); 
-       if (abs(phi1 - phi2) > (TMath::Pi()) ) dphi = 2*(TMath::Pi()) - abs(phi1 - phi2); 
-       double dist_to_tracks = pow( 
-        pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x()- displacedTTracks[itracks2].innermostMeasurementState().globalPosition().x(), 2) +
-        pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y()- displacedTTracks[itracks2].innermostMeasurementState().globalPosition().y(), 2) +
-        pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().z()- displacedTTracks[itracks2].innermostMeasurementState().globalPosition().z(), 2) 
-        , 0.5
-      );
-      // !=dd
+    //  for (auto const & genParticle : *genParticles)
+     for (auto genIterator=genParticles->begin(); genIterator!=genParticles->end(); genIterator++) //loop on gen particles
+       {
+          // std::cout<< "pdgid :"<< genIterator->pdgId()<<std::endl; //check for top presence OK
+	        if ( abs(genIterator->pdgId()) >= 1 && abs(genIterator->pdgId()) <= 6 && genIterator->status()==22)//all quarks
+            {  
+	            nbrLLP++;//useless, actually, only for debugging 
+              int num_track=-1;
+              if  (abs(genIterator->pdgId()) == 6) {DisplacedTop++;}
 
-       //if (dd>40 || dphi>1.4) continue; 
-       //if(dist_to_tracks > 30) continue;
-       
-       temp_coll_tracks.push_back(displacedTTracks[itracks]); 
-       temp_coll_tracks.push_back(displacedTTracks[itracks2]); 
-       TransientVertex displacedVertex_vertex = theFitter_vertex.vertex(temp_coll_tracks); 
-       //if(displacedVertex_vertex.isValid() && displacedVertex_vertex.normalisedChiSquared() < 1000){
-       if(displacedVertex_vertex.isValid() ){//reconstructible################""""
-         std::pair< std::vector<reco::TransientTrack>, TransientVertex> pair_iterators_vertex(temp_coll_tracks,displacedVertex_vertex) ;
-         
-         tree_seedVtx_X.push_back(displacedVertex_vertex.position().x());
-         tree_seedVtx_Y.push_back(displacedVertex_vertex.position().y());
-         tree_seedVtx_Z.push_back(displacedVertex_vertex.position().z());
-         tree_seedVtx_dd.push_back(dd); 
-         tree_seedVtx_dphi.push_back(dphi); 
-         tree_seedVtx_distance2track.push_back(dist_to_tracks); 
-         tree_seedVtx_normChi2.push_back(displacedVertex_vertex.normalisedChiSquared()); 
-         
+              if ( DisplacedTop > 2 ) 
+                {
+	                float dV1 = (genIterator->vx() - top1_x)*(genIterator->vx() - top1_x)
+		              + (genIterator->vy() - top1_y)*(genIterator->vy() - top1_y)
+		              + (genIterator->vz() - top1_z)*(genIterator->vz() - top1_z);
+	                float dV2 = (genIterator->vx() - top2_x)*(genIterator->vx() - top2_x)
+		              + (genIterator->vy() - top2_y)*(genIterator->vy() - top2_y)
+		              + (genIterator->vz() - top2_z)*(genIterator->vz() - top2_z);
+	                if ( dV1 > 0.01 && dV2 > 0.01 ) 
+                    {
+                      if (abs(genIterator->pdgId()) == 6) nOverfullTop++;
+                    }
+	              } 
 
-         proto_vertex.push_back(pair_iterators_vertex);
-         //  PVtx.GetProto().push_back(pair_iterators_vertex);/*!*//*This doesn't  work*/
-         PVtx.PushBack(pair_iterators_vertex);/*!*//*it does*/ 
-                
-       }
-     }
-   }
-  nVtxIsValid=PVtx.Size();
-  if(showlog) cout << "-----------------" <<endl; 
-  //  if(showlog) cout << proto_vertex.size() << " proto-vertex selected " << endl;
-  if(showlog) cout << PVtx.Size() << " proto-vertex selected " << endl;/*!*/
+                if (DisplacedTop == 2)
+                  {
+                    if  (abs(genIterator->pdgId()) == 6) 
+                      {
+                        DisplacedTop=2;
+                        top2_x = genIterator->vx();
+		                    top2_y = genIterator->vy();
+		                    top2_z = genIterator->vz();
+                      }
+                  }
 
+	            if ( DisplacedTop == 1 ) 
+                {
+		              if (abs(genIterator->pdgId()) == 6) 
+                    {
+                      top1_x = genIterator->vx();
+	                    top1_y = genIterator->vy();
+	                    top1_z = genIterator->vz();        
+	                  }  
+	              } 
+	              
+
+
+              ///////////////////////////////////////////////////////////////////////////////
+              //Loop on recotracks to split the event in two using the info of GenParticles//
+              ///////////////////////////////////////////////////////////////////////////////
+              
+              for (auto trackIterator=tracks.begin(); trackIterator!=tracks.end(); trackIterator++) //loop on reco tracks
+	              {
+		              if(trackIterator->pt() < 1 || fabs(trackIterator->eta()) > 2.4) continue;
+		              num_track++;
+                  //BDT selection of displaced tracks for each top-------
+                  float bdtval = reader->EvaluateMVA( "BDTG" );
+                  // std::cout<<"check for mva value"<< bdtval << std::endl;
+                  if (bdtval< -0.0401) continue;//-0.0401
+                  //-----------------------------------------------------
+		              if (tree_track_isSimMatched[num_track]==0) continue; //keeping only the reco tracks matched to sim tracks 
+		              if (abs(tree_track_genVertexPos_X[num_track]-genIterator->vx())<0.01 && abs(tree_track_genVertexPos_Y[num_track]-genIterator->vy())<0.01 && abs(tree_track_genVertexPos_Z[num_track]-genIterator->vz())<0.01)
+                     //if the position of the sim track associated to the reco track is the same as the gen top vertex
+		                {//genVertexPos X which produces de associated simtrack
+		                  TransientTrack  transientTrack = theTransientTrackBuilder->build(*trackIterator); 
+		                  if (DisplacedTop == 1) displacedTracks_LLP1.push_back(transientTrack);//part of these are top but we need to split the event in two, ...
+		                  if (DisplacedTop == 2) displacedTracks_LLP2.push_back(transientTrack);//.. this is why we are using condition on displacedtop
+		                }
+	              }
+	          }//pdgid 
+            // std::cout<<"nbre LLP = "<< nbrLLP << " avec " << DisplacedTop << " top"<< std::endl;
+	     }//genParticle
+  }//runonData
+
+  std::cout << "displacedTracks_LLP1 size : "<< displacedTracks_LLP1.size()<<std::endl;
+  std::cout << "displacedTracks_LLP2 size : "<< displacedTracks_LLP2.size()<<std::endl;
+  std::cout << "overfulltop size : "<< nOverfullTop<<std::endl;
+  //-------------------------------------------------------------//
+  //Look at the vertex fitting with all the tracks // New approach (Daniel/Paul)
+  //-------------------------------------------------------------//
+  KalmanVertexFitter theFitter_vertex_global(kvfPSet);
+
+  std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > proto_vertex_global; // container of the vertex and associated tracks
+
+  Proto GPVtx(proto_vertex_global);/*!*/
+
+  TransientVertex Global_Vertex = theFitter_vertex_global.vertex(displacedTTracks);//FItting with all the displacedTTracks of the event
+
+  std::cout<<"KVF is applied with "<<displacedTTracks.size()<< " tracks"<<std::endl;
+
+  if (Global_Vertex.isValid())//NotValid if the max number of steps has been exceedeor the fitted position is out of tracker bounds.
+          {  std::cout<<"KVF is applied and is valid"<<std::endl;
+            for(unsigned int itracks = 0; itracks < displacedTTracks.size(); itracks++)
+              {
+                for(unsigned int itracks2 = itracks+1; itracks2 < displacedTTracks.size(); itracks2++)
+                  {
+                    double r1 = sqrt(pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y(),2)); 
+                    double r2 = sqrt(pow(displacedTTracks[itracks2].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTTracks[itracks2].innermostMeasurementState().globalPosition().y(),2)); 
+                    double phi1 = TMath::ATan2(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y(),displacedTTracks[itracks].innermostMeasurementState().globalPosition().x());
+                    double phi2 = TMath::ATan2(displacedTTracks[itracks2].innermostMeasurementState().globalPosition().y(),displacedTTracks[itracks2].innermostMeasurementState().globalPosition().x());
+                    double dr = abs(r1-r2); 
+                    double dz = abs(displacedTTracks[itracks].innermostMeasurementState().globalPosition().z()-displacedTTracks[itracks2].innermostMeasurementState().globalPosition().z());
+                    double dd = sqrt(pow(dr,2)+pow(dz,2)); 
+                    double dphi = 0.; 
+                    if (abs(phi1 - phi2) < (TMath::Pi()) ) dphi = abs(phi1 - phi2); 
+                    if (abs(phi1 - phi2) > (TMath::Pi()) ) dphi = 2*(TMath::Pi()) - abs(phi1 - phi2); 
+                    double dist_to_tracks = pow( 
+                      pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x()- displacedTTracks[itracks2].innermostMeasurementState().globalPosition().x(), 2) +
+                      pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y()- displacedTTracks[itracks2].innermostMeasurementState().globalPosition().y(), 2) +
+                      pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().z()- displacedTTracks[itracks2].innermostMeasurementState().globalPosition().z(), 2) 
+                      , 0.5);
+                    tree_GlobalVertex_dr.push_back(dr);
+                    tree_GlobalVertex_dz.push_back(dz);
+                    tree_GlobalVertex_dd.push_back(dd); 
+                    tree_GlobalVertex_dphi.push_back(dphi); 
+                    tree_GlobalVertex_distance2track.push_back(dist_to_tracks); 
+                  }
+              }
+                    tree_GlobalVertex_X.push_back(Global_Vertex.position().x());
+                    tree_GlobalVertex_Y.push_back(Global_Vertex.position().x());
+                    tree_GlobalVertex_Z.push_back(Global_Vertex.position().x());
+                    tree_GlobalVertex_NChi2.push_back(Global_Vertex.normalisedChiSquared());
+                    tree_GlobalVertex_nTrks.push_back(displacedTTracks.size());//Ntracks used to build the vertex
+          }
+  std::cout<< "end of global vertex fitting with displacedTracks" << std::endl;
   //////////////////////////////////
   //--------------------------------
   //Same step as before but done separately between the two tops
-  //reconstruct seed vertex from pair of tracks for each top
-  //select those who have a chi2/ndf < 100
   //--------------------------------
   //////////////////////////////////
-  //top1
-  KalmanVertexFitter theFitter_vertex_top1(kvfPSet);//One or less vertex /*!*/
+
+  //--------------------------------FIRST TOP----------------------------------//
+  
+  KalmanVertexFitter theFitter_vertex_top1(kvfPSet);//One or less vertex: either Valid or NotValid /*!*/
+  
   std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > proto_vertex_top1; // container of the vertex and associated tracks
+  
   Proto PVtx_top1(proto_vertex_top1);/*!*/
-
+  
+  TransientVertex displacedVertex_vertex_top1 = theFitter_vertex_top1.vertex(displacedTracks_LLP1);//Vertex constructed using all tracks of quarks (not only top, for the first top)
+  std::cout<< "displacedVertex_vertex_top1 is built" << std::endl;
   // We can split the previous step by using the displacedTracks_top1 data that was registered line 2200
-        
-        for(unsigned int itracks = 0; itracks < displacedTracks_top1.size(); itracks++)
-          {  
-     
-          for(unsigned int itracks2 = itracks+1; itracks2 < displacedTracks_top1.size(); itracks2++)
-            {
-              std::vector<reco::TransientTrack> temp_coll_tracks;
-              double r1 = sqrt(pow(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().y(),2)); 
-              double r2 = sqrt(pow(displacedTracks_top1[itracks2].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTracks_top1[itracks2].innermostMeasurementState().globalPosition().y(),2)); 
-              double phi1 = TMath::ATan2(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().y(),displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().x());
-              double phi2 = TMath::ATan2(displacedTracks_top1[itracks2].innermostMeasurementState().globalPosition().y(),displacedTracks_top1[itracks2].innermostMeasurementState().globalPosition().x());
-              double dr = abs(r1-r2); 
-              double dz = abs(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().z()-displacedTracks_top1[itracks2].innermostMeasurementState().globalPosition().z());
-              double dd = sqrt(pow(dr,2)+pow(dz,2)); 
-              double dphi = 0.; 
-       
-              if (abs(phi1 - phi2) < (TMath::Pi()) ) dphi = abs(phi1 - phi2); 
-              if (abs(phi1 - phi2) > (TMath::Pi()) ) dphi = 2*(TMath::Pi()) - abs(phi1 - phi2); 
-              double dist_to_tracks = pow( 
-                pow(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().x()- displacedTracks_top1[itracks2].innermostMeasurementState().globalPosition().x(), 2) +
-                pow(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().y()- displacedTracks_top1[itracks2].innermostMeasurementState().globalPosition().y(), 2) +
-                pow(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().z()- displacedTracks_top1[itracks2].innermostMeasurementState().globalPosition().z(), 2) 
-                , 0.5);
-              temp_coll_tracks.push_back(displacedTracks_top1[itracks]); 
-              temp_coll_tracks.push_back(displacedTracks_top1[itracks2]);
-              TransientVertex displacedVertex_vertex = theFitter_vertex_top1.vertex(temp_coll_tracks);
-              if(displacedVertex_vertex.isValid())
-                {//reconstructible
-                  std::pair< std::vector<reco::TransientTrack>, TransientVertex> pair_iterators_vertex(temp_coll_tracks,displacedVertex_vertex) ;
-                  tree_seedVtx_X_top1.push_back(displacedVertex_vertex.position().x());
-                  tree_seedVtx_Y_top1.push_back(displacedVertex_vertex.position().y());
-                  tree_seedVtx_Z_top1.push_back(displacedVertex_vertex.position().z());
-                  tree_seedVtx_dd_top1.push_back(dd); 
-                  tree_seedVtx_dphi_top1.push_back(dphi); 
-                  tree_seedVtx_distance2track_top1.push_back(dist_to_tracks); 
-                  tree_seedVtx_normChi2_top1.push_back(displacedVertex_vertex.normalisedChiSquared()); 
-                  // proto_vertex.push_back(pair_iterators_vertex);
-                  PVtx_top1.PushBack(pair_iterators_vertex);
-                }
-            }
+        if(displacedVertex_vertex_top1.isValid())//NotValid if the max number of steps has been exceded or the fitted position is out of tracker bounds.
+          {std::cout<< "displacedVertex_vertex_top1 is valid" << std::endl;
+            for(unsigned int itracks = 0; itracks < displacedTracks_LLP1.size(); itracks++)
+              {    
+                for(unsigned int itracks2 = itracks+1; itracks2 < displacedTracks_LLP1.size(); itracks2++)
+                  {
+                    double r1 = sqrt(pow(displacedTracks_LLP1[itracks].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTracks_LLP1[itracks].innermostMeasurementState().globalPosition().y(),2)); 
+                    double r2 = sqrt(pow(displacedTracks_LLP1[itracks2].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTracks_LLP1[itracks2].innermostMeasurementState().globalPosition().y(),2)); 
+                    double phi1 = TMath::ATan2(displacedTracks_LLP1[itracks].innermostMeasurementState().globalPosition().y(),displacedTracks_LLP1[itracks].innermostMeasurementState().globalPosition().x());
+                    double phi2 = TMath::ATan2(displacedTracks_LLP1[itracks2].innermostMeasurementState().globalPosition().y(),displacedTracks_LLP1[itracks2].innermostMeasurementState().globalPosition().x());
+                    double dr = abs(r1-r2); 
+                    double dz = abs(displacedTracks_LLP1[itracks].innermostMeasurementState().globalPosition().z()-displacedTracks_LLP1[itracks2].innermostMeasurementState().globalPosition().z());
+                    double dd = sqrt(pow(dr,2)+pow(dz,2)); 
+                    double dphi = 0.; 
+                    if (abs(phi1 - phi2) < (TMath::Pi()) ) dphi = abs(phi1 - phi2); 
+                    if (abs(phi1 - phi2) > (TMath::Pi()) ) dphi = 2*(TMath::Pi()) - abs(phi1 - phi2); 
+                    double dist_to_tracks = pow( 
+                      pow(displacedTracks_LLP1[itracks].innermostMeasurementState().globalPosition().x()- displacedTracks_LLP1[itracks2].innermostMeasurementState().globalPosition().x(), 2) +
+                      pow(displacedTracks_LLP1[itracks].innermostMeasurementState().globalPosition().y()- displacedTracks_LLP1[itracks2].innermostMeasurementState().globalPosition().y(), 2) +
+                      pow(displacedTracks_LLP1[itracks].innermostMeasurementState().globalPosition().z()- displacedTracks_LLP1[itracks2].innermostMeasurementState().globalPosition().z(), 2) 
+                      , 0.5);
+                    tree_seedVtx_dr_top1.push_back(dr); 
+                    tree_seedVtx_dz_top1.push_back(dz); 
+                    tree_seedVtx_dd_top1.push_back(dd); 
+                    tree_seedVtx_dphi_top1.push_back(dphi); 
+                    tree_seedVtx_distance2track_top1.push_back(dist_to_tracks); 
+                  }
+              }            
+                    tree_seedVtx_X_top1.push_back(displacedVertex_vertex_top1.position().x());
+                    tree_seedVtx_Y_top1.push_back(displacedVertex_vertex_top1.position().y());
+                    tree_seedVtx_Z_top1.push_back(displacedVertex_vertex_top1.position().z());
+                    tree_seedVtx_normChi2_top1.push_back(displacedVertex_vertex_top1.normalisedChiSquared());
+                    tree_DVertex_top1_nTrks.push_back(displacedTracks_LLP1.size());     
           }
-int nVtx_top1_IsValid = PVtx_top1.Size();
-      
+  
 
-//top2
-   KalmanVertexFitter theFitter_vertex_top2(kvfPSet);//One or less vertex /*!*/
-   std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > proto_vertex_top2; // container of the vertex and associated tracks
-   Proto PVtx_top2(proto_vertex_top2);/*!*/
+  //---------------------------SECOND TOP-------------------------------------//
 
-// We can split the previous step by using the displacedTracks_top2 data that was registered line 2200
-        
-        for(unsigned int itracks = 0; itracks < displacedTracks_top2.size(); itracks++)
-          {  
-     
-          for(unsigned int itracks2 = itracks+1; itracks2 < displacedTracks_top2.size(); itracks2++)
-            {
-              std::vector<reco::TransientTrack> temp_coll_tracks;
-               double r1 = sqrt(pow(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().y(),2)); 
-               double r2 = sqrt(pow(displacedTracks_top2[itracks2].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTracks_top2[itracks2].innermostMeasurementState().globalPosition().y(),2)); 
-               double phi1 = TMath::ATan2(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().y(),displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().x());
-               double phi2 = TMath::ATan2(displacedTracks_top2[itracks2].innermostMeasurementState().globalPosition().y(),displacedTracks_top2[itracks2].innermostMeasurementState().globalPosition().x());
-               double dr = abs(r1-r2); 
-               double dz = abs(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().z()-displacedTracks_top2[itracks2].innermostMeasurementState().globalPosition().z());
-               double dd = sqrt(pow(dr,2)+pow(dz,2)); 
-               double dphi = 0.; 
-       
-               if (abs(phi1 - phi2) < (TMath::Pi()) ) dphi = abs(phi1 - phi2); 
-               if (abs(phi1 - phi2) > (TMath::Pi()) ) dphi = 2*(TMath::Pi()) - abs(phi1 - phi2); 
-               double dist_to_tracks = pow( 
-                pow(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().x()- displacedTracks_top2[itracks2].innermostMeasurementState().globalPosition().x(), 2) +
-                pow(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().y()- displacedTracks_top2[itracks2].innermostMeasurementState().globalPosition().y(), 2) +
-                pow(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().z()- displacedTracks_top2[itracks2].innermostMeasurementState().globalPosition().z(), 2) 
-                , 0.5);
-              temp_coll_tracks.push_back(displacedTracks_top2[itracks]); 
-              temp_coll_tracks.push_back(displacedTracks_top2[itracks2]);
-              TransientVertex displacedVertex_vertex = theFitter_vertex_top2.vertex(temp_coll_tracks);
-              if(displacedVertex_vertex.isValid())
-                {//reconstructible
-                  std::pair< std::vector<reco::TransientTrack>, TransientVertex> pair_iterators_vertex(temp_coll_tracks,displacedVertex_vertex) ;
-                  tree_seedVtx_X_top2.push_back(displacedVertex_vertex.position().x());
-                  tree_seedVtx_Y_top2.push_back(displacedVertex_vertex.position().y());
-                  tree_seedVtx_Z_top2.push_back(displacedVertex_vertex.position().z());
-                  tree_seedVtx_dd_top2.push_back(dd); 
-                  tree_seedVtx_dphi_top2.push_back(dphi); 
-                  tree_seedVtx_distance2track_top2.push_back(dist_to_tracks); 
-                  tree_seedVtx_normChi2_top2.push_back(displacedVertex_vertex.normalisedChiSquared()); 
-                  // proto_vertex.push_back(pair_iterators_vertex);
-                  PVtx_top2.PushBack(pair_iterators_vertex);
-                }
-            }
-         }
-  int nVtx_top2_IsValid = PVtx_top2.Size();
+  KalmanVertexFitter theFitter_vertex_top2(kvfPSet);//One or less vertex /*!*/
+
+  std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > proto_vertex_top2; // container of the vertex and associated tracks
+
+  Proto PVtx_top2(proto_vertex_top2);/*!*/
+
+  TransientVertex displacedVertex_vertex_top2 = theFitter_vertex_top2.vertex(displacedTracks_LLP2);//Vertex constructed using all tracks of quarks (not only top, for the second top)
+        std::cout<< "displacedVertex_vertex_top2 is built" << std::endl;
+        if(displacedVertex_vertex_top2.isValid())//NotValid if the max number of steps has been exceded or the fitted position is out of tracker bounds.
+          {//reconstructible
+          std::cout<< "displacedVertex_vertex_top2 is valid" << std::endl;
+            for(unsigned int itracks = 0; itracks < displacedTracks_LLP2.size(); itracks++)
+              {  
+                for(unsigned int itracks2 = itracks+1; itracks2 < displacedTracks_LLP2.size(); itracks2++)
+                  {
+                    double r1 = sqrt(pow(displacedTracks_LLP2[itracks].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTracks_LLP2[itracks].innermostMeasurementState().globalPosition().y(),2)); 
+                    double r2 = sqrt(pow(displacedTracks_LLP2[itracks2].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTracks_LLP2[itracks2].innermostMeasurementState().globalPosition().y(),2)); 
+                    double phi1 = TMath::ATan2(displacedTracks_LLP2[itracks].innermostMeasurementState().globalPosition().y(),displacedTracks_LLP2[itracks].innermostMeasurementState().globalPosition().x());
+                    double phi2 = TMath::ATan2(displacedTracks_LLP2[itracks2].innermostMeasurementState().globalPosition().y(),displacedTracks_LLP2[itracks2].innermostMeasurementState().globalPosition().x());
+                    double dr = abs(r1-r2); 
+                    double dz = abs(displacedTracks_LLP2[itracks].innermostMeasurementState().globalPosition().z()-displacedTracks_LLP2[itracks2].innermostMeasurementState().globalPosition().z());
+                    double dd = sqrt(pow(dr,2)+pow(dz,2)); 
+                    double dphi = 0.;
+                    if (abs(phi1 - phi2) < (TMath::Pi()) ) dphi = abs(phi1 - phi2); 
+                    if (abs(phi1 - phi2) > (TMath::Pi()) ) dphi = 2*(TMath::Pi()) - abs(phi1 - phi2); 
+                    double dist_to_tracks = pow( 
+                      pow(displacedTracks_LLP2[itracks].innermostMeasurementState().globalPosition().x()- displacedTracks_LLP2[itracks2].innermostMeasurementState().globalPosition().x(), 2) +
+                      pow(displacedTracks_LLP2[itracks].innermostMeasurementState().globalPosition().y()- displacedTracks_LLP2[itracks2].innermostMeasurementState().globalPosition().y(), 2) +
+                      pow(displacedTracks_LLP2[itracks].innermostMeasurementState().globalPosition().z()- displacedTracks_LLP2[itracks2].innermostMeasurementState().globalPosition().z(), 2) 
+                      , 0.5);
+                    tree_seedVtx_dr_top2.push_back(dr);
+                    tree_seedVtx_dz_top2.push_back(dz);
+                    tree_seedVtx_dd_top2.push_back(dd); 
+                    tree_seedVtx_dphi_top2.push_back(dphi); 
+                    tree_seedVtx_distance2track_top2.push_back(dist_to_tracks); 
+                  }
+              }
+                   tree_seedVtx_X_top2.push_back(displacedVertex_vertex_top2.position().x());
+                   tree_seedVtx_Y_top2.push_back(displacedVertex_vertex_top2.position().y());
+                   tree_seedVtx_Z_top2.push_back(displacedVertex_vertex_top2.position().z());
+                   tree_seedVtx_normChi2_top2.push_back(displacedVertex_vertex_top2.normalisedChiSquared());
+                   tree_DVertex_top2_nTrks.push_back(displacedTracks_LLP2.size());
+          }
+  
     
+//Fromer version of the code (Jérémy)
+
+//------------------------------------------------------------
+   //reconstruct seed vertex from pair of tracks //Not used for now (Paul)
+   //select those who have a chi2/ndf < 100
+   //------------------------------------------------------------
+    ///////////////////////////////////////////////////////////////////////Not USED ATM////////////////////////////////////////////////////
+  //  KalmanVertexFitter theFitter_vertex(kvfPSet);//One or less vertex /*!*/ //Commenter ça
+  //  std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > proto_vertex; // container of the vertex and associated tracks
+  //  Proto PVtx(proto_vertex);/*!*/
+  //  for(unsigned int itracks = 0; itracks < displacedTTracks.size(); itracks++)
+  //     {
+  //     for(unsigned int itracks2 = itracks+1; itracks2 < displacedTTracks.size(); itracks2++)
+  //       {
+  //       double r1 = sqrt(pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y(),2)); 
+  //       double r2 = sqrt(pow(displacedTTracks[itracks2].innermostMeasurementState().globalPosition().x(),2)+pow(displacedTTracks[itracks2].innermostMeasurementState().globalPosition().y(),2)); 
+  //       double phi1 = TMath::ATan2(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y(),displacedTTracks[itracks].innermostMeasurementState().globalPosition().x());
+  //       double phi2 = TMath::ATan2(displacedTTracks[itracks2].innermostMeasurementState().globalPosition().y(),displacedTTracks[itracks2].innermostMeasurementState().globalPosition().x());
+  //       double dr = abs(r1-r2); 
+  //       double dz = abs(displacedTTracks[itracks].innermostMeasurementState().globalPosition().z()-displacedTTracks[itracks2].innermostMeasurementState().globalPosition().z());
+  //       double dd = sqrt(pow(dr,2)+pow(dz,2)); 
+  //       double dphi = 0.; 
+       
+  //       if (abs(phi1 - phi2) < (TMath::Pi()) ) dphi = abs(phi1 - phi2); 
+  //       if (abs(phi1 - phi2) > (TMath::Pi()) ) dphi = 2*(TMath::Pi()) - abs(phi1 - phi2); 
+  //       double dist_to_tracks = pow( 
+  //       pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x()- displacedTTracks[itracks2].innermostMeasurementState().globalPosition().x(), 2) +
+  //       pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y()- displacedTTracks[itracks2].innermostMeasurementState().globalPosition().y(), 2) +
+  //       pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().z()- displacedTTracks[itracks2].innermostMeasurementState().globalPosition().z(), 2) 
+  //       , 0.5
+  //       );
+  //       // !=dd
+  //       //if (dd>40 || dphi>1.4) continue; 
+  //       //if(dist_to_tracks > 30) continue;
+  //       std::vector<reco::TransientTrack> temp_coll_tracks;//In former's version, was in the second loop and we were studying vertex generated by pairs of tracks
+  //       temp_coll_tracks.push_back(displacedTTracks[itracks]);
+  //       temp_coll_tracks.push_back(displacedTTracks[itracks2]); 
+  //       TransientVertex displacedVertex_vertex = theFitter_vertex.vertex(temp_coll_tracks); 
+  //       if(displacedVertex_vertex.isValid() ){//reconstructible, //peut prendre un temps fou
+  //       //NotValid if the max number of steps has been exceedeor the fitted position is out of tracker bounds.
+  //        std::pair< std::vector<reco::TransientTrack>, TransientVertex> pair_iterators_vertex(temp_coll_tracks,displacedVertex_vertex) ;
+  //        tree_seedVtx_X.push_back(displacedVertex_vertex.position().x());
+  //        tree_seedVtx_Y.push_back(displacedVertex_vertex.position().y());
+  //        tree_seedVtx_Z.push_back(displacedVertex_vertex.position().z());
+  //        tree_seedVtx_dd.push_back(dd); 
+  //        tree_seedVtx_dphi.push_back(dphi); 
+  //        tree_seedVtx_distance2track.push_back(dist_to_tracks); 
+  //        tree_seedVtx_normChi2.push_back(displacedVertex_vertex.normalisedChiSquared()); 
+  //        proto_vertex.push_back(pair_iterators_vertex);
+  //        //  PVtx.GetProto().push_back(pair_iterators_vertex);/*!*//*This doesn't  work*/
+  //        PVtx.PushBack(pair_iterators_vertex);/*!*//*it does*/ 
+              
+  //      }
+  //    }
+  //    tree_DVertex_nTrks.push_back(PVtx.SizeTTracks(itracks)); 
+  //  }
+    
+  // if(showlog) cout << "-----------------" <<endl; 
+  // //  if(showlog) cout << proto_vertex.size() << " proto-vertex selected " << endl;
+  // if(showlog) cout << PVtx.Size() << " proto-vertex selected " << endl;/*!*/
+
+
+
+
+
+
+
+
+
+
+//-----------------------------------next step-not started-------------------------------------//
+
+
+
+
+
+
+
+
+
 
    //displacedTTracks & displacedVertex_vertex
   /*!*/ // Diviser l'event en deux : tmva ou axe sprivilégiés dans l'event (voir root: vectuer o uaxe privilégié) pt eta phi?
@@ -2824,126 +2871,126 @@ int nVtx_top1_IsValid = PVtx_top1.Size();
    //      filter new vertex based on chi2/ndf
    //      keep or reject tracks
    //------------------------------------------------------------
-   
+   //kalman fitter sur toutes les traces juste ça 
    
 
-   for(unsigned int  idx_proto_vertex= 0; idx_proto_vertex < PVtx.Size(); idx_proto_vertex++){  /*!*/
-    //  loop on track, reco vertex, test and reject or select track
-     for(unsigned int itracks = 0; itracks < displacedTTracks.size(); itracks++){
-       std::vector<reco::TransientTrack> temp_coll_tracks = PVtx.TTrack(idx_proto_vertex);/*!*/
-      //  first hit distance to vertex
-       double dist_to_vertex = pow( 
-         pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x()- PVtx.x(idx_proto_vertex), 2) +
-         pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y()- PVtx.y(idx_proto_vertex), 2) +
-         pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().z()- PVtx.z(idx_proto_vertex), 2) 
-         , 0.5);
-      //  cout << "distance check to vertex " << dist_to_vertex << endl;
-      // Selection criteria tochange 
-       if( //dist_to_vertex < 30 && 
-          fabs(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[0].innermostMeasurementState().globalPosition().x()  ) > 0.001 &&  
-          fabs(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[1].innermostMeasurementState().globalPosition().x()  ) > 0.001 ){
-            temp_coll_tracks.push_back(displacedTTracks[itracks]);
-            TransientVertex displacedVertex_vertex = theFitter_vertex.vertex(temp_coll_tracks); 
-            // /chi2 < 100 in original 
-            if(displacedVertex_vertex.isValid() && displacedVertex_vertex.normalisedChiSquared() < 50){
-              PVtx.TTrack(idx_proto_vertex)=temp_coll_tracks;/*!*/
-              PVtx.TVertex(idx_proto_vertex)= displacedVertex_vertex;/*!*/
-            } else temp_coll_tracks.pop_back();
-        }
-     }
-   }
-  //reconstruit
-  int nVtxIsReco = PVtx.Size();
-  float VtxReco_Eff=0;
-  if(showlog)  cout << "-----------------"<<endl; 
-  //  if(showlog) cout << " number of vertex after adding tracks " << proto_vertex.size() << endl;
-  if(showlog) cout << " number of vertex after adding tracks " << PVtx.Size() << endl;/*!*/
+  //  for(unsigned int  idx_proto_vertex= 0; idx_proto_vertex < PVtx.Size(); idx_proto_vertex++){  /*!*/
+  //   //  loop on track, reco vertex, test and reject or select track
+  //    for(unsigned int itracks = 0; itracks < displacedTTracks.size(); itracks++){
+  //      std::vector<reco::TransientTrack> temp_coll_tracks = PVtx.TTrack(idx_proto_vertex);/*!*/
+  //     //  first hit distance to vertex
+  //      double dist_to_vertex = pow( 
+  //        pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x()- PVtx.x(idx_proto_vertex), 2) +
+  //        pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().y()- PVtx.y(idx_proto_vertex), 2) +
+  //        pow(displacedTTracks[itracks].innermostMeasurementState().globalPosition().z()- PVtx.z(idx_proto_vertex), 2) 
+  //        , 0.5);
+  //     //  cout << "distance check to vertex " << dist_to_vertex << endl;
+  //     // Selection criteria tochange 
+  //      if( //dist_to_vertex < 30 && 
+  //         fabs(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[0].innermostMeasurementState().globalPosition().x()  ) > 0.001 &&  
+  //         fabs(displacedTTracks[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[1].innermostMeasurementState().globalPosition().x()  ) > 0.001 ){
+  //           temp_coll_tracks.push_back(displacedTTracks[itracks]);
+  //           TransientVertex displacedVertex_vertex = theFitter_vertex.vertex(temp_coll_tracks); 
+  //           // /chi2 < 100 in original 
+  //           if(displacedVertex_vertex.isValid() && displacedVertex_vertex.normalisedChiSquared() < 50){
+  //             PVtx.TTrack(idx_proto_vertex)=temp_coll_tracks;/*!*/
+  //             PVtx.TVertex(idx_proto_vertex)= displacedVertex_vertex;/*!*/
+  //           } else temp_coll_tracks.pop_back();
+  //       }
+  //    }
+  //  }
+  // //reconstruit
+  // int nVtxIsReco = PVtx.Size();
+  // float VtxReco_Eff=0;
+  // if(showlog)  cout << "-----------------"<<endl; 
+  // //  if(showlog) cout << " number of vertex after adding tracks " << proto_vertex.size() << endl;
+  // if(showlog) cout << " number of vertex after adding tracks " << PVtx.Size() << endl;/*!*/
 
-  if (nVtxIsValid!=0)
-  {VtxReco_Eff = nVtxIsReco/nVtxIsValid;
-  tree_VtxReco_Eff.push_back(VtxReco_Eff);}
-  else
-  {tree_VtxReco_Eff.push_back(0);}
+  // if (nVtxIsValid!=0)
+  // {VtxReco_Eff = nVtxIsReco/nVtxIsValid;
+  // tree_VtxReco_Eff.push_back(VtxReco_Eff);}
+  // else
+  // {tree_VtxReco_Eff.push_back(0);}
   
 
 
-  //top1
-   for(unsigned int  idx_proto_vertex= 0; idx_proto_vertex < PVtx_top1.Size(); idx_proto_vertex++){  /*!*/
-    //  loop on track, reco vertex, test and reject or select track
-     for(unsigned int itracks = 0; itracks < displacedTracks_top1.size(); itracks++){
-       std::vector<reco::TransientTrack> temp_coll_tracks = PVtx_top1.TTrack(idx_proto_vertex);/*!*/
-      //  first hit distance to vertex
-       double dist_to_vertex = pow( 
-         pow(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().x()- PVtx_top1.x(idx_proto_vertex), 2) +
-         pow(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().y()- PVtx_top1.y(idx_proto_vertex), 2) +
-         pow(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().z()- PVtx_top1.z(idx_proto_vertex), 2) 
-         , 0.5);
-      //  cout << "distance check to vertex " << dist_to_vertex << endl;
-      // Selection criteria tochange 
-       if( //dist_to_vertex < 30 && 
-          fabs(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[0].innermostMeasurementState().globalPosition().x()  ) > 0.001 &&  
-          fabs(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[1].innermostMeasurementState().globalPosition().x()  ) > 0.001 ){
-            temp_coll_tracks.push_back(displacedTracks_top1[itracks]);
-            TransientVertex displacedVertex_vertex = theFitter_vertex_top1.vertex(temp_coll_tracks); 
-            // /chi2 < 100 in original 
-            if(displacedVertex_vertex.isValid() && displacedVertex_vertex.normalisedChiSquared() < 50){
-              PVtx_top1.TTrack(idx_proto_vertex) = temp_coll_tracks;/*!*/
-              PVtx_top1.TVertex(idx_proto_vertex) = displacedVertex_vertex;/*!*/
-            } else temp_coll_tracks.pop_back();
-        }
-     }
-   }
-  //reconstruit
-  int nVtxIsReco_top1 = PVtx_top1.Size();
-  float VtxReco_Eff_top1=0;
-  if(showlog)  cout << "-----------------"<<endl; 
-  //  if(showlog) cout << " number of vertex after adding tracks " << proto_vertex.size() << endl;
-  if(showlog) cout << " number of vertex after adding tracks " << PVtx_top1.Size() << endl;/*!*/
+  // //top1
+  //  for(unsigned int  idx_proto_vertex= 0; idx_proto_vertex < PVtx_top1.Size(); idx_proto_vertex++){  /*!*/
+  //   //  loop on track, reco vertex, test and reject or select track
+  //    for(unsigned int itracks = 0; itracks < displacedTracks_top1.size(); itracks++){
+  //      std::vector<reco::TransientTrack> temp_coll_tracks = PVtx_top1.TTrack(idx_proto_vertex);/*!*/
+  //     //  first hit distance to vertex
+  //      double dist_to_vertex = pow( 
+  //        pow(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().x()- PVtx_top1.x(idx_proto_vertex), 2) +
+  //        pow(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().y()- PVtx_top1.y(idx_proto_vertex), 2) +
+  //        pow(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().z()- PVtx_top1.z(idx_proto_vertex), 2) 
+  //        , 0.5);
+  //     //  cout << "distance check to vertex " << dist_to_vertex << endl;
+  //     // Selection criteria tochange 
+  //      if( //dist_to_vertex < 30 && 
+  //         fabs(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[0].innermostMeasurementState().globalPosition().x()  ) > 0.001 &&  
+  //         fabs(displacedTracks_top1[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[1].innermostMeasurementState().globalPosition().x()  ) > 0.001 ){
+  //           temp_coll_tracks.push_back(displacedTracks_top1[itracks]);
+  //           TransientVertex displacedVertex_vertex = theFitter_vertex_top1.vertex(temp_coll_tracks); 
+  //           // /chi2 < 100 in original 
+  //           if(displacedVertex_vertex.isValid() && displacedVertex_vertex.normalisedChiSquared() < 50){
+  //             PVtx_top1.TTrack(idx_proto_vertex) = temp_coll_tracks;/*!*/
+  //             PVtx_top1.TVertex(idx_proto_vertex) = displacedVertex_vertex;/*!*/
+  //           } else temp_coll_tracks.pop_back();
+  //       }
+  //    }
+  //  }
+  // //reconstruit
+  // int nVtxIsReco_top1 = PVtx_top1.Size();
+  // float VtxReco_Eff_top1=0;
+  // if(showlog)  cout << "-----------------"<<endl; 
+  // //  if(showlog) cout << " number of vertex after adding tracks " << proto_vertex.size() << endl;
+  // if(showlog) cout << " number of vertex after adding tracks " << PVtx_top1.Size() << endl;/*!*/
 
-  if (nVtx_top1_IsValid!=0)
-  {VtxReco_Eff_top1 = nVtxIsReco_top1/nVtx_top1_IsValid;
-  tree_VtxReco_Eff_top1.push_back(VtxReco_Eff_top1);}
-  else
-  {tree_VtxReco_Eff_top1.push_back(0);}
+  // if (nVtx_top1_IsValid!=0)
+  // {VtxReco_Eff_top1 = nVtxIsReco_top1/nVtx_top1_IsValid;
+  // tree_VtxReco_Eff_top1.push_back(VtxReco_Eff_top1);}
+  // else
+  // {tree_VtxReco_Eff_top1.push_back(0);}
 
-  //top2 
-   for(unsigned int  idx_proto_vertex= 0; idx_proto_vertex < PVtx_top2.Size(); idx_proto_vertex++){  /*!*/
-    //  loop on track, reco vertex, test and reject or select track
-     for(unsigned int itracks = 0; itracks < displacedTracks_top2.size(); itracks++){
-       std::vector<reco::TransientTrack> temp_coll_tracks = PVtx.TTrack(idx_proto_vertex);/*!*/
-      //  first hit distance to vertex
-       double dist_to_vertex = pow( 
-         pow(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().x()- PVtx_top2.x(idx_proto_vertex), 2) +
-         pow(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().y()- PVtx_top2.y(idx_proto_vertex), 2) +
-         pow(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().z()- PVtx_top2.z(idx_proto_vertex), 2) 
-         , 0.5);
-      //  cout << "distance check to vertex " << dist_to_vertex << endl;
-      // Selection criteria tochange 
-       if( //dist_to_vertex < 30 && 
-          fabs(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[0].innermostMeasurementState().globalPosition().x()  ) > 0.001 &&  
-          fabs(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[1].innermostMeasurementState().globalPosition().x()  ) > 0.001 ){
-            temp_coll_tracks.push_back(displacedTracks_top2[itracks]);
-            TransientVertex displacedVertex_vertex = theFitter_vertex.vertex(temp_coll_tracks); 
-            // /chi2 < 100 in original 
-            if(displacedVertex_vertex.isValid() && displacedVertex_vertex.normalisedChiSquared() < 50){
-              PVtx_top2.TTrack(idx_proto_vertex)=temp_coll_tracks;/*!*/
-              PVtx_top2.TVertex(idx_proto_vertex)= displacedVertex_vertex;/*!*/
-            } else temp_coll_tracks.pop_back();
-        }
-     }
-   }
-  //reconstruit
-  int nVtxIsReco_top2 = PVtx_top2.Size();
-  float VtxReco_Eff_top2=0;
-  if(showlog)  cout << "-----------------"<<endl; 
-  //  if(showlog) cout << " number of vertex after adding tracks " << proto_vertex.size() << endl;
-  if(showlog) cout << " number of vertex after adding tracks " << PVtx_top2.Size() << endl;/*!*/
+  // //top2 
+  //  for(unsigned int  idx_proto_vertex= 0; idx_proto_vertex < PVtx_top2.Size(); idx_proto_vertex++){  /*!*/
+  //   //  loop on track, reco vertex, test and reject or select track
+  //    for(unsigned int itracks = 0; itracks < displacedTracks_top2.size(); itracks++){
+  //      std::vector<reco::TransientTrack> temp_coll_tracks = PVtx.TTrack(idx_proto_vertex);/*!*/
+  //     //  first hit distance to vertex
+  //      double dist_to_vertex = pow( 
+  //        pow(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().x()- PVtx_top2.x(idx_proto_vertex), 2) +
+  //        pow(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().y()- PVtx_top2.y(idx_proto_vertex), 2) +
+  //        pow(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().z()- PVtx_top2.z(idx_proto_vertex), 2) 
+  //        , 0.5);
+  //     //  cout << "distance check to vertex " << dist_to_vertex << endl;
+  //     // Selection criteria tochange 
+  //      if( //dist_to_vertex < 30 && 
+  //         fabs(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[0].innermostMeasurementState().globalPosition().x()  ) > 0.001 &&  
+  //         fabs(displacedTracks_top2[itracks].innermostMeasurementState().globalPosition().x() - temp_coll_tracks[1].innermostMeasurementState().globalPosition().x()  ) > 0.001 ){
+  //           temp_coll_tracks.push_back(displacedTracks_top2[itracks]);
+  //           TransientVertex displacedVertex_vertex = theFitter_vertex.vertex(temp_coll_tracks); 
+  //           // /chi2 < 100 in original 
+  //           if(displacedVertex_vertex.isValid() && displacedVertex_vertex.normalisedChiSquared() < 50){
+  //             PVtx_top2.TTrack(idx_proto_vertex)=temp_coll_tracks;/*!*/
+  //             PVtx_top2.TVertex(idx_proto_vertex)= displacedVertex_vertex;/*!*/
+  //           } else temp_coll_tracks.pop_back();
+  //       }
+  //    }
+  //  }
+  // //reconstruit
+  // int nVtxIsReco_top2 = PVtx_top2.Size();
+  // float VtxReco_Eff_top2=0;
+  // if(showlog)  cout << "-----------------"<<endl; 
+  // //  if(showlog) cout << " number of vertex after adding tracks " << proto_vertex.size() << endl;
+  // if(showlog) cout << " number of vertex after adding tracks " << PVtx_top2.Size() << endl;/*!*/
 
-  if (nVtx_top2_IsValid!=0)
-  {VtxReco_Eff_top2 = nVtxIsReco_top2/nVtx_top2_IsValid;
-  tree_VtxReco_Eff_top2.push_back(VtxReco_Eff_top2);}
-  else
-  {tree_VtxReco_Eff_top2.push_back(0);}
+  // if (nVtx_top2_IsValid!=0)
+  // {VtxReco_Eff_top2 = nVtxIsReco_top2/nVtx_top2_IsValid;
+  // tree_VtxReco_Eff_top2.push_back(VtxReco_Eff_top2);}
+  // else
+  // {tree_VtxReco_Eff_top2.push_back(0);}
 
   //for testing
    /*
@@ -3504,20 +3551,20 @@ void TrackingPerf::clearVariables() {
   //added by Paul
 
   
-  tree_top1_x.clear();
-  tree_top1_y.clear();
-  tree_top1_z.clear();    
-  tree_top2_x.clear();
-  tree_top2_y.clear();
-  tree_top2_z.clear();
+  tree_LLP1_x.clear();
+  tree_LLP1_y.clear();
+  tree_LLP1_z.clear();    
+  tree_LLP2_x.clear();
+  tree_LLP2_y.clear();
+  tree_LLP2_z.clear();
 
-  tree_top1_pt.clear();
-  tree_top1_eta.clear();
-  tree_top1_phi.clear();
+  tree_LLP1_pt.clear();
+  tree_LLP1_eta.clear();
+  tree_LLP1_phi.clear();
 
-  tree_top2_pt.clear();
-  tree_top2_eta.clear();
-  tree_top2_phi.clear();
+  tree_LLP2_pt.clear();
+  tree_LLP2_eta.clear();
+  tree_LLP2_phi.clear();
   tree_ntop.clear();
 
   tree_simtrack_genVertexPosDiff_top1_X.clear();
@@ -3538,7 +3585,25 @@ void TrackingPerf::clearVariables() {
   tree_displacedTTracks_pt.clear();
   tree_simtrack_isRecoMatched_pt.clear();
   tree_FakeRate.clear();
+  tree_track_ntrk10.clear();
+  tree_track_ntrk20.clear();
+  tree_track_ntrk30.clear();
+  tree_DVertex_top1_nTrks.clear();
+  tree_DVertex_top2_nTrks.clear();
+  tree_DVertex_nTrks.clear();
+  tree_GlobalVertex_X.clear();       
+  tree_GlobalVertex_Y.clear();
+  tree_GlobalVertex_Z.clear();
+  tree_GlobalVertex_dr.clear();
+  tree_GlobalVertex_dz.clear();         
+  tree_GlobalVertex_dd.clear();         
+  tree_GlobalVertex_dphi.clear();        
+  tree_GlobalVertex_distance2track.clear();         
+  tree_GlobalVertex_NChi2.clear();        
+  tree_GlobalVertex_nTrks.clear(); 
 
+  tree_seedVtx_dz_top1.clear();
+  tree_seedVtx_dz_top2.clear();
 
  } 
 
