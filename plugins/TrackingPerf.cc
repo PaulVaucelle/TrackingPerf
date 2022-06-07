@@ -541,8 +541,7 @@ class TrackingPerf : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       std::vector<float> tree_seedVtx_dphi; 
       std::vector<float> tree_seedVtx_distance2track; 
       std::vector<float> tree_seedVtx_normChi2; 
-  
-  
+
       //--------------------------------
       // jet infos ------- 
       //--------------------------------
@@ -1122,52 +1121,52 @@ TrackingPerf::TrackingPerf(const edm::ParameterSet& iConfig):
   smalltree->Branch("tree_VtxReco_Eff",&tree_VtxReco_Eff);
   //First top analysis
 
-  smalltree->Branch("                tree_seedVtx_X_top1",&tree_seedVtx_X_top1);
-  smalltree->Branch("                tree_seedVtx_Y_top1",&tree_seedVtx_Y_top1);
-  smalltree->Branch("                tree_seedVtx_Z_top1",&tree_seedVtx_Z_top1);
-  smalltree->Branch("                tree_seedVtx_dd_top1",&tree_seedVtx_dd_top1);
-  smalltree->Branch("                tree_seedVtx_dphi_top1",&tree_seedVtx_dphi_top1);
-  smalltree->Branch("                tree_seedVtx_distance2track_top1",&tree_seedVtx_distance2track_top1); 
-  smalltree->Branch("                tree_seedVtx_normChi2_top1",&tree_seedVtx_normChi2_top1);
-  smalltree->Branch("                tree_VtxReco_Eff_top1",&tree_VtxReco_Eff_top1);
+  smalltree->Branch("tree_seedVtx_X_top1",&tree_seedVtx_X_top1);
+  smalltree->Branch("tree_seedVtx_Y_top1",&tree_seedVtx_Y_top1);
+  smalltree->Branch("tree_seedVtx_Z_top1",&tree_seedVtx_Z_top1);
+  smalltree->Branch("tree_seedVtx_dd_top1",&tree_seedVtx_dd_top1);
+  smalltree->Branch("tree_seedVtx_dphi_top1",&tree_seedVtx_dphi_top1);
+  smalltree->Branch("tree_seedVtx_distance2track_top1",&tree_seedVtx_distance2track_top1); 
+  smalltree->Branch("tree_seedVtx_normChi2_top1",&tree_seedVtx_normChi2_top1);
+  smalltree->Branch("tree_VtxReco_Eff_top1",&tree_VtxReco_Eff_top1);
 
   //Second top analysis
 
-  smalltree->Branch("                tree_seedVtx_X_top2",&tree_seedVtx_X_top2);
-  smalltree->Branch("                tree_seedVtx_Y_top2",&tree_seedVtx_Y_top2);
-  smalltree->Branch("                tree_seedVtx_Z_top2",&tree_seedVtx_Z_top2);
-  smalltree->Branch("                tree_seedVtx_dd_top2",&tree_seedVtx_dd_top2);
-  smalltree->Branch("                tree_seedVtx_dphi_top2",&tree_seedVtx_dphi_top2);
-  smalltree->Branch("                tree_seedVtx_distance2track_top2",&tree_seedVtx_distance2track_top2); 
-  smalltree->Branch("                tree_seedVtx_normChi2_top2",&tree_seedVtx_normChi2_top2);
-  smalltree->Branch("                tree_VtxReco_Eff_top2",&tree_VtxReco_Eff_top2);
+  smalltree->Branch("tree_seedVtx_X_top2",&tree_seedVtx_X_top2);
+  smalltree->Branch("tree_seedVtx_Y_top2",&tree_seedVtx_Y_top2);
+  smalltree->Branch("tree_seedVtx_Z_top2",&tree_seedVtx_Z_top2);
+  smalltree->Branch("tree_seedVtx_dd_top2",&tree_seedVtx_dd_top2);
+  smalltree->Branch("tree_seedVtx_dphi_top2",&tree_seedVtx_dphi_top2);
+  smalltree->Branch("tree_seedVtx_distance2track_top2",&tree_seedVtx_distance2track_top2); 
+  smalltree->Branch("tree_seedVtx_normChi2_top2",&tree_seedVtx_normChi2_top2);
+  smalltree->Branch("tree_VtxReco_Eff_top2",&tree_VtxReco_Eff_top2);
 
         ///////////////////////////////////////////////////////////////////
       //Warning : the following branches need to be added to LLTopAna.h//
       ///////////////////////////////////////////////////////////////////
 
-  smalltree->Branch("                tree_track_ntrk10",&tree_track_ntrk10);
-  smalltree->Branch("                tree_track_ntrk20",&tree_track_ntrk20);
-  smalltree->Branch("                tree_track_ntrk30",&tree_track_ntrk30);
-  smalltree->Branch("                tree_DVertex_top1_nTrks",&tree_DVertex_top1_nTrks);
-  smalltree->Branch("                tree_DVertex_top2_nTrks",&tree_DVertex_top2_nTrks);
-  smalltree->Branch("                tree_DVertex_nTrks",&tree_DVertex_nTrks);
+  smalltree->Branch("tree_track_ntrk10",&tree_track_ntrk10);
+  smalltree->Branch("tree_track_ntrk20",&tree_track_ntrk20);
+  smalltree->Branch("tree_track_ntrk30",&tree_track_ntrk30);
+  smalltree->Branch("tree_DVertex_top1_nTrks",&tree_DVertex_top1_nTrks);
+  smalltree->Branch("tree_DVertex_top2_nTrks",&tree_DVertex_top2_nTrks);
+  smalltree->Branch("tree_DVertex_nTrks",&tree_DVertex_nTrks);
 
-  smalltree->Branch("                tree_GlobalVertex_X",&tree_GlobalVertex_X);        
-  smalltree->Branch("                tree_GlobalVertex_Y",&tree_GlobalVertex_Y);
-  smalltree->Branch("                tree_GlobalVertex_Z",&tree_GlobalVertex_Z);
-  smalltree->Branch("                tree_GlobalVertex_dr",&tree_GlobalVertex_dr);
-  smalltree->Branch("                tree_GlobalVertex_dz",&tree_GlobalVertex_dz);            
-  smalltree->Branch("                tree_GlobalVertex_dd",&tree_GlobalVertex_dd);          
-  smalltree->Branch("                tree_GlobalVertex_dphi",&tree_GlobalVertex_dphi);         
-  smalltree->Branch("                tree_GlobalVertex_distance2track",&tree_GlobalVertex_distance2track);          
-  smalltree->Branch("                tree_GlobalVertex_NChi2",&tree_GlobalVertex_NChi2);         
-  smalltree->Branch("                tree_GlobalVertex_nTrk",&tree_GlobalVertex_nTrks);
+  smalltree->Branch("tree_GlobalVertex_X",&tree_GlobalVertex_X);        
+  smalltree->Branch("tree_GlobalVertex_Y",&tree_GlobalVertex_Y);
+  smalltree->Branch("tree_GlobalVertex_Z",&tree_GlobalVertex_Z);
+  smalltree->Branch("tree_GlobalVertex_dr",&tree_GlobalVertex_dr);
+  smalltree->Branch("tree_GlobalVertex_dz",&tree_GlobalVertex_dz);            
+  smalltree->Branch("tree_GlobalVertex_dd",&tree_GlobalVertex_dd);          
+  smalltree->Branch("tree_GlobalVertex_dphi",&tree_GlobalVertex_dphi);         
+  smalltree->Branch("tree_GlobalVertex_distance2track",&tree_GlobalVertex_distance2track);          
+  smalltree->Branch("tree_GlobalVertex_NChi2",&tree_GlobalVertex_NChi2);         
+  smalltree->Branch("tree_GlobalVertex_nTrk",&tree_GlobalVertex_nTrks);
 
-  smalltree->Branch("                tree_seedVtx_dr_top1",&tree_seedVtx_dr_top1);
-  smalltree->Branch("                tree_seedVtx_dz_top1",&tree_seedVtx_dz_top1);
-  smalltree->Branch("                tree_seedVtx_dr_top2",&tree_seedVtx_dr_top2);
-  smalltree->Branch("                tree_seedVtx_dz_top2",&tree_seedVtx_dz_top2);
+  smalltree->Branch("tree_seedVtx_dr_top1",&tree_seedVtx_dr_top1);
+  smalltree->Branch("tree_seedVtx_dz_top1",&tree_seedVtx_dz_top1);
+  smalltree->Branch("tree_seedVtx_dr_top2",&tree_seedVtx_dr_top2);
+  smalltree->Branch("tree_seedVtx_dz_top2",&tree_seedVtx_dz_top2);
 
   tree_NbrOfZCand= 0;
   
@@ -1728,7 +1727,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        tree_slimmedmuon_CutBasedIdMediumPrompt	  .push_back(	muon.passed(reco::Muon::CutBasedIdMediumPrompt));
        tree_slimmedmuon_CutBasedIdTight		   .push_back(   muon.passed(reco::Muon::CutBasedIdTight));
      }
-       std::cout<< "number of muons first method : " << tree_slimmedmuon_pt.size() << std::endl;
+      //  std::cout<< "number of muons first method : " << tree_slimmedmuon_pt.size() << std::endl;
 
 
    //reco::BeamSpot vertexBeamSpot= *recoBeamSpotHandle;
@@ -1898,11 +1897,12 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             float top2_Diff_X = 0;
             float top2_Diff_Y = 0;
             float top2_Diff_Z = 0;
-
-            if ( ntop == 1 ) {//>=?
+            // std::cout<< "ntop : "<< ntop<<std::endl;
+            if ( ntop >= 1 ) {//>=? ok
               float dV1 = (genVertexPos_X - top1_x)*(genVertexPos_X - top1_x)
               + (genVertexPos_Y - top1_y)*(genVertexPos_Y - top1_y)
               + (genVertexPos_Z - top1_z)*(genVertexPos_Z - top1_z);
+              // std::cout<< "genVertexPosX : "<<genVertexPos_X<<" & top1_X : "<< top1_x<< " & dV1 : "<< dV1<<std::endl;
               top1_Diff_X = genVertexPos_X - top1_x;//recsim coll genVertexPosX
               top1_Diff_Y = genVertexPos_Y - top1_y;
               top1_Diff_Z = genVertexPos_Z - top1_z;
@@ -1934,8 +1934,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
             for (auto genIterator=genParticles->begin(); genIterator!=genParticles->end(); genIterator++)
             {
-              // if (abs(genIterator->pdgId())==6 && genIterator->status()==22) //if the gen particle is a displaced top 
-              if (abs(genIterator->pdgId())<=6 && abs(genIterator->pdgId())>=1)
+              if (abs(genIterator->pdgId())==6 && genIterator->status()==22) //if the gen particle is a displaced top 
+              // if (abs(genIterator->pdgId())<=6 && abs(genIterator->pdgId())>=1)
               {  //Doublon de la méthode de  Daniel ligne ~1500//
                 double top_x=genIterator->vx(); 
                 double top_y=genIterator->vy(); 
@@ -2056,7 +2056,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
        } //end loop on tracking particles 
      ratio= NSimtoReco/NSim;/*!*/
-     std::cout<< "ratio of NSimtoReco/Nsim = "<< ratio << std::endl;
+    //  std::cout<< "ratio of NSimtoReco/Nsim = "<< ratio << std::endl;
      tree_NSimtoReco.push_back(NSimtoReco);
      tree_NSim.push_back(NSim);
      tree_RecoEfficiency.push_back(ratio);//change en fonction du pt et êta
@@ -2371,19 +2371,21 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //Reconstructed : isValid()
     if (nReconstructibleVertex1!=0)
       {
-        std::cout<<"nreconstrible 1"<< std::endl;
+        // std::cout<<"nreconstrible 1"<< std::endl;
         float RecoVertex1_Eff = nRecoVertex1/nReconstructibleVertex1;tree_RecoVertex1_Eff.push_back(RecoVertex1_Eff);
       }
     else  {tree_RecoVertex1_Eff.push_back(0);
-    std::cout<<"push back 0 pour top1"<< std::endl;}
+    // std::cout<<"push back 0 pour top1"<< std::endl;
+    }
 
     if(nReconstructibleVertex2!=0)
-    {std::cout<<"nrecostrible 2"<< std::endl;
+    {//std::cout<<"nrecostrible 2"<< std::endl;
     float RecoVertex2_Eff = nRecoVertex2/nReconstructibleVertex2;
     tree_RecoVertex2_Eff.push_back(RecoVertex2_Eff);}
     else
     {tree_RecoVertex2_Eff.push_back(0);
-    std::cout<<"push back 0 pour top2"<< std::endl;}
+    //std::cout<<"push back 0 pour top2"<< std::endl;
+    }
    }
    
   //////////////////
@@ -2500,7 +2502,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       {Ratio_b4ADsel = nTracks_ADsel/nTracks_b4sel;tree_Ratio_b4ADsel.push_back(Ratio_b4ADsel);}
     else {tree_Ratio_b4ADsel.push_back(0);}
     
-    std::cout << " Ratio of tracks before and after sel with tmva = "<< Ratio_b4ADsel << std::endl;
+    // std::cout << " Ratio of tracks before and after sel with tmva = "<< Ratio_b4ADsel << std::endl;
     tree_nTracks_ADsel.push_back(nTracks_ADsel);
     tree_nTracks_b4sel.push_back(nTracks_b4sel);//plus compliqué
       if(showlog) cout << displacedTTracks.size() << " displaced tracks selected " << endl;
@@ -2592,9 +2594,9 @@ if ( !runOnData_ ) //selection of displacedTracks using Daniel's method
 	     }//genParticle
   }//runonData
 
-  std::cout << "displacedTracks_LLP1 size : "<< displacedTracks_LLP1.size()<<std::endl;
-  std::cout << "displacedTracks_LLP2 size : "<< displacedTracks_LLP2.size()<<std::endl;
-  std::cout << "overfulltop size : "<< nOverfullTop<<std::endl;
+  // std::cout << "displacedTracks_LLP1 size : "<< displacedTracks_LLP1.size()<<std::endl;
+  // std::cout << "displacedTracks_LLP2 size : "<< displacedTracks_LLP2.size()<<std::endl;
+  // std::cout << "overfulltop size : "<< nOverfullTop<<std::endl;
   //-------------------------------------------------------------//
   //Look at the vertex fitting with all the tracks // New approach (Daniel/Paul)
   //-------------------------------------------------------------//
@@ -2604,12 +2606,15 @@ if ( !runOnData_ ) //selection of displacedTracks using Daniel's method
 
   Proto GPVtx(proto_vertex_global);/*!*/
 
-  TransientVertex Global_Vertex = theFitter_vertex_global.vertex(displacedTTracks);//FItting with all the displacedTTracks of the event
+  if (displacedTTracks.size()>1)
+  {
+    TransientVertex Global_Vertex = theFitter_vertex_global.vertex(displacedTTracks);//FItting with all the displacedTTracks of the event
 
-  std::cout<<"KVF is applied with "<<displacedTTracks.size()<< " tracks"<<std::endl;
+    // std::cout<<"KVF is applied with "<<displacedTTracks.size()<< " tracks"<<std::endl;
 
-  if (Global_Vertex.isValid())//NotValid if the max number of steps has been exceedeor the fitted position is out of tracker bounds.
-          {  std::cout<<"KVF is applied and is valid"<<std::endl;
+    if (Global_Vertex.isValid())//NotValid if the max number of steps has been exceedeor the fitted position is out of tracker bounds.
+         { 
+            //  std::cout<<"KVF is applied and is valid"<<std::endl;
             for(unsigned int itracks = 0; itracks < displacedTTracks.size(); itracks++)
               {
                 for(unsigned int itracks2 = itracks+1; itracks2 < displacedTTracks.size(); itracks2++)
@@ -2637,12 +2642,13 @@ if ( !runOnData_ ) //selection of displacedTracks using Daniel's method
                   }
               }
                     tree_GlobalVertex_X.push_back(Global_Vertex.position().x());
-                    tree_GlobalVertex_Y.push_back(Global_Vertex.position().x());
-                    tree_GlobalVertex_Z.push_back(Global_Vertex.position().x());
+                    tree_GlobalVertex_Y.push_back(Global_Vertex.position().y());
+                    tree_GlobalVertex_Z.push_back(Global_Vertex.position().z());
                     tree_GlobalVertex_NChi2.push_back(Global_Vertex.normalisedChiSquared());
                     tree_GlobalVertex_nTrks.push_back(displacedTTracks.size());//Ntracks used to build the vertex
           }
-  std::cout<< "end of global vertex fitting with displacedTracks" << std::endl;
+  }
+  // std::cout<< "end of global vertex fitting with displacedTracks" << std::endl;
   //////////////////////////////////
   //--------------------------------
   //Same step as before but done separately between the two tops
@@ -2656,12 +2662,14 @@ if ( !runOnData_ ) //selection of displacedTracks using Daniel's method
   std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > proto_vertex_top1; // container of the vertex and associated tracks
   
   Proto PVtx_top1(proto_vertex_top1);/*!*/
-  
-  TransientVertex displacedVertex_vertex_top1 = theFitter_vertex_top1.vertex(displacedTracks_LLP1);//Vertex constructed using all tracks of quarks (not only top, for the first top)
-  std::cout<< "displacedVertex_vertex_top1 is built" << std::endl;
-  // We can split the previous step by using the displacedTracks_top1 data that was registered line 2200
-        if(displacedVertex_vertex_top1.isValid())//NotValid if the max number of steps has been exceded or the fitted position is out of tracker bounds.
-          {std::cout<< "displacedVertex_vertex_top1 is valid" << std::endl;
+  if (displacedTracks_LLP1.size()>1)
+    {
+      TransientVertex displacedVertex_vertex_top1 = theFitter_vertex_top1.vertex(displacedTracks_LLP1);//Vertex constructed using all tracks of quarks (not only top, for the first top)
+      // std::cout<< "displacedVertex_vertex_top1 is built" << std::endl;
+      // We can split the previous step by using the displacedTracks_top1 data that was registered line 2200
+       if(displacedVertex_vertex_top1.isValid())//NotValid if the max number of steps has been exceded or the fitted position is out of tracker bounds.
+          {
+            // std::cout<< "displacedVertex_vertex_top1 is valid" << std::endl;
             for(unsigned int itracks = 0; itracks < displacedTracks_LLP1.size(); itracks++)
               {    
                 for(unsigned int itracks2 = itracks+1; itracks2 < displacedTracks_LLP1.size(); itracks2++)
@@ -2694,7 +2702,7 @@ if ( !runOnData_ ) //selection of displacedTracks using Daniel's method
                     tree_seedVtx_normChi2_top1.push_back(displacedVertex_vertex_top1.normalisedChiSquared());
                     tree_DVertex_top1_nTrks.push_back(displacedTracks_LLP1.size());     
           }
-  
+    }
 
   //---------------------------SECOND TOP-------------------------------------//
 
@@ -2703,12 +2711,12 @@ if ( !runOnData_ ) //selection of displacedTracks using Daniel's method
   std::vector< std::pair< std::vector<reco::TransientTrack>, TransientVertex> > proto_vertex_top2; // container of the vertex and associated tracks
 
   Proto PVtx_top2(proto_vertex_top2);/*!*/
-
-  TransientVertex displacedVertex_vertex_top2 = theFitter_vertex_top2.vertex(displacedTracks_LLP2);//Vertex constructed using all tracks of quarks (not only top, for the second top)
-        std::cout<< "displacedVertex_vertex_top2 is built" << std::endl;
+  if (displacedTracks_LLP2.size()>1)
+      {  TransientVertex displacedVertex_vertex_top2 = theFitter_vertex_top2.vertex(displacedTracks_LLP2);//Vertex constructed using all tracks of quarks (not only top, for the second top)
+        // std::cout<< "displacedVertex_vertex_top2 is built" << std::endl;
         if(displacedVertex_vertex_top2.isValid())//NotValid if the max number of steps has been exceded or the fitted position is out of tracker bounds.
           {//reconstructible
-          std::cout<< "displacedVertex_vertex_top2 is valid" << std::endl;
+          // std::cout<< "displacedVertex_vertex_top2 is valid" << std::endl;
             for(unsigned int itracks = 0; itracks < displacedTracks_LLP2.size(); itracks++)
               {  
                 for(unsigned int itracks2 = itracks+1; itracks2 < displacedTracks_LLP2.size(); itracks2++)
@@ -2741,9 +2749,9 @@ if ( !runOnData_ ) //selection of displacedTracks using Daniel's method
                    tree_seedVtx_normChi2_top2.push_back(displacedVertex_vertex_top2.normalisedChiSquared());
                    tree_DVertex_top2_nTrks.push_back(displacedTracks_LLP2.size());
           }
-  
+      }
     
-//Fromer version of the code (Jérémy)
+//Former version of the code (Jérémy)
 
 //------------------------------------------------------------
    //reconstruct seed vertex from pair of tracks //Not used for now (Paul)
