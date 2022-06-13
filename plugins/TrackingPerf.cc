@@ -1600,21 +1600,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     } 
 	   } 
 	 } 
-	 //$$ Pas seulement des top car on considère tous les quarks dans cette partie du code
-	tree_LLP1_x.push_back(top1_x);
-  tree_LLP1_y.push_back(top1_y);
-  tree_LLP1_z.push_back(top1_z);
-  tree_LLP2_x.push_back(top2_x);
-  tree_LLP2_y.push_back(top2_y);
-  tree_LLP2_z.push_back(top2_z);
 
-  tree_LLP1_pt.push_back(top1_pt);
-  tree_LLP1_eta.push_back(top1_eta);
-  tree_LLP1_phi.push_back(top1_phi);
-
-  tree_LLP2_pt.push_back(top2_pt);
-  tree_LLP2_eta.push_back(top2_eta);
-  tree_LLP2_phi.push_back(top2_phi);
 	 //$$
 	 if (genParticle.pt() < 0.9 || fabs(genParticle.eta()) > 4.0) continue; //Conditions on all quarks, not only on top
 	 //$$
@@ -1636,7 +1622,22 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    tree_ntop.push_back(ntop);
        }
     
-     
+     	 //$$ Pas seulement des top car on considère tous les quarks dans cette partie du code
+	tree_LLP1_x.push_back(top1_x);
+  tree_LLP1_y.push_back(top1_y);
+  tree_LLP1_z.push_back(top1_z);
+  
+  tree_LLP2_x.push_back(top2_x);
+  tree_LLP2_y.push_back(top2_y);
+  tree_LLP2_z.push_back(top2_z);
+
+  tree_LLP1_pt.push_back(top1_pt);
+  tree_LLP1_eta.push_back(top1_eta);
+  tree_LLP1_phi.push_back(top1_phi);
+
+  tree_LLP2_pt.push_back(top2_pt);
+  tree_LLP2_eta.push_back(top2_eta);
+  tree_LLP2_phi.push_back(top2_phi);
      //      cout << " ntop " << ntop << "   top1 " << top1_x << " " << top1_y << " " << top1_z  
      //                               << "   top2 " << top2_x << " " << top2_y << " " << top2_z << endl; 
 
@@ -2395,7 +2396,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   if(showlog) cout << "//////////////////////////"<< endl; 
   if(showlog) cout << "start to select displaced tracks " << endl;
   vector<reco::TransientTrack> displacedTTracks;
-    
+  vector<reco::TransientTrack> TTracks;
   ///// MVA for track selection coming from displaced tops 
 
   //ajouté par Paul /*!*/
@@ -2490,11 +2491,12 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        if(tree_track_pt[counter_track] < 1 || fabs(tree_track_eta[counter_track]) > 2.4 || tree_track_recoAK4PFJet_idx[counter_track] == -1  || drSig<5 || tree_track_NChi2[counter_track]>5) continue;
        //if (bdtval < 0.0674  ) continue; //optimal cut for 10 cm, trained on 19k events, <s>=22 and <b>=240 //Jérémy
        //  if (bdtval < 0.07381 ) continue; //optimal cut for 50 cm, trained on 10k events, <s>=15 and <b>=234 //Jérémy
+       TTracks.push_back(theTransientTrackBuilder->build(*itTrack));
        if (bdtval< -0.0401) continue; //optimal cut for 50 cm ,trained on 10k events //Paul, expected to change
        nTracks_ADsel++;
         
        displacedTTracks.push_back(theTransientTrackBuilder->build(*itTrack));
-       tree_displacedTTracks_pt.push_back(tree_track_pt[counter_track]);//avec le booléen
+      //  tree_displacedTTracks_pt.push_back(tree_track_pt[counter_track]);//avec le booléen
        //cout << "kept track and it is from displaced top "<<tree_track_simtrack_isFromDispTop[counter_track]<<endl; 
     }  //End loop on all the tracks
 
@@ -2514,6 +2516,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 /////////////////////////////
 vector<reco::TransientTrack> displacedTracks_LLP1;
 vector<reco::TransientTrack> displacedTracks_LLP2;
+vector<reco::TransientTrack> tracks_LLP1;
+vector<reco::TransientTrack> tracks_LLP2;
 int nOverfullTop=0;
 if ( !runOnData_ ) //selection of displacedTracks using Daniel's method
   {
@@ -2565,7 +2569,7 @@ if ( !runOnData_ ) //selection of displacedTracks using Daniel's method
 	                  }  
 	              } 
 	              
-
+                //utilsier is fromLLP
 
               ///////////////////////////////////////////////////////////////////////////////
               //Loop on recotracks to split the event in two using the info of GenParticles//
@@ -2575,16 +2579,19 @@ if ( !runOnData_ ) //selection of displacedTracks using Daniel's method
 	              {
 		              if(trackIterator->pt() < 1 || fabs(trackIterator->eta()) > 2.4) continue;
 		              num_track++;
-                  //BDT selection of displaced tracks for each top-------
-                  float bdtval = reader->EvaluateMVA( "BDTG" );
-                  // std::cout<<"check for mva value"<< bdtval << std::endl;
-                  if (bdtval< -0.0401) continue;//-0.0401
-                  //-----------------------------------------------------
+
 		              if (tree_track_isSimMatched[num_track]==0) continue; //keeping only the reco tracks matched to sim tracks 
 		              if (abs(tree_track_genVertexPos_X[num_track]-genIterator->vx())<0.01 && abs(tree_track_genVertexPos_Y[num_track]-genIterator->vy())<0.01 && abs(tree_track_genVertexPos_Z[num_track]-genIterator->vz())<0.01)
                      //if the position of the sim track associated to the reco track is the same as the gen top vertex
 		                {//genVertexPos X which produces de associated simtrack
 		                  TransientTrack  transientTrack = theTransientTrackBuilder->build(*trackIterator); 
+                      if (DisplacedTop == 1) tracks_LLP1.push_back(transientTrack);
+                      if (DisplacedTop == 2) tracks_LLP2.push_back(transientTrack);
+                      //BDT selection of displaced tracks for each top-------
+                      float bdtval = reader->EvaluateMVA( "BDTG" );
+                      // std::cout<<"check for mva value"<< bdtval << std::endl;
+                      if (bdtval< -0.0401) continue;//-0.0401 for bgctau50cm
+                      //-----------------------------------------------------
 		                  if (DisplacedTop == 1) displacedTracks_LLP1.push_back(transientTrack);//part of these are top but we need to split the event in two, ...
 		                  if (DisplacedTop == 2) displacedTracks_LLP2.push_back(transientTrack);//.. this is why we are using condition on displacedtop
 		                }
