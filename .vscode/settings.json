@@ -44,6 +44,8 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "LLTopAna(1).C": "cpp",
+        "iostream": "cpp"
     }
 }

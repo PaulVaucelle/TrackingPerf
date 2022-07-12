@@ -242,7 +242,7 @@
 #include <DataFormats/HepMCCandidate/interface/GenStatusFlags.h>
 
 #include "TrackingPerf/TrackingPerf/interface/Proto.h"
-
+#include "TrackingPerf/TrackingPerf/interface/DeltaFunc.h"
 //
 // class declaration
 //
@@ -382,6 +382,7 @@ class TrackingPerf : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
   //fill the tree per track
   //std::vector<int> tree_track_nclusters;
   std::vector< float > tree_track_pt;
+  std::vector< float > tree_track_ptError;
   std::vector< float > tree_track_outerPt; 
   std::vector< float > tree_track_eta;
   std::vector< float > tree_track_phi;
@@ -736,6 +737,32 @@ class TrackingPerf : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
   float tree_Vtx_mva_LLP2_z;
   float	tree_Vtx_mva_LLP2_NChi2;
 
+  //Analysis with the two hemispheres
+
+  int	tree_Vtx_Hemi_LLP1_nTrks = 0;
+  float	tree_Vtx_Hemi_LLP1_x;
+  float tree_Vtx_Hemi_LLP1_y;
+  float tree_Vtx_Hemi_LLP1_z;
+  float	tree_Vtx_Hemi_LLP1_NChi2;
+
+  int	tree_Vtx_Hemi_LLP2_nTrks = 0;
+  float	tree_Vtx_Hemi_LLP2_x;
+  float tree_Vtx_Hemi_LLP2_y;
+  float tree_Vtx_Hemi_LLP2_z;
+  float	tree_Vtx_Hemi_LLP2_NChi2;
+
+  int	tree_Vtx_Hemi_mva_LLP1_nTrks = 0;
+  float	tree_Vtx_Hemi_mva_LLP1_x;
+  float tree_Vtx_Hemi_mva_LLP1_y;
+  float tree_Vtx_Hemi_mva_LLP1_z;
+  float	tree_Vtx_Hemi_mva_LLP1_NChi2;
+
+  int	tree_Vtx_Hemi_mva_LLP2_nTrks = 0;
+  float	tree_Vtx_Hemi_mva_LLP2_x;
+  float tree_Vtx_Hemi_mva_LLP2_y;
+  float tree_Vtx_Hemi_mva_LLP2_z;
+  float	tree_Vtx_Hemi_mva_LLP2_NChi2;
+
 //     //First top analysis
 // 
 //   std::vector<float>		    tree_seedVtx_X_top1;
@@ -850,6 +877,7 @@ TrackingPerf::TrackingPerf(const edm::ParameterSet& iConfig):
   // track
   
   smalltree->Branch("tree_track_pt",		    &tree_track_pt);
+  smalltree->Branch("tree_track_ptError",&tree_track_ptError);
   smalltree->Branch("tree_track_outerPt",           &tree_track_outerPt ); 		      
   smalltree->Branch("tree_track_eta",  	            &tree_track_eta ); 	      
   smalltree->Branch("tree_track_phi",  	            &tree_track_phi ); 
@@ -1135,6 +1163,32 @@ TrackingPerf::TrackingPerf(const edm::ParameterSet& iConfig):
   smalltree->Branch("tree_Vtx_mva_LLP2_z",&tree_Vtx_mva_LLP2_z);
   smalltree->Branch("tree_Vtx_mva_LLP2_NChi2",&tree_Vtx_mva_LLP2_NChi2);
 
+  //Analysis with the two hemispheres
+  
+  smalltree->Branch("tree_Vtx_Hemi_LLP1_nTrks",&tree_Vtx_Hemi_LLP1_nTrks);
+  smalltree->Branch("tree_Vtx_Hemi_LLP1_x",&tree_Vtx_Hemi_LLP1_x);
+  smalltree->Branch("tree_Vtx_Hemi_LLP1_y",&tree_Vtx_Hemi_LLP1_y);
+  smalltree->Branch("tree_Vtx_Hemi_LLP1_z",&tree_Vtx_Hemi_LLP1_z);
+  smalltree->Branch("tree_Vtx_Hemi_LLP1_NChi2",&tree_Vtx_Hemi_LLP1_NChi2);
+
+  smalltree->Branch("tree_Vtx_Hemi_LLP2_nTrks",&tree_Vtx_Hemi_LLP2_nTrks);
+  smalltree->Branch("tree_Vtx_Hemi_LLP2_x",&tree_Vtx_Hemi_LLP2_x);
+  smalltree->Branch("tree_Vtx_Hemi_LLP2_y",&tree_Vtx_Hemi_LLP2_y);
+  smalltree->Branch("tree_Vtx_Hemi_LLP2_z",&tree_Vtx_Hemi_LLP2_z);
+  smalltree->Branch("tree_Vtx_Hemi_LLP2_NChi2",&tree_Vtx_Hemi_LLP2_NChi2);
+
+  smalltree->Branch("tree_Vtx_Hemi_mva_LLP1_nTrks",&tree_Vtx_Hemi_mva_LLP1_nTrks);
+  smalltree->Branch("tree_Vtx_Hemi_mva_LLP1_x",&tree_Vtx_Hemi_mva_LLP1_x);
+  smalltree->Branch("tree_Vtx_Hemi_mva_LLP1_y",&tree_Vtx_Hemi_mva_LLP1_y);
+  smalltree->Branch("tree_Vtx_Hemi_mva_LLP1_z",&tree_Vtx_Hemi_mva_LLP1_z);
+  smalltree->Branch("tree_Vtx_Hemi_mva_LLP1_NChi2",&tree_Vtx_Hemi_mva_LLP1_NChi2);
+
+  smalltree->Branch("tree_Vtx_Hemi_mva_LLP2_nTrks",&tree_Vtx_Hemi_mva_LLP2_nTrks);
+  smalltree->Branch("tree_Vtx_Hemi_mva_LLP2_x",&tree_Vtx_Hemi_mva_LLP2_x);
+  smalltree->Branch("tree_Vtx_Hemi_mva_LLP2_y",&tree_Vtx_Hemi_mva_LLP2_y);
+  smalltree->Branch("tree_Vtx_Hemi_mva_LLP2_z",&tree_Vtx_Hemi_mva_LLP2_z);
+  smalltree->Branch("tree_Vtx_Hemi_mva_LLP2_NChi2",&tree_Vtx_Hemi_mva_LLP2_NChi2);
+
 //   //First top analysis
 // 
 //   smalltree->Branch("tree_seedVtx_X_top1",&tree_seedVtx_X_top1);
@@ -1345,12 +1399,12 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   ////////	BS     /////////////
   //////////////////////////////////
   //////////////////////////////////
-  
+
   BeamSpot const & bs = *recoBeamSpotHandle;
   tree_bs_PosX = bs.x0();
   tree_bs_PosY = bs.y0();
   tree_bs_PosZ = bs.z0();
-  
+
   //////////////////////////////////
   //////////////////////////////////
   ////////   Tracks  /////////////
@@ -1360,7 +1414,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   
   edm::RefToBaseVector<reco::Track> trackRefs;
   size_t idxTrack = 0;
-  
+
   std::map<size_t , int > trackToVextexMap;
   std::map<size_t , int > trackToAK4SlimmedJetMap;
   std::map<size_t , int > trackToAK4PFJetMap;
@@ -1372,7 +1426,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   std::map<size_t , int > ak8jetToTrackMap;
   //	std::map<size_t , int > ak8CaloJetToTrackMap;
   std::map<size_t , int > trackToPFJetMap;
-  
+
   ///// TRACK ASSOCIATION TO VERTICES AND JETS 
   
   //	int nRecoTracks = tracks.size(); 
@@ -1495,14 +1549,15 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       
       idxTrack++;
     } 
-  
+
   //////////////////////////////////
   //////////////////////////////////
   //////   primary vertices  ///////
   //////////////////////////////////
   //////////////////////////////////
   
-  int nPV = vertices->size(); 
+  int nPV = vertices->size();
+
   for (auto const & vertex : *vertices) {
     tree_vtx_PosX.push_back(vertex.x());
     tree_vtx_PosY.push_back(vertex.y());
@@ -1513,13 +1568,15 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     tree_vtx_PosZError.push_back(vertex.zError());
     nPV++; 
   }
-  
+  float PVx = tree_vtx_PosX[0];//l'index 0 donne le PV! 
+  float PVy = tree_vtx_PosY[0];
+  float PVz = tree_vtx_PosZ[0];
   //////////////////////////////////
   //////////////////////////////////
   ////////   MET   /////////////////
   //////////////////////////////////
   //////////////////////////////////
-  
+
   //const Met& met = PFMET->at(0); 
   tree_PFMet_et  = -10.;
   tree_PFMet_phi = -10.; 
@@ -1530,13 +1587,13 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     tree_PFMet_phi = themet.phi(); 
     tree_PFMet_sig = themet.significance(); 
   }
-  
+
   //////////////////////////////////
   //////////////////////////////////
   //////// gen Information /////////
   //////////////////////////////////
   //////////////////////////////////
-  
+
 //$$$$
   int nLLP = 0;
   int nllp = 0;
@@ -1545,15 +1602,34 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   tree_GenPVy = 0.;
   tree_GenPVz = 0.;
 
+  // Gen Information  for event axis//
+   float  Gen_neu1_eta=-10, Gen_neu1_phi=-10; 
+   float  Gen_neu2_eta=-10, Gen_neu2_phi=-10; 
+  //  float deltaPhi;
+   int  neu[2],  nneu = 0;
+   TLorentzVector vneu[2];
+   TLorentzVector v1, v2, v;
+   
+  //  float dRneuneu = 0.;
+
+   for (int k=0; k<2; k++) {
+     neu[k] = -1;
+   }
+   /////////////////////////////////////////////////////////
+
   if ( !runOnData_ ) {
     //      int nGenParticles = genParticles->size(); 
     //cout << "number of gen particles "<<nGenParticles<<endl; 
     
     ///GEN PARTICLES 
-  
+    int genParticle_idx=0;
     for (auto const & genParticle : *genParticles) {
-      int pdgid = abs(genParticle.pdgId());
-
+      genParticle_idx++;
+      int pdgid = genParticle.pdgId();
+      float Gen_pt  = genParticle.pt();
+      float Gen_eta = genParticle.eta();
+      float Gen_phi = genParticle.phi();
+      float Gen_m = genParticle.mass();
       // smuon
       if ( pdgid == 1000013 ) {  
         tree_GenPVx = genParticle.vx();
@@ -1562,23 +1638,49 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       }
 
       // neutralino from smuon
-      if ( pdgid == 1000023 ) {  
-        const Candidate * mom = genParticle.mother();
-        if ( abs(mom->pdgId()) == 1000013 ) {  
-  	  nLLP++;
-  	  if ( nLLP == 1 ) {
-  	    tree_LLP1_pt  = genParticle.pt();
-  	    tree_LLP1_eta = genParticle.eta();
-  	    tree_LLP1_phi = genParticle.phi();	 
-  	  } 
-  	  if ( nLLP == 2 ) {
-  	    tree_LLP2_pt  = genParticle.pt();
-  	    tree_LLP2_eta = genParticle.eta();
-  	    tree_LLP2_phi = genParticle.phi();	 
-  	  } 
+      if ( pdgid == 1000023 ) 
+        {  
+          const Candidate * mom = genParticle.mother();
+          if ( abs(mom->pdgId()) == 1000013 ) 
+            {  
+  	          nLLP++;
+  	          if ( nLLP == 1 ) 
+                {
+  	              tree_LLP1_pt  = Gen_pt;
+  	              tree_LLP1_eta = Gen_eta;
+  	              tree_LLP1_phi = Gen_phi;	 
+  	            } 
+  	          if ( nLLP == 2 ) 
+                {
+  	              tree_LLP2_pt  = Gen_pt;
+  	              tree_LLP2_eta = Gen_eta;
+  	              tree_LLP2_phi = Gen_phi;	 
+  	            }
+              if ( neu[0] < 0 ) 
+                {
+                  neu[0] = genParticle_idx;
+	                vneu[0].SetPtEtaPhiM( Gen_pt, Gen_eta, Gen_phi, Gen_m );
+	                Gen_neu1_eta = Gen_eta;
+	                Gen_neu1_phi = Gen_phi;
+                }
+              else if ( neu[1] < 0 ) 
+                {
+                  neu[1] = genParticle_idx;
+	                vneu[1].SetPtEtaPhiM( Gen_pt, Gen_eta, Gen_phi, Gen_m );
+	                Gen_neu2_eta = Gen_eta;
+	                Gen_neu2_phi = Gen_phi;
+                }
+              nneu++;     
+            }
         }
-      }
-        
+
+      // if ( nneu == 2 ) 
+      //   {
+      //     dRneuneu = Deltar( Gen_neu1_eta, Gen_neu1_phi, Gen_neu2_eta, Gen_neu2_phi );
+      //     // deltaPhi = Deltaphi( Gen_neu1_phi, Gen_neu2_phi );
+      //   }
+
+
       // quarks from neutralino
       if ( pdgid >= 1 && pdgid <= 6 ) {
         const Candidate * mom = genParticle.mother();
@@ -1681,6 +1783,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       tree_electron_energy.push_back(electron.energy());
     }
   
+  
   //  ///  reco Muons
 
   //  int nmuon=0;
@@ -1693,10 +1796,21 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   //  bool muon2_MVAisoLoose = ;bool muon2_MVAisoMedium = ;bool muon2_MVAisoTight = ;bool muon2_isGlobalMuon = ;
   //  bool muon2_isStandAloneMuon = ;bool muon2_CutBasedIdLoose = ;bool muon2_CutBasedIdMedium = ;
   //  bool muon2_CutBasedIdMediumPrompt = ;bool muon2_CutBasedIdTight =; 
-   
+
+  int muon_idx=0;
+  // bool ZMuRec = false;
+  // int PFiso, MVAiso, CutBasedId;
+  float dVr, dVz;
+  float Mmumu = 0.;
+  int nmurec = 0, imu1 = -1, imu2 = -1;
+  float mupt1, mueta1, muphi1, mupt2, mueta2, muphi2;
+  TLorentzVector vmuon[2];
+  float mu_mass=0.1057;
   for (auto const & muon : *slimmedmuons)
     {
       if ( muon.pt() < 3. ) continue;
+      muon_idx++;
+      int nmu = slimmedmuons->size();
       tree_slimmedmuon_pt.push_back( muon.pt());
       tree_slimmedmuon_eta.push_back(muon.eta());
       tree_slimmedmuon_phi.push_back(muon.phi());
@@ -1723,9 +1837,61 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       tree_slimmedmuon_CutBasedIdMedium     .push_back(   muon.passed(reco::Muon::CutBasedIdMedium));
       tree_slimmedmuon_CutBasedIdMediumPrompt	 .push_back(   muon.passed(reco::Muon::CutBasedIdMediumPrompt));
       tree_slimmedmuon_CutBasedIdTight  	  .push_back(	muon.passed(reco::Muon::CutBasedIdTight));
+
+      if ( !muon.passed(muon.isGlobalMuon()) ) continue;//Need global muons
+      mupt1  = muon.pt();
+      if ( mupt1 < 10. ) continue;//Zmu filter
+      dVr = TMath::Sqrt( (muon.vx()-PVx)*(muon.vx()-PVx) + (muon.vy()-PVy)*(muon.vy()-PVy) );
+      dVz = muon.vz()-PVz;
+      if ( dVr > 0.1 || abs(dVz) > 0.2 ) continue;// on veut un bon fit pour nos PV d'ou un seuil maximum sur les distances
+      mueta1 = muon.eta();
+      muphi1 = muon.phi();
+
+      v1.SetPtEtaPhiM(mupt1,mueta1,muphi1,mu_mass);
+      vmuon[0].SetPtEtaPhiM(mupt1,mueta1,muphi1,0);
+      nmurec++;
+      if ( muon_idx == nmu-1 ) continue;
+      for ( int muon2_idx=muon_idx+1;muon2_idx<nmu;muon2_idx++) //recompte des éléments déjà comptés
+        {	   // Loop on other reco muons
+          if ( !tree_slimmedmuon_isGlobalMuon[muon2_idx] ) continue;
+          if ( tree_slimmedmuon_charge[muon_idx] == tree_slimmedmuon_charge[muon2_idx] ) continue;
+          dVr = TMath::Sqrt( (tree_slimmedmuon_vx[muon2_idx]-PVx)*(tree_slimmedmuon_vx[muon2_idx]-PVx) + (tree_slimmedmuon_vy[muon2_idx]-PVy)*(tree_slimmedmuon_vy[muon2_idx]-PVy) );
+          dVz = tree_slimmedmuon_vz[muon2_idx]-PVz;
+          if ( dVr > 0.1 || abs(dVz) > 0.2 ) continue;
+          mupt2  = tree_slimmedmuon_pt[muon2_idx];
+          if ( mupt2 < 10. ) continue;
+          if ( mupt1 < 28. && mupt2 < 28. ) continue;//Zmu FIlter
+          mueta2 = tree_slimmedmuon_eta[muon2_idx];
+          muphi2 = tree_slimmedmuon_phi[muon2_idx];
+          muon2_idx++;
+          v2.SetPtEtaPhiM(mupt2,mueta2,muphi2,mu_mass);
+          vmuon[1].SetPtEtaPhiM(mupt2,mueta2,muphi2,0);
+          v = v1 + v2;
+          if ( v.Mag() > Mmumu ) 
+            {//Mag pour masse invariante (magnitude)
+              Mmumu = v.Mag();
+	            imu1 = muon_idx;
+	            imu2 = muon2_idx;
+            }
+        }
+      if ( Mmumu < 60. ) continue;
     }
      //  std::cout<< "number of muons first method : " << tree_slimmedmuon_pt.size() << std::endl;
-
+  
+  if ( tree_slimmedmuon_pt[imu2] > tree_slimmedmuon_pt[imu1] ) {
+     int imu0 = imu2;
+     imu2 = imu1;//muons reco with imu1 having the highest pt
+     imu1 = imu0;
+     v = vmuon[0];
+     vmuon[0] = vmuon[1];
+     vmuon[1] = v;
+   }
+   mupt1  = tree_slimmedmuon_pt[imu1];
+   mueta1 = tree_slimmedmuon_eta[imu1];
+   muphi1 = tree_slimmedmuon_phi[imu1];
+   mupt2  = tree_slimmedmuon_pt[imu2];
+   mueta2 = tree_slimmedmuon_eta[imu2];
+   muphi2 = tree_slimmedmuon_phi[imu2];
 
   //reco::BeamSpot vertexBeamSpot= *recoBeamSpotHandle;
   edm::ESHandle<TransientTrackBuilder> theTransientTrackBuilder;
@@ -1736,7 +1902,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   reco::RecoToSimCollection recSimColl ;
   if(!runOnData_) recSimColl= associatorByHits.associateRecoToSim(trackRefs, tpCollection);
   //fake rate determination : when a reco track has no matched simtrack
-  
+
   int nTracks = 0; 
   //	int nUnmatchTrack_fromPU = 0;
   //	int nUnmatchTrack_fromPV = 0;
@@ -1756,6 +1922,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     tree_track_charge.push_back(itTrack->charge());
     tree_track_pt.push_back(itTrack->pt());
+    tree_track_ptError.push_back(itTrack->ptError());
     tree_track_eta.push_back(itTrack->eta());
     tree_track_phi.push_back(itTrack->phi());
     tree_track_nhits.push_back(itTrack->numberOfValidHits());
@@ -2046,7 +2213,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   ///////////   jets   /////////////
   //////////////////////////////////
   //////////////////////////////////
-  
+
   //cout << "number of jets "<<nJet<<endl;  
   //for ak4
   for (int ij=0;ij<int(ak4slimmedJets->size());ij++)
@@ -2364,7 +2531,190 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      //std::cout<<"push back 0 pour top2"<< std::endl;
    }
   }
+
+
+  /////////////////////////////////////////////////////////
+  //-----------------------------------------
+  //Jets for axis reco
+  //-----------------------------------------
+  /////////////////////////////////////////////////////////
+
+
+   int njet = 0, ijet1 = -1, njet1 = 0, njet2 = 0;
+   bool isjet1[99], isjet2[99];
+   TLorentzVector vaxis1, vaxis2, vjet[99];
+   float PtMin=20;//GeV 
+   float EtaMax=2.4;
+   int njetall = ak4slimmedJets->size();
+  for ( int jetidx=0; jetidx<njetall; jetidx++)
+    {
+      const Jet& jet = ak4slimmedJets->at(jetidx); 
+      float jet_pt  = jet.pt();
+      float jet_eta = jet.eta();
+      float jet_phi = jet.phi();
+      isjet1[jetidx] = false;//first neutralino jets
+      isjet2[jetidx] = false;//second neutralino jets
+      v.SetPtEtaPhiM( jet_pt, jet_eta, jet_phi, 0. );//set the axis
+      if ( jet_pt < PtMin ) continue;
+      if ( abs(jet_eta) > EtaMax ) continue;
+
+      ///////////////////////////////////////////
+      // look if prompt muon inside (undefined variables:Gen_neu,..neu, njetall, , delatR??, imu1, imu2, tree_slimmed_...)
+      ///////////////////////////////////////////
+
+      float deltaR1 = 1000., deltaR2 = 1000.;
+      if ( imu1 >= 0 ) deltaR1 = Deltar( jet_eta, jet_phi, tree_slimmedmuon_eta[imu1], tree_slimmedmuon_phi[imu1] );
+      if ( imu2 >= 0 ) deltaR2 = Deltar( jet_eta, jet_phi, tree_slimmedmuon_eta[imu2], tree_slimmedmuon_phi[imu2] );
+      if ( deltaR1 < 0.4 || deltaR2 < 0.4 ) 
+        {
+          if ( deltaR1 < 0.4 ) 
+            { //if muon is inside, we remove the muons infomation from the jet
+              v1.SetPtEtaPhiM( tree_slimmedmuon_pt[imu1], 
+	                            tree_slimmedmuon_eta[imu1], 
+			                        tree_slimmedmuon_phi[imu1], 
+                              0 );
+	            v -= v1; //v TLorentzFactor being just above, defined by jet data
+            }
+          if ( deltaR2 < 0.4 ) 
+            {
+              v2.SetPtEtaPhiM( tree_slimmedmuon_pt[imu2], 
+	                            tree_slimmedmuon_eta[imu2], 
+			                        tree_slimmedmuon_phi[imu2],
+                              0 );
+	            v -= v2;
+            }
+          jet_pt  = v.Pt(); //Update jet data by removing the mouns information (muons that could be in the jet)
+          jet_eta = v.Eta(); //+ we do not want muons data to build the two axis since they come from the PV
+          jet_phi = v.Phi(); 
+        }  
+
+      //$$
+      njet++;//same as njet
+      isjet1[jetidx] = true;
+      vjet[jetidx] = v;//Only jet data (with  possible muons being removed)
+     if ( njet == 1 ) 
+      {
+        vaxis1 = v;
+        ijet1 = jetidx;
+        njet1 = 1;
+        isjet2[jetidx] = true;//are we sure about it? and why not isjet1[i]//LOOKAT
+      }
+    } // End Loop on jets
   
+  //////////////////
+  //------------------------------
+  //Event Axis
+  //------------------------------
+  //////////////////
+
+  int iLLPrec1 = 1;// iLLPrec2 = 2;
+  float  dR1 = 10., dR2 = 10.;
+  // float dR, deta, dphi;
+  float dRcut = 1.5;//subjectif choice: pi/2
+
+  if ( ijet1 >= 0 && ijet1 < njetall ) 
+    {
+      for (int i=ijet1+1; i<njetall; i++) // Loop on jet
+        {   
+          if ( !isjet1[i] ) continue;
+          float jet_eta = vjet[i].Eta();
+          float jet_phi = vjet[i].Phi();
+          float deltar = Deltar( jet_eta, jet_phi, vaxis1.Eta(), vaxis1.Phi() );//check if the jets belong to the same "hemispehre"...
+          if ( deltar > dRcut ) continue;
+          njet1++;
+          vaxis1 += vjet[i];//... if so, the axis is modified including the new jet
+          isjet2[i] = true;
+        }	  // end Loop on jet
+    }
+  /////////////////////////////// 
+  // compare with neutralino axis
+  /////////////////////////////// 
+
+  float axis_eta = vaxis1.Eta();
+  float axis_phi = vaxis1.Phi();
+  if ( ijet1 >= 0 ) 
+    {
+      if ( neu[0] >= 0 ) dR1 = Deltar( axis_eta, axis_phi, Gen_neu1_eta, Gen_neu1_phi );//dR between reco axis of jets and gen neutralino
+      if ( neu[1] >= 0 ) dR2 = Deltar( axis_eta, axis_phi, Gen_neu2_eta, Gen_neu2_phi );
+      // dR = dR1;
+      if ( dR2 < dR1 ) 
+        {//make sure that the reco axis defined meshes well with the axis of the gen neutralino, if not it is swapped
+        iLLPrec1 = 2;
+        //iLLPrec2 = 1;
+        // dR = dR2;
+        }
+      // if ( iLLPrec1 == 1 ) 
+      //   {
+      //     dphi = abs(Deltaphi( axis_phi, Gen_neu1_phi ));
+      //     deta = abs(axis_eta - Gen_neu1_eta);
+      //   }
+      // else 
+      //   {
+      //     dphi = abs(Deltaphi( axis_phi, Gen_neu2_phi ));
+      //     deta = abs(axis_eta - Gen_neu2_eta);
+      //   }
+    }
+
+  //   //dRneuneu loop
+  //  if ( dRneuneu > dRcut && ijet1 >= 0 && ijet1 < njetall ) {
+  //    float axis2_phi = 0.;
+  //    //Hypothesis: both neutralinos are back to back
+  //    if ( axis_phi >= 0 ) axis2_phi = axis_phi - 3.14159;//phi has to be between (-pi/+pi)
+  //    else                 axis2_phi = axis_phi + 3.14159;//phi has to be between (-pi/+pi)
+     //Thisis a first assessment on the axis of the other neutralino wrt the first one
+     
+    //  if ( iLLPrec2 == 1 ) {
+    //    dR = Deltar( axis_eta, axis2_phi, Gen_neu1_eta, Gen_neu1_phi );//reco vs gen
+    //    dphi = abs(Deltaphi( axis2_phi, Gen_neu1_phi ));//check if the neutralino is within the axis previously defined, we would like dR<0.4
+    //    //with the assumption that both neutralinos are back to back
+    //  }
+    //  else {
+    //    dR = Deltar( axis_eta, axis2_phi, Gen_neu2_eta, Gen_neu2_phi );//reco vs gen
+    //    dphi = abs(Deltaphi( axis2_phi, Gen_neu2_phi ));//check if the neutralino is within the axis previously defined, we would like dR<0.4
+    //    //with the assumption that both neutralinos are back to back
+    //  }
+    //############################"END OF Hypothesis: both neutralinos are back to back##################################
+
+
+     for (int i=ijet1+1; i<njetall; i++) //Loop on jet
+      {   // Loop on jet to build second axis
+        if ( !isjet1[i] ) continue;
+        if ( isjet2[i] ) continue;
+        if ( njet2 == 0 ) 
+          {
+            vaxis2 = vjet[i];//define second axis
+	          njet2 = 1;
+          }
+        else 
+          {
+            float jet_eta = vjet[i].Eta();
+            float jet_phi = vjet[i].Phi();
+            float deltar = Deltar( jet_eta, jet_phi, vaxis2.Eta(), vaxis2.Phi() );//modificiation of the axis is the new jet belongs to dR<dRCut
+            if ( deltar < dRcut ) 
+              {
+                vaxis2 += vjet[i];
+	              njet2++;
+	            }
+          }
+      }	   // end Loop on jet
+
+    //  if ( njet2 >= 1 ) {
+    //    float axis2_eta = vaxis2.Eta();
+    //    float axis2_phi = vaxis2.Phi();
+    //    if ( iLLPrec2 == 1) {
+    //      dR = Deltar( axis2_eta, axis2_phi, Gen_neu1_eta, Gen_neu1_phi );
+    //      dphi = abs(Deltaphi( axis2_phi, Gen_neu1_phi ));
+    //      deta = abs(axis2_eta - Gen_neu1_eta);
+    //    }
+    //    else {
+    //      dR = Deltar( axis2_eta, axis2_phi, Gen_neu2_eta, Gen_neu2_phi );
+    //      dphi = abs(Deltaphi( axis2_phi, Gen_neu2_phi ));
+    //      deta = abs(axis2_eta - Gen_neu2_eta);
+    //    }
+    //   //  float dRaxis1_2 = Deltar( axis_eta, axis_phi, axis_eta, axis2_phi);
+    //   //POssible to add a constraint dRaxis1_2: distribution available
+    //   }
+  //  }// End of dRneuneu loop
 
   //////////////////
   //------------------------------
@@ -2374,15 +2724,16 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
   if(showlog) cout << "//////////////////////////"<< endl; 
   if(showlog) cout << "start to select displaced tracks " << endl;
-  vector<reco::TransientTrack> displacedTracks_llp1, displacedTracks_llp2, displacedTracks_mva_llp1, displacedTracks_mva_llp2;
-    
+  vector<reco::TransientTrack> displacedTracks_llp1, displacedTracks_llp2, displacedTracks_mva_llp1, displacedTracks_mva_llp2;//Control Tracks
+  vector<reco::TransientTrack> displacedTracks_Hemi_llp1, displacedTracks_Hemi_llp2, displacedTracks_Hemi_mva_llp1, displacedTracks_Hemi_mva_llp2;//Tracks selected wrt the hemisphere
   ///// MVA for track selection coming from displaced tops 
 
   //ajout� par Paul /*!*/
-  float drSig, isinjet; /*!*/
+  float drSig, isinjet;
+  // float dptSig; /*!*/
   int jet; /*!*/
   float ntrk10, ntrk20, ntrk30; /*!*/
-  float firsthit_X, firsthit_Y, firsthit_Z, dxy, dxyError, pt, eta, NChi2, nhits, algo; /*!*/
+  float firsthit_X, firsthit_Y, firsthit_Z, dxy, dxyError, pt, eta,phi, NChi2, nhits, algo; /*!*/
   double bdtval = -100.;
   TMVA::Reader *reader = new TMVA::Reader( "!Color:!Silent" );
    
@@ -2405,7 +2756,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   //$$
   reader->BookMVA( "BDTG", weightFile_ );
   //$$
-   
+  float bdtcut=-0.0401;//optimal value w/o track association to axis: -0.0401
   int counter_track = -1; 
   for (size_t iTrack = 0; iTrack<trackRefs.size(); ++iTrack)  // Loop on all the tracks
   {
@@ -2416,11 +2767,15 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     firsthit_Z = tree_track_firsthit_Z[counter_track]; 
     dxy        = tree_track_dxy[counter_track]; 
     dxyError   = tree_track_dxyError[counter_track]; 
-    pt         = tree_track_pt[counter_track]; 
-    eta        = tree_track_eta[counter_track]; 
+    pt         = tree_track_pt[counter_track];
+    // ptError    = tree_track_ptError[counter_track]; 
+    eta        = tree_track_eta[counter_track];
+    phi        = tree_track_phi[counter_track];
     NChi2      = tree_track_NChi2[counter_track]; 
     nhits      = tree_track_nhits[counter_track]; 
-    algo       = tree_track_algo[counter_track]; 
+    algo       = tree_track_algo[counter_track];
+    // float dptSig=-1.
+    // if (pt>0) dptSig=ptError/pt;
 
     //Ajout� par Paul /*!*/
     drSig = -1.;
@@ -2430,60 +2785,136 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     ntrk30 = 0;
     bdtval = -10.;
 
-    if ( pt > 1. && NChi2 < 5. && drSig > 5. ) { // On regarde les track_selec[i] qui sont True donc de potentielles tracks secondaires
+    if ( pt > 1. && NChi2 < 5. && drSig > 5. ) 
+    { // On regarde les track_selec[i] qui sont True donc de potentielles tracks secondaires
 
       jet = tree_track_recoAK4SlimmedJet_idx[counter_track]; /*!*/
       isinjet = 0.;
       if ( jet >= 0 ) isinjet = 1.; /*!*/
 
+      // float dR=0;
+      int Tracks_axis=0;//flag to check which axis is the closest from the track
+      float dR1  = Deltar( eta, phi, axis_eta, axis_phi);//axis_phi and axis_eta for the first axis
+      float axis2_eta = -10;
+      float axis2_phi = -10;
+      int isFromLLP=tree_track_simtrack_isFromLLP[counter_track];//simtrack_isFromLLP is done way above that
+      // float bdtval=tree_track_MVAval->at(i);//bdt cut is done below 
+      axis2_eta = vaxis2.Eta();
+      axis2_phi = vaxis2.Phi();
+      //check the dR between the tracks and the second axis (without any selection on the tracks)
+      float dR2  = Deltar( eta, phi, axis2_eta, axis2_phi);
+      if (dR1>dR2)//a restriction could be added on the value of dR to assign the value Tracks_axis  (avoid some background???)
+      //++ you could have a track that belongs to the two hemispheres ...
+        {
+          // dR=dR2;
+          Tracks_axis=2;//belongs to second axis (second neutralino)
+        }
+      else
+        {
+          // dR=dR1;
+          Tracks_axis=1;//belongs to first axis (first neutralino)
+        }
+
       //Computation of the distances needed for the BDT
       int counter_othertrack = -1; ///*!*/
       for (size_t iTrack2=0; iTrack2<trackRefs.size(); ++iTrack2)    // Loop on all the other Tracks/*!*/
-      {
-      	counter_othertrack++;
-      if ( counter_othertrack == counter_track ) continue;
+        {
+      	  counter_othertrack++;
+          if ( counter_othertrack == counter_track ) continue;
+    	    float pt2  = tree_track_pt[counter_othertrack];
+    	    float dr2 = abs(tree_track_dxy[counter_othertrack]);
+    	    float drSig2 = -1.;
+    	    if ( tree_track_dxyError[counter_othertrack] > 0 ) drSig2 = dr2 / tree_track_dxyError[counter_othertrack];
+    	    NChi2 = tree_track_NChi2[counter_othertrack];
+          if ( !(pt2 > 1. && NChi2 < 5. && drSig2 > 5.) ) continue; // On regarde les autres track_selec[i] qui sont True donc de potnetielles tracks secondaires
+    	    float x2 = tree_track_firsthit_X[counter_othertrack];
+    	    float y2 = tree_track_firsthit_Y[counter_othertrack];
+    	    float z2 = tree_track_firsthit_Z[counter_othertrack];
+    	    float dist = TMath::Sqrt( (firsthit_X-x2)*(firsthit_X-x2) + (firsthit_Y-y2)*(firsthit_Y-y2) + (firsthit_Z-z2)*(firsthit_Z-z2) );//pour chaque reconstruite, on regarde les autres tracks, 
+    	    if ( dist < 10. )	      {ntrk10++;} // les sctocker les 3 , on teste sur une seule couche quand on regarde vers l'avant
+    	    if ( dist < 20. )	      {ntrk20++;} 
+    	    if ( dist < 30. )	      {ntrk30++;} 
+        }  // end Loop on other Tracks
 
-    	float pt2  = tree_track_pt[counter_othertrack];
-    	float dr2 = abs(tree_track_dxy[counter_othertrack]);
-    	float drSig2 = -1.;
-    	if ( tree_track_dxyError[counter_othertrack] > 0 ) drSig2 = dr2 / tree_track_dxyError[counter_othertrack];
-    	NChi2 = tree_track_NChi2[counter_othertrack];
 
-      if ( !(pt2 > 1. && NChi2 < 5. && drSig2 > 5.) ) continue; // On regarde les autres track_selec[i] qui sont True donc de potnetielles tracks secondaires
+      ////--------------Control tracks-----------------////
 
-    	float x2 = tree_track_firsthit_X[counter_othertrack];
-    	float y2 = tree_track_firsthit_Y[counter_othertrack];
-    	float z2 = tree_track_firsthit_Z[counter_othertrack];
-    	float dist = TMath::Sqrt( (firsthit_X-x2)*(firsthit_X-x2) + (firsthit_Y-y2)*(firsthit_Y-y2) + (firsthit_Z-z2)*(firsthit_Z-z2) );//pour chaque reconstruite, on regarde les autres tracks, 
-    	if ( dist < 10. )	      {ntrk10++;} // les sctocker les 3 , on teste sur une seule couche quand on regarde vers l'avant
-    	if ( dist < 20. )	      {ntrk20++;} 
-    	if ( dist < 30. )	      {ntrk30++;} 
-      }  // end Loop on other Tracks
-
-      if ( tree_track_simtrack_isFromLLP[counter_track] == 1 ) {
+      if ( isFromLLP == 1 ) {
         displacedTracks_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
       }
-      if ( tree_track_simtrack_isFromLLP[counter_track] == 2 ) {
+      if ( isFromLLP == 2 ) {
         displacedTracks_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
       }
+      ////--------------END OF Control tracks----------////
+
 
       bdtval = reader->EvaluateMVA( "BDTG" ); //default value = -10 (no -10 observed and -999 comes from EvaluateMVA)
       //cout << "BDT VAL " << bdtval <<endl; 
-    
+
+      if ( iLLPrec1==1)
+        {
+          if (Tracks_axis==1 && isFromLLP == 1 ) 
+            {
+              displacedTracks_Hemi_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
+            }
+          if (Tracks_axis==2 && isFromLLP == 2 ) 
+            {
+              displacedTracks_Hemi_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
+            }
+        }
+      if ( iLLPrec1==2)
+        {
+          if (Tracks_axis==2 && isFromLLP == 1 ) 
+            {
+              displacedTracks_Hemi_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
+            }
+          if (Tracks_axis==1 && isFromLLP == 2 ) 
+            {
+              displacedTracks_Hemi_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
+            }
+        }
 //$$
       // if (bdtval < 0.0674  ) { //optimal cut for 10 cm, trained on 19k events, <s>=22 and <b>=240 //J�r�my
       // if (bdtval < 0.07381 ) { //optimal cut for 50 cm, trained on 10k events, <s>=15 and <b>=234 //J�r�my
-      if ( bdtval > -0.0401 ) { //optimal cut for 50 cm ,trained on 10k events //Paul, expected to change
+      if ( bdtval > bdtcut ) 
+        { //optimal cut for 50 cm ,trained on 10k events //Paul, expected to change
 //$$
+          ////--------------Control tracks-----------------////
+          if ( isFromLLP == 1 ) 
+            {
+              displacedTracks_mva_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
+            }
+          if ( isFromLLP == 2 ) 
+            {
+              displacedTracks_mva_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
+            }
+          ////--------------END OF Control tracks----------////
 
-        if ( tree_track_simtrack_isFromLLP[counter_track] == 1 ) {
-          displacedTracks_mva_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
+
+          if ( iLLPrec1==1)
+            {
+              if (Tracks_axis==1 && isFromLLP == 1 ) 
+                {
+                  displacedTracks_Hemi_mva_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
+                }
+              if (Tracks_axis==2 && isFromLLP == 2 ) 
+                {
+                  displacedTracks_Hemi_mva_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
+                }
+            }
+          if ( iLLPrec1==2)
+            {
+              if (Tracks_axis==2 && isFromLLP == 1 ) 
+                {
+                  displacedTracks_Hemi_mva_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
+                }
+              if (Tracks_axis==1 && isFromLLP == 2 ) 
+                {
+                  displacedTracks_Hemi_mva_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
+                }
+            }
+        
         }
-        if ( tree_track_simtrack_isFromLLP[counter_track] == 2 ) {
-          displacedTracks_mva_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
-        }
-        //cout << "kept track and it is from displaced top "<<tree_track_simtrack_isFromDispTop[counter_track]<<endl; 
-      }
     }
 
     tree_track_ntrk10.push_back(ntrk10);
@@ -2494,8 +2925,10 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   } //End loop on all the tracks
 
   if ( showlog ) {
-    cout << " displaced tracks LLP1 " << displacedTracks_llp1.size() << " " << displacedTracks_mva_llp1.size() << endl;
-    cout << " displaced tracks LLP2 " << displacedTracks_llp2.size() << " " << displacedTracks_mva_llp2.size() << endl;
+    cout << " displaced tracks LLP1 " << displacedTracks_llp1.size() << " and with mva" << displacedTracks_mva_llp1.size() << endl;
+    cout << " displaced tracks LLP2 " << displacedTracks_llp2.size() << " and with mva" << displacedTracks_mva_llp2.size() << endl;
+    cout << " displaced tracks Hemi LLP1 " << displacedTracks_Hemi_llp1.size() << " and with mva" << displacedTracks_Hemi_mva_llp1.size() << endl;
+    cout << " displaced tracks Hemi LLP2 " << displacedTracks_Hemi_llp2.size() << " and with mva" << displacedTracks_Hemi_mva_llp2.size() << endl;
   }
 
   //---------------------------------------------------------------------------------------//
@@ -2565,6 +2998,62 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   tree_Vtx_LLP2_y = Vtx_y;
   tree_Vtx_LLP2_z = Vtx_z;
   tree_Vtx_LLP2_NChi2 = Vtx_chi;
+
+//--------------------------- FIRST LLP WITH HEMISPHERE-------------------------------------//
+
+  KalmanVertexFitter theFitter_vertex_Hemi_llp1(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
+  
+  Vtx_ntk = displacedTracks_Hemi_llp1.size();
+  Vtx_x = -10.;
+  Vtx_y = -10.;
+  Vtx_z = -10.;
+  Vtx_chi = -1.;
+
+  if ( Vtx_ntk > 1 )
+  {
+    TransientVertex displacedVertex_Hemi_llp1 = theFitter_vertex_Hemi_llp1.vertex(displacedTracks_Hemi_llp1); // fitted vertex
+
+    if ( displacedVertex_Hemi_llp1.isValid() ) // NotValid if the max number of steps has been exceded or the fitted position is out of tracker bounds.
+    {
+      Vtx_x = displacedVertex_Hemi_llp1.position().x();
+      Vtx_y = displacedVertex_Hemi_llp1.position().y();
+      Vtx_z = displacedVertex_Hemi_llp1.position().z();
+      Vtx_chi = displacedVertex_Hemi_llp1.normalisedChiSquared();
+    }
+  }
+  tree_Vtx_Hemi_LLP1_nTrks = Vtx_ntk;	 //to be added   
+  tree_Vtx_Hemi_LLP1_x = Vtx_x;//to be added
+  tree_Vtx_Hemi_LLP1_y = Vtx_y;//to be added
+  tree_Vtx_Hemi_LLP1_z = Vtx_z;//to be added
+  tree_Vtx_Hemi_LLP1_NChi2 = Vtx_chi;//to be added
+
+//--------------------------- SECOND LLP WITH HEMISPHERE-------------------------------------//
+
+  KalmanVertexFitter theFitter_vertex_Hemi_llp2(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
+  
+  Vtx_ntk = displacedTracks_Hemi_llp2.size();
+  Vtx_x = -10.;
+  Vtx_y = -10.;
+  Vtx_z = -10.;
+  Vtx_chi = -1.;
+
+  if ( Vtx_ntk > 1 )
+  {
+    TransientVertex displacedVertex_Hemi_llp2 = theFitter_vertex_Hemi_llp2.vertex(displacedTracks_Hemi_llp2); // fitted vertex
+
+    if ( displacedVertex_Hemi_llp2.isValid() ) // NotValid if the max number of steps has been exceded or the fitted position is out of tracker bounds.
+    {
+      Vtx_x = displacedVertex_Hemi_llp2.position().x();
+      Vtx_y = displacedVertex_Hemi_llp2.position().y();
+      Vtx_z = displacedVertex_Hemi_llp2.position().z();
+      Vtx_chi = displacedVertex_Hemi_llp2.normalisedChiSquared();
+    }
+  }
+  tree_Vtx_Hemi_LLP2_nTrks = Vtx_ntk;	 //to be added   
+  tree_Vtx_Hemi_LLP2_x = Vtx_x;//to be added
+  tree_Vtx_Hemi_LLP2_y = Vtx_y;//to be added
+  tree_Vtx_Hemi_LLP2_z = Vtx_z;//to be added
+  tree_Vtx_Hemi_LLP2_NChi2 = Vtx_chi;//to be added
     
   //------------------------------- FIRST LLP WITH MVA ----------------------------------//
   
@@ -2656,6 +3145,62 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   tree_Vtx_mva_LLP2_z = Vtx_z;
   tree_Vtx_mva_LLP2_NChi2 = Vtx_chi;
     
+//--------------------------- FIRST LLP WITH HEMISPHERE WITH MVA-------------------------------------//
+
+  KalmanVertexFitter theFitter_vertex_Hemi_mva_llp1(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
+  
+  Vtx_ntk = displacedTracks_Hemi_mva_llp1.size();
+  Vtx_x = -10.;
+  Vtx_y = -10.;
+  Vtx_z = -10.;
+  Vtx_chi = -1.;
+
+  if ( Vtx_ntk > 1 )
+  {
+    TransientVertex displacedVertex_Hemi_mva_llp1 = theFitter_vertex_Hemi_mva_llp1.vertex(displacedTracks_Hemi_mva_llp1); // fitted vertex
+
+    if ( displacedVertex_Hemi_mva_llp1.isValid() ) // NotValid if the max number of steps has been exceded or the fitted position is out of tracker bounds.
+    {
+      Vtx_x = displacedVertex_Hemi_mva_llp1.position().x();
+      Vtx_y = displacedVertex_Hemi_mva_llp1.position().y();
+      Vtx_z = displacedVertex_Hemi_mva_llp1.position().z();
+      Vtx_chi = displacedVertex_Hemi_mva_llp1.normalisedChiSquared();
+    }
+  }
+  tree_Vtx_Hemi_mva_LLP1_nTrks = Vtx_ntk;	 //to be added   
+  tree_Vtx_Hemi_mva_LLP1_x = Vtx_x;//to be added
+  tree_Vtx_Hemi_mva_LLP1_y = Vtx_y;//to be added
+  tree_Vtx_Hemi_mva_LLP1_z = Vtx_z;//to be added
+  tree_Vtx_Hemi_mva_LLP1_NChi2 = Vtx_chi;//to be added
+
+//--------------------------- SECOND LLP WITH HEMISPHERE WITH MVA-------------------------------------//
+
+  KalmanVertexFitter theFitter_vertex_Hemi_mva_llp2(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
+  
+  Vtx_ntk = displacedTracks_Hemi_mva_llp2.size();
+  Vtx_x = -10.;
+  Vtx_y = -10.;
+  Vtx_z = -10.;
+  Vtx_chi = -1.;
+
+  if ( Vtx_ntk > 1 )
+  {
+    TransientVertex displacedVertex_Hemi_mva_llp2 = theFitter_vertex_Hemi_mva_llp2.vertex(displacedTracks_Hemi_mva_llp2); // fitted vertex
+
+    if ( displacedVertex_Hemi_mva_llp2.isValid() ) // NotValid if the max number of steps has been exceded or the fitted position is out of tracker bounds.
+    {
+      Vtx_x = displacedVertex_Hemi_mva_llp2.position().x();
+      Vtx_y = displacedVertex_Hemi_mva_llp2.position().y();
+      Vtx_z = displacedVertex_Hemi_mva_llp2.position().z();
+      Vtx_chi = displacedVertex_Hemi_mva_llp2.normalisedChiSquared();
+    }
+  }
+  tree_Vtx_Hemi_mva_LLP2_nTrks = Vtx_ntk;	 //to be added   
+  tree_Vtx_Hemi_mva_LLP2_x = Vtx_x;//to be added
+  tree_Vtx_Hemi_mva_LLP2_y = Vtx_y;//to be added
+  tree_Vtx_Hemi_mva_LLP2_z = Vtx_z;//to be added
+  tree_Vtx_Hemi_mva_LLP2_NChi2 = Vtx_chi;//to be added
+
 
 //Former version of the code (J�r�my)
 
@@ -3116,9 +3661,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    
    int NumberMuonsSup10GeV = 0; 
    int NumberMuonsSup28GeV = 0; 
-   float mu_mass = 0.1057;
    bool invMassGood = false; 
-   TLorentzVector v1, v2, v;
+   
    
    for (auto const & muon : *slimmedmuons) {
      if ( !muon.isGlobalMuon() ) continue;

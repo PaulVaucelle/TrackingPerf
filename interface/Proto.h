@@ -31,6 +31,7 @@ class Proto {
 
       //Vector related methods
       unsigned int Size(){return GetProto().size();}
+      unsigned int SizeTTracks(int i){return ProtoVertex[i].first.size(); }
       void PushBack(std::pair< std::vector<reco::TransientTrack>, TransientVertex> pair_iterators_vertex){ProtoVertex.push_back(pair_iterators_vertex);}
       
       //3D position of the vertex//
