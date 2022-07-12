@@ -704,14 +704,6 @@ class TrackingPerf : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
   float tree_LLP2_x;
   float tree_LLP2_y;
   float tree_LLP2_z;
-
-  std::vector<int> tree_NSim;
-  std::vector<float> tree_RecoEfficiency;
-
-  std::vector<float> tree_FakeRate;
-  std::vector<float> tree_RecoVertex1_Eff;
-  std::vector<float> tree_RecoVertex2_Eff;
-  std::vector<float> tree_VtxReco_Eff;
   
   int	tree_Vtx_LLP1_nTrks = 0;
   float	tree_Vtx_LLP1_x;
@@ -1131,13 +1123,6 @@ TrackingPerf::TrackingPerf(const edm::ParameterSet& iConfig):
   smalltree->Branch("tree_LLP2_pt",&tree_LLP2_pt);
   smalltree->Branch("tree_LLP2_eta",&tree_LLP2_eta);
   smalltree->Branch("tree_LLP2_phi",&tree_LLP2_phi);
-
-  smalltree->Branch("tree_NSim",&tree_NSim);
-  smalltree->Branch("tree_RecoEfficiency",&tree_RecoEfficiency);
-  smalltree->Branch("tree_FakeRate",&tree_FakeRate);
-  smalltree->Branch("tree_RecoVertex1_Eff",&tree_RecoVertex1_Eff);
-  smalltree->Branch("tree_RecoVertex2_Eff",&tree_RecoVertex2_Eff);
-  smalltree->Branch("tree_VtxReco_Eff",&tree_VtxReco_Eff);
 
   smalltree->Branch("tree_Vtx_LLP1_nTrks",&tree_Vtx_LLP1_nTrks);
   smalltree->Branch("tree_Vtx_LLP1_x",&tree_Vtx_LLP1_x);
@@ -1995,9 +1980,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //matching par hits
 
     if ( !runOnData_ ) {
-      float NReco=trackRefs.size();
-      float NRecotoSim=0;
-      float ratioReco=0;
   
       int nSimHits = 0;
       bool isSimMatched = false;
@@ -2032,7 +2014,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         //if (!foundTPs->val.empty()) {
         isSimMatched = true;
         TrackingParticleRef tpr = foundTPs->val[0].first;
-        NRecotoSim++;
         nSimHits = tpr->numberOfTrackerHits();
         
         simtrack_charge 	       = tpr->charge();     
@@ -2091,8 +2072,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         }
       }
 
-      ratioReco = NRecotoSim/NReco;  
-      tree_FakeRate.push_back(ratioReco);
       
       tree_track_nSimHits		       .push_back(nSimHits); 
       tree_track_isSimMatched		       .push_back(isSimMatched);
@@ -2151,9 +2130,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   if ( !runOnData_ ) {
     reco::SimToRecoCollection simRecColl = associatorByHits.associateSimToReco(trackRefs, tpCollection);
     //Reco efficiecny estimation by looking at the number of simtracks matched with reco tracks
-      float NSim=0;/*!*/
-      float NSimtoReco=0;/*!*/
-      float ratio=0;/*!*/
 
     for (const TrackingParticleRef& tp: tpCollection) 
     {
@@ -2174,13 +2150,12 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       tree_simtrack_genVertexPos_Z		   .push_back( tp->vz());
       
       bool isRecoMatched = false;
-      NSim = NSim + 1;/*!*/
+
       std::vector<int> tkIdx;
       auto foundTracks = simRecColl.find(tp);
       if ( foundTracks != simRecColl.end() ) 
       {
     	isRecoMatched = true;
-    	NSimtoReco=NSimtoReco+1;/*!*/
     	for (const auto trackQuality: foundTracks->val) 
               {
         	     tkIdx.push_back(trackQuality.first.key());
@@ -2201,10 +2176,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     } //end loop on tracking particles 
 
-    ratio= NSimtoReco/NSim;/*!*/
-    //  std::cout<< "ratio of NSimtoReco/Nsim = "<< ratio << std::endl;
-    tree_NSim.push_back(NSim);
-    tree_RecoEfficiency.push_back(ratio);//change en fonction du pt et �ta
   }
 
    
@@ -2395,13 +2366,10 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    if(showlog) cout << "------------------------" <<endl;
    if(showlog) cout << "Number of reco tracks for first top "<<displacedTracks_top1.size()<<endl; 
    if(showlog) cout << "Number of reco tracks for second top "<<displacedTracks_top2.size()<<endl; 
-   int nReconstructibleVertex1=0;
-   int nReconstructibleVertex2=0;
-   int nRecoVertex1=0;
-   int nRecoVertex2=0;
+   
    if ( displacedTracks_top1.size() > 1 )
       {
-       nReconstructibleVertex1++;
+       
              KalmanVertexFitter theFitter_top1; 
              //AdaptiveVertexFitter  theFitter_top1;	
        
@@ -2411,7 +2379,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
              // now you have a new vertex, can e.g. be compared with the original
              if (displacedVertex_top1.isValid()) // NotValid if the max number of steps has been exceedeor the fitted position is out of tracker bounds.
              {    
-  	 nRecoVertex1++;
+  	 
   	 auto lineariser = DefaultLinearizationPointFinder();
                auto linearization_point = lineariser.getLinearizationPoint(displacedTracks_top1);
                if(showlog) std::cout << "seed top1 is: " << linearization_point.x() << " - " << linearization_point.y() << " - " << linearization_point.z() << '\n';
@@ -2456,7 +2424,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     
    if ( displacedTracks_top2.size() > 1 )
    { 
-       nReconstructibleVertex2++;
+       
              auto lineariser = DefaultLinearizationPointFinder();
              auto linearization_point = lineariser.getLinearizationPoint(displacedTracks_top2);
              if(showlog) std::cout << "seed top 2 is: " << linearization_point.x() << " - " << linearization_point.y() << " - " << linearization_point.z() << '\n';
@@ -2469,7 +2437,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        // now you have a new vertex, can e.g. be compared with the original
        if (displacedVertex_top2.isValid()) //NotValid if the max number of steps has been exceedeor the fitted position is out of tracker bounds.
        { 
-  	 nRecoVertex2++;   
+  	    
   	 if(showlog)	    cout << "------------------------" <<endl;
   	 if(showlog) std::cout << " SECOND TOP DISPLACED VERTEX X POS " << displacedVertex_top2.position().x() << std::endl;
   	 if(showlog) std::cout << " SECOND TOP DISPLACED VERTEX Y POS " << displacedVertex_top2.position().y() << std::endl;
@@ -2510,26 +2478,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   	//     std::cout << "not enough tracks left for top 2" <<std::endl;
    }
 
-   //Vertex Reconstruction efficiency : Reconstructed/Reconstructible vertices
-   //Reconstructible: if more than one track is available for the recosntruction
-   //Reconstructed : isValid()
-   if (nReconstructibleVertex1!=0)
-     {
-       // std::cout<<"nreconstrible 1"<< std::endl;
-       float RecoVertex1_Eff = nRecoVertex1/nReconstructibleVertex1;tree_RecoVertex1_Eff.push_back(RecoVertex1_Eff);
-     }
-   else  {tree_RecoVertex1_Eff.push_back(0);
-     // std::cout<<"push back 0 pour top1"<< std::endl;
-   }
 
-   if(nReconstructibleVertex2!=0)
-   {  //std::cout<<"nrecostrible 2"<< std::endl;
-     float RecoVertex2_Eff = nRecoVertex2/nReconstructibleVertex2;
-     tree_RecoVertex2_Eff.push_back(RecoVertex2_Eff);}
-   else
-   {  tree_RecoVertex2_Eff.push_back(0);
-     //std::cout<<"push back 0 pour top2"<< std::endl;
-   }
   }
 
 
@@ -3971,10 +3920,8 @@ void TrackingPerf::clearVariables() {
 
   //added by Paul
 
-  tree_NSim.clear();
-  tree_RecoEfficiency.clear();
   tree_simtrack_isRecoMatched_pt.clear();
-  tree_FakeRate.clear();
+
 
 //   tree_DVertex_top1_nTrks.clear();
 //   tree_DVertex_top2_nTrks.clear();
