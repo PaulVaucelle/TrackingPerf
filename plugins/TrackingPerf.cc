@@ -1273,7 +1273,7 @@ void
 TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   clearVariables();
-  bool showlog = false;
+  bool showlog = true;
   using namespace edm;
   using namespace reco;
   using namespace std;
@@ -2527,7 +2527,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    float EtaMax = 2.4;
 
    int njetall = ak4slimmedJets->size();
-  for ( int jetidx=0; jetidx<njetall; jetidx++)
+  for ( int jetidx=0; jetidx<njetall; jetidx++)  // Loop on jet
     {
       const Jet& jet = ak4slimmedJets->at(jetidx); 
       float jet_pt  = jet.pt();
@@ -2580,9 +2580,9 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 //           vaxis1 = v;
 //           ijet1 = jetidx;
 //           njet1 = 1;
-//           isjet2[jetidx] = true;//are we sure about it? and why not isjet1[i]//LOOKAT
+//           isjet2[jetidx] = true;
 //         }
-        if ( njet == 1 && jet_pt > PtMin && abs(jet_eta) < EtaMax ) 
+        if ( njet1 == 0 && jet_pt > PtMin && abs(jet_eta) < EtaMax ) 
         {
             njet1 = 1;
             isjet1[jetidx] = true;
@@ -2599,7 +2599,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 //$$
   int iLLPrec1 = 1, iLLPrec2 = 2;
-  float  dR, dR1 = 10., dR2 = 10.;
+  float dR, dR1 = 10., dR2 = 10.;
 
   float dRcut = 1.5; //subjectif choice: pi/2
 
@@ -2612,7 +2612,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           if ( njet1 > 0 ) dR1 = Deltar( jet_eta, jet_phi, vaxis1.Eta(), vaxis1.Phi() );
           if ( njet2 > 0 ) dR2 = Deltar( jet_eta, jet_phi, vaxis2.Eta(), vaxis2.Phi() );
 // axis 1
-          if ( njet1 > 0 && !isjet2[i] && dR1 < dRcut ) {          
+          if ( njet1 > 0 && !isjet2[i]  && dR1 < dRcut) {          //
           njet1++;
           vaxis1 += vjet[i];
           isjet1[i] = true;
@@ -2623,7 +2623,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           vaxis2 = vjet[i];
           isjet2[i] = true;
         }
-                else if ( njet2 > 0 && !isjet1[i] && !isjet2[i] && dR2 < dRcut ) {
+        else if ( njet2 > 0 && !isjet1[i] && !isjet2[i] && dR2 < dRcut ) {//
           njet2++;
           vaxis2 += vjet[i];
           isjet2[i] = true;
@@ -2640,25 +2640,25 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   float axis1_phi = vaxis1.Phi();
   if ( neu[0] >= 0 ) dR1 = Deltar( axis1_eta, axis1_phi, Gen_neu1_eta, Gen_neu1_phi ); //dR between reco axis of jets and gen neutralino
   if ( neu[1] >= 0 ) dR2 = Deltar( axis1_eta, axis1_phi, Gen_neu2_eta, Gen_neu2_phi );
-      dR = dR1;
-      if ( dR2 < dR1 ) 
-        { //make sure that the reco axis defined meshes well with the axis of the gen neutralino, if not it is swapped
-        iLLPrec1 = 2;
-        iLLPrec2 = 1;
-        dR = dR2;
-        }
-      float axis1_dR = dR;
-
-      float axis2_eta = vaxis2.Eta();
-      float axis2_phi = vaxis2.Phi();     
-      if ( njet2 == 0 ) {         // compute an axis 2 even without jet, by taking the opposite in phi to axis 1
-            axis2_eta = axis1_eta;
-            axis2_phi = axis1_phi - 3.14159;
-      if ( axis1_phi < 0 ) axis2_phi = axis1_phi + 3.14159;
-      vaxis2.SetPtEtaPhiM( vaxis1.Pt(), axis2_eta, axis2_phi, 0 );
-          }
-      if ( iLLPrec2 == 1 ) dR = Deltar( axis2_eta, axis2_phi, Gen_neu1_eta, Gen_neu1_phi );
-    else                 dR = Deltar( axis2_eta, axis2_phi, Gen_neu2_eta, Gen_neu2_phi );
+  dR = dR1;
+  if ( dR2 < dR1 ) 
+    { //make sure that the reco axis defined meshes well with the axis of the gen neutralino, if not it is swapped
+      iLLPrec1 = 2;
+      iLLPrec2 = 1;
+      dR = dR2;
+    }
+  float axis1_dR = dR;
+  float axis2_eta = vaxis2.Eta();
+  float axis2_phi = vaxis2.Phi();     
+  if ( njet2 == 0 ) 
+    {  // compute an axis 2 even without jet, by taking the opposite in phi to axis 1
+      axis2_eta = axis1_eta;
+      axis2_phi = axis1_phi - 3.14159;
+  if ( axis1_phi < 0 ) axis2_phi = axis1_phi + 3.14159;
+      // vaxis2.SetPtEtaPhiM( vaxis1.Pt(), axis2_eta, axis2_phi, 0 );
+    }
+  if ( iLLPrec2 == 1 ) dR = Deltar( axis2_eta, axis2_phi, Gen_neu1_eta, Gen_neu1_phi );
+  else                 dR = Deltar( axis2_eta, axis2_phi, Gen_neu2_eta, Gen_neu2_phi );
   float axis2_dR = dR;
 //$$
   tree_axis1_njet = njet1; 
@@ -2763,24 +2763,20 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       // float dR=0;
       int Tracks_axis = 0;//flag to check which axis is the closest from the track
       float dR1  = Deltar( eta, phi, axis1_eta, axis1_phi);//axis1_phi and axis1_eta for the first axis
-      float axis2_eta = -10;
-      float axis2_phi = -10;
       int isFromLLP = tree_track_simtrack_isFromLLP[counter_track];//simtrack_isFromLLP is done way above that
       // float bdtval=tree_track_MVAval->at(i);//bdt cut is done below 
-      axis2_eta = vaxis2.Eta();
-      axis2_phi = vaxis2.Phi();
       //check the dR between the tracks and the second axis (without any selection on the tracks)
       float dR2  = Deltar( eta, phi, axis2_eta, axis2_phi);
       if (dR1 > dR2)//a restriction could be added on the value of dR to assign the value Tracks_axis  (avoid some background???)
       //++ you could have a track that belongs to the two hemispheres ...
         {
           dR=dR2;
-          Tracks_axis = 2;//belongs to second hemi (second neutralino)
+          Tracks_axis = 2;//belongs to second axis (second neutralino)
         }
       else
         {
           dR=dR1;
-          Tracks_axis = 1;//belongs to first hemi (first neutralino)
+          Tracks_axis = 1;//belongs to first axis (first neutralino)
         }
 
       //Computation of the distances needed for the BDT
