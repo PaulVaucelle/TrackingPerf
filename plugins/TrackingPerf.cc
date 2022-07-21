@@ -2601,8 +2601,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   int iLLPrec1 = 1, iLLPrec2 = 2;
   float dR, dR1 = 10., dR2 = 10.;
 
-  float dRcut = 1.5; //subjectif choice: pi/2
-
+  float dRcut_hemis = (TMath::Pi())/2; //subjectif choice: pi/2 //iffrentiarte the cts pi/2 for this one the other could be changed
+  float dRcut_tracks = (TMath::Pi())/2; //1 or (TMath::Pi())/2 or 2.2
   for (int i=0; i<njetall; i++) // Loop on jet
     {  
         if ( !isjet[i] ) continue;
@@ -2612,7 +2612,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           if ( njet1 > 0 ) dR1 = Deltar( jet_eta, jet_phi, vaxis1.Eta(), vaxis1.Phi() );
           if ( njet2 > 0 ) dR2 = Deltar( jet_eta, jet_phi, vaxis2.Eta(), vaxis2.Phi() );
 // axis 1
-          if ( njet1 > 0 && !isjet2[i]  && dR1 < dRcut) {          //
+          if ( njet1 > 0 && !isjet2[i]  && dR1 < dRcut_hemis) {          //
           njet1++;
           vaxis1 += vjet[i];
           isjet1[i] = true;
@@ -2623,7 +2623,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           vaxis2 = vjet[i];
           isjet2[i] = true;
         }
-        else if ( njet2 > 0 && !isjet1[i] && !isjet2[i] && dR2 < dRcut ) {//
+        else if ( njet2 > 0 && !isjet1[i] && !isjet2[i] && dR2 < dRcut_hemis ) {//
           njet2++;
           vaxis2 += vjet[i];
           isjet2[i] = true;
@@ -2815,28 +2815,15 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       bdtval = reader->EvaluateMVA( "BDTG" ); //default value = -10 (no -10 observed and -999 comes from EvaluateMVA)
       //cout << "BDT VAL " << bdtval <<endl; 
 
-      if ( iLLPrec1==1 && dR < dRcut)
+      if (Tracks_axis==1 && dR < dRcut_tracks) 
         {
-          if (Tracks_axis==1 ) 
-            {
-              Tracks_Hemi_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
-            }
-          if (Tracks_axis==2  ) 
-            {
-              Tracks_Hemi_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
-            }
+          Tracks_Hemi_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
         }
-      if ( iLLPrec1==2 && dR < dRcut)
+      if (Tracks_axis==2 && dR < dRcut_tracks ) 
         {
-          if (Tracks_axis==2  ) 
-            {
-              Tracks_Hemi_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
-            }
-          if (Tracks_axis==1  ) 
-            {
-              Tracks_Hemi_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
-            }
+          Tracks_Hemi_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
         }
+
 
       // if (bdtval < 0.0674  ) { //optimal cut for 10 cm, trained on 19k events, <s>=22 and <b>=240 //J�r�my
       // if (bdtval < 0.07381 ) { //optimal cut for 50 cm, trained on 10k events, <s>=15 and <b>=234 //J�r�my
@@ -2853,30 +2840,14 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             }
           ////--------------END OF Control tracks----------////
 
-
-          if ( iLLPrec1==1 && dR < dRcut)
+          if (Tracks_axis==1 && dR < dRcut_tracks) 
             {
-              if (Tracks_axis==1 ) 
-                {
-                  displacedTracks_Hemi_mva_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
-                }
-              if (Tracks_axis==2 ) 
-                {
-                  displacedTracks_Hemi_mva_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
-                }
+              displacedTracks_Hemi_mva_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
             }
-          if ( iLLPrec1==2 && dR < dRcut)
+          if (Tracks_axis==2 && dR < dRcut_tracks) 
             {
-              if (Tracks_axis==2 ) 
-                {
-                  displacedTracks_Hemi_mva_llp1.push_back(theTransientTrackBuilder->build(*itTrack));
-                }
-              if (Tracks_axis==1 ) 
-                {
-                  displacedTracks_Hemi_mva_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
-                }
-            }
-        
+              displacedTracks_Hemi_mva_llp2.push_back(theTransientTrackBuilder->build(*itTrack));
+            }        
         }
     }
 
