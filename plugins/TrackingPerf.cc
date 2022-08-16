@@ -765,13 +765,37 @@ private:
     float tree_Vtx_Hemi1_mva_y;
     float tree_Vtx_Hemi1_mva_z;
     float tree_Vtx_Hemi1_mva_NChi2;
+    // float tree_Vtx_Hemi1_mva_Tracks_NChi2;
+    // int   tree_Vtx_Hemi1_mva_Tracks_LostHit;
+    // int   tree_Vtx_Hemi1_mva_Tracks_ValidHits;
+
+    // int   tree_Vtx_Hemi1_mva_nTrks_F=0;
+    // float tree_Vtx_Hemi1_mva_x_F;
+    // float tree_Vtx_Hemi1_mva_y_F;
+    // float tree_Vtx_Hemi1_mva_z_F;
+    // float tree_Vtx_Hemi1_mva_NChi2_F;
+    // float tree_Vtx_Hemi1_mva_Tracks_NChi2_F;
+    // int   tree_Vtx_Hemi1_mva_Tracks_LostHit_F;
+    // int   tree_Vtx_Hemi1_mva_Tracks_ValidHits_F;
     
     int   tree_Vtx_Hemi2_mva_nTrks = 0;
     float tree_Vtx_Hemi2_mva_x;
     float tree_Vtx_Hemi2_mva_y;
     float tree_Vtx_Hemi2_mva_z;
     float tree_Vtx_Hemi2_mva_NChi2;
+    // float tree_Vtx_Hemi2_mva_Tracks_NChi2;
+    // int   tree_Vtx_Hemi2_mva_Tracks_LostHit;
+    // int   tree_Vtx_Hemi2_mva_Tracks_ValidHits;
     
+    // int   tree_Vtx_Hemi2_mva_nTrks_F = 0;
+    // float tree_Vtx_Hemi2_mva_x_F;
+    // float tree_Vtx_Hemi2_mva_y_F;
+    // float tree_Vtx_Hemi2_mva_z_F;
+    // float tree_Vtx_Hemi2_mva_NChi2_F;
+    // float tree_Vtx_Hemi2_mva_Tracks_NChi2_F;
+    // int   tree_Vtx_Hemi2_mva_Tracks_LostHit_F;
+    // int   tree_Vtx_Hemi2_mva_Tracks_ValidHits_F;
+
 //$$
     std::vector< int >   tree_Vtx_HemiLLP_nTrks;
     std::vector< float > tree_Vtx_HemiLLP_dx;
@@ -785,19 +809,21 @@ private:
     std::vector< float > tree_Vtx_HemiLLP_mva_NChi2;
     std::vector< int >   tree_Vtx_HemiLLP_filter;
 //$$
+    std::vector< float > tree_Hemi_tracks_dR;
+    std::vector< float > tree_Hemi_tracks_axis;
+
+    std::vector< float > tree_Hemi_Strack_dR;
+    std::vector< float > tree_MVA_Hemi_Strack_dR;
     
-    float tree_Hemi_Strack_dR;
-    float tree_MVA_Hemi_Strack_dR;
-    
-    int tree_MVA_SignalTracks_Matching;
-    int tree_SignalTracks_Matching;
-    float tree_Hemi_Strack_dR_dRcut;
-    float tree_MVA_Hemi_Strack_dR_dRcut;
-    float tree_STracks_Axis_Match_dR;
-    float tree_STracks_Axis_MisMatch_dR;
-    float tree_MVA_STracks_Axis_Match_dR;
-    float tree_MVA_STracks_Axis_MisMatch_dR;
-    
+    std::vector< int > tree_MVA_SignalTracks_Matching;
+    std::vector< int > tree_SignalTracks_Matching;
+    std::vector< float > tree_Hemi_Strack_dR_dRcut;
+    std::vector< float > tree_MVA_Hemi_Strack_dR_dRcut;
+    std::vector< float > tree_STracks_Axis_Match_dR;
+    std::vector< float > tree_STracks_Axis_MisMatch_dR;
+    std::vector< float > tree_MVA_STracks_Axis_Match_dR;
+    std::vector< float > tree_MVA_STracks_Axis_MisMatch_dR;
+    std::vector< float > tree_Hemi_track_dR1_2;
     
     // float
     //     //First top analysis
@@ -1225,13 +1251,40 @@ kvfPSet( iConfig.getParameter<edm::ParameterSet>("KVFParameters"))
     smalltree->Branch("tree_Vtx_Hemi1_mva_y",&tree_Vtx_Hemi1_mva_y);
     smalltree->Branch("tree_Vtx_Hemi1_mva_z",&tree_Vtx_Hemi1_mva_z);
     smalltree->Branch("tree_Vtx_Hemi1_mva_NChi2",&tree_Vtx_Hemi1_mva_NChi2);
-    
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_NChi2",&tree_Vtx_Hemi1_mva_Tracks_NChi2);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_LostHit",&tree_Vtx_Hemi1_mva_Tracks_LostHit);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_ValidHits",&tree_Vtx_Hemi1_mva_Tracks_ValidHits); 
+
+
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_nTrks_F",&tree_Vtx_Hemi2_mva_nTrks_F);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_x_F",&tree_Vtx_Hemi2_mva_x_F);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_y_F",&tree_Vtx_Hemi2_mva_y_F);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_z_F",&tree_Vtx_Hemi2_mva_z_F);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_NChi2_F",&tree_Vtx_Hemi2_mva_NChi2_F);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_NChi2_F",&tree_Vtx_Hemi1_mva_Tracks_NChi2_F);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_LostHit_F",&tree_Vtx_Hemi1_mva_Tracks_LostHit_F);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_ValidHits_F",&tree_Vtx_Hemi1_mva_Tracks_ValidHits_F);  
+
+
     smalltree->Branch("tree_Vtx_Hemi2_mva_nTrks",&tree_Vtx_Hemi2_mva_nTrks);
     smalltree->Branch("tree_Vtx_Hemi2_mva_x",&tree_Vtx_Hemi2_mva_x);
     smalltree->Branch("tree_Vtx_Hemi2_mva_y",&tree_Vtx_Hemi2_mva_y);
     smalltree->Branch("tree_Vtx_Hemi2_mva_z",&tree_Vtx_Hemi2_mva_z);
     smalltree->Branch("tree_Vtx_Hemi2_mva_NChi2",&tree_Vtx_Hemi2_mva_NChi2);
-    
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_NChi2",&tree_Vtx_Hemi2_mva_Tracks_NChi2);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_LostHit",&tree_Vtx_Hemi2_mva_Tracks_LostHit);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_ValidHits",&tree_Vtx_Hemi2_mva_Tracks_ValidHits);
+
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_nTrks_F",&tree_Vtx_Hemi2_mva_nTrks_F);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_x_F",&tree_Vtx_Hemi2_mva_x_F);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_y_F",&tree_Vtx_Hemi2_mva_y_F);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_z_F",&tree_Vtx_Hemi2_mva_z_F);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_NChi2_F",&tree_Vtx_Hemi2_mva_NChi2_F);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_NChi2_F",&tree_Vtx_Hemi2_mva_Tracks_NChi2_F);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_LostHit_F",&tree_Vtx_Hemi2_mva_Tracks_LostHit_F);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_ValidHits_F",&tree_Vtx_Hemi2_mva_Tracks_ValidHits_F); 
+
+
 //$$
     smalltree->Branch("tree_Vtx_HemiLLP_nTrks", &tree_Vtx_HemiLLP_nTrks);
     smalltree->Branch("tree_Vtx_HemiLLP_dx",    &tree_Vtx_HemiLLP_dx);
@@ -1256,7 +1309,10 @@ kvfPSet( iConfig.getParameter<edm::ParameterSet>("KVFParameters"))
     smalltree->Branch("tree_STracks_Axis_MisMatch_dR",&tree_STracks_Axis_MisMatch_dR);
     smalltree->Branch("tree_MVA_STracks_Axis_Match_dR",&tree_MVA_STracks_Axis_Match_dR);
     smalltree->Branch("tree_MVA_STracks_Axis_MisMatch_dR",&tree_MVA_STracks_Axis_MisMatch_dR);
-    
+
+    smalltree->Branch("tree_Hemi_tracks_dR",&tree_Hemi_tracks_dR);
+    smalltree->Branch("tree_Hemi_tracks_axis",&tree_Hemi_tracks_axis);
+    smalltree->Branch("tree_Hemi_track_dR1_2",&tree_Hemi_track_dR1_2);
     //   //First top analysis
     //
     //   smalltree->Branch("tree_seedVtx_X_top1",&tree_seedVtx_X_top1);
@@ -1326,7 +1382,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
     clearVariables();
 //$$
-    bool showlog = false;
+    bool showlog = true;
 //$$
     using namespace edm;
     using namespace reco;
@@ -1878,6 +1934,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     for (auto const & muon : *slimmedmuons)
     {
         if ( muon.pt() < 3. ) continue;
+	//std::cout<< "midx: "<<muon_idx<<std::endl;
         muon_idx++;
         int nmu = slimmedmuons->size();
         tree_slimmedmuon_pt.push_back( muon.pt());
@@ -1919,10 +1976,11 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         v1.SetPtEtaPhiM(mupt1,mueta1,muphi1,mu_mass);
         vmuon[0].SetPtEtaPhiM(mupt1,mueta1,muphi1,0);
         nmurec++;
-        
+        //std::cout<<"nmu : "<<nmu<<std::endl;
         if ( muon_idx == nmu-1 ) continue;
         for ( int muon2_idx=muon_idx+1;muon2_idx<nmu;muon2_idx++) //recompte des éléments déjà comptés
         {       // Loop on other reco muons
+	//std::cout<<"muon_idx:  "<< muon_idx<< "//"<<"muon2_idx : "<<muon2_idx<<std::endl;
             if ( !tree_slimmedmuon_isGlobalMuon[muon2_idx] ) continue;
             if ( tree_slimmedmuon_charge[muon_idx] == tree_slimmedmuon_charge[muon2_idx] ) continue;
             dVr = TMath::Sqrt( (tree_slimmedmuon_vx[muon2_idx]-PVx)*(tree_slimmedmuon_vx[muon2_idx]-PVx) + (tree_slimmedmuon_vy[muon2_idx]-PVy)*(tree_slimmedmuon_vy[muon2_idx]-PVy) );
@@ -1945,9 +2003,12 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             }
         }
         if ( Mmumu < 60. ) continue;
+	    
+        //std::cout<<"imu1 "<<imu1<<std::endl;
+    //std::cout<<"imu2 "<< imu2<< std::endl;
     }
     //  std::cout<< "number of muons first method : " << tree_slimmedmuon_pt.size() << std::endl;
-    
+
     if ( tree_slimmedmuon_pt[imu2] > tree_slimmedmuon_pt[imu1] ) {
         int imu0 = imu2;
         imu2 = imu1; //muons reco with imu1 having the highest pt
@@ -2638,7 +2699,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     float dR, dR1 = 10., dR2 = 10.;
     
     float dRcut_hemis = (TMath::Pi())/2; //subjectif choice: pi/2 //iffrentiarte the cts pi/2 for this one the other could be changed
-    float dRcut_tracks = (TMath::Pi())/2; //1 or (TMath::Pi())/2 or 2.2
+    float dRcut_tracks =  0.7 ; //1 or (TMath::Pi())/2 or 2.2
     for (int i=0; i<njetall; i++) // Loop on jet
     {
         if ( !isjet[i] ) continue;
@@ -2736,7 +2797,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     // float dptSig; /*!*/
     int jet; /*!*/
     float ntrk10, ntrk20, ntrk30; /*!*/
-    float firsthit_X, firsthit_Y, firsthit_Z, dxy, dxyError, pt, eta,phi, NChi2, nhits, algo; /*!*/
+    float firsthit_X, firsthit_Y, firsthit_Z, dxy, dxyError, pt, eta,phi, NChi2, nhits, algo, track_dR,track_dRmax ; /*!*/
     double bdtval = -100.;
     TMVA::Reader *reader = new TMVA::Reader( "!Color:!Silent" );
     
@@ -2756,10 +2817,11 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     reader->AddVariable( "mva_ntrk10", &ntrk10);
     reader->AddVariable( "mva_drSig", &drSig); /*!*/
     reader->AddVariable( "mva_track_isinjet", &isinjet); /*!*/
-    
+    reader->AddVariable("mva_track_dR",&track_dR);
+    reader->AddVariable("mva_track_dRmax",&track_dRmax);
     reader->BookMVA( "BDTG", weightFile_ );
     
-    float bdtcut=-0.0401; // optimal value w/o track association to axis: -0.0401
+    float bdtcut=0.4; // optimal value w/o track association to axis: -0.0401
 
     int counter_track = -1;
 //     std::cout<< "size of tracks "<< trackRefs.size() << "pls help m edear god of physics" << std::endl;
@@ -2809,14 +2871,19 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 //++ you could have a track that belongs to the two hemispheres ...
             {
                 dR = dR2;
+		track_dR=dR2;
+		track_dRmax=dR1;
                 Tracks_axis = 2; // belongs to second axis
             }
             else
             {
                 dR = dR1;
+		track_dR=dR1;
+		track_dRmax=dR2;
                 Tracks_axis = 1; // belongs to first axis
             }
-            
+            tree_Hemi_track_dR1_2.push_back(dR1);
+	    tree_Hemi_track_dR1_2.push_back(dR2);
             //Computation of the distances needed for the BDT
             int counter_othertrack = -1; ///*!*/
             for (size_t iTrack2=0; iTrack2<trackRefs.size(); ++iTrack2)    // Loop on all the other Tracks/*!*/
@@ -2852,34 +2919,36 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             
             bdtval = reader->EvaluateMVA( "BDTG" ); //default value = -10 (no -10 observed and -999 comes from EvaluateMVA)
             //cout << "BDT VAL " << bdtval <<endl;
-            
+            tree_Hemi_tracks_axis.push_back(Tracks_axis);
+            tree_Hemi_tracks_dR.push_back(dR);
+	    
             if ( Tracks_axis == 1 )
             {
                 if ( dR < dRcut_tracks )
                 {
                     displacedTracks_Hemi1.push_back(theTransientTrackBuilder->build(*itTrack));
-                    tree_Hemi_Strack_dR_dRcut=dR;
+                    tree_Hemi_Strack_dR_dRcut.push_back(dR);
                 }
 
                 if (iLLPrec1==1 && isFromLLP==1)
                 {
                     Match=1;//good matching on 2
-                    tree_SignalTracks_Matching=Match;
-                    tree_STracks_Axis_Match_dR=dR;
+                    tree_SignalTracks_Matching.push_back(Match);
+                    tree_STracks_Axis_Match_dR.push_back(dR);
                 }
                 if (iLLPrec1==2 && isFromLLP==2)
                 {
                     Match=2;//good matching on 1
-                    tree_SignalTracks_Matching=Match;
-                    tree_STracks_Axis_Match_dR=dR;
+                    tree_SignalTracks_Matching.push_back(Match);
+                    tree_STracks_Axis_Match_dR.push_back(dR);
                 }
                 if ((iLLPrec1==1 && isFromLLP==2 ) || ( iLLPrec1==2 && isFromLLP==1))
                 {
                     Match=0;//missmatch
-                    tree_SignalTracks_Matching=Match;
-                    tree_STracks_Axis_MisMatch_dR=dR;
+                    tree_SignalTracks_Matching.push_back(Match);
+                    tree_STracks_Axis_MisMatch_dR.push_back(dR);
                 }
-                tree_Hemi_Strack_dR=dR;
+                tree_Hemi_Strack_dR.push_back(dR);
             }
             
             
@@ -2888,28 +2957,28 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 if ( dR < dRcut_tracks )
                 {
                     displacedTracks_Hemi2.push_back(theTransientTrackBuilder->build(*itTrack));
-                    tree_Hemi_Strack_dR_dRcut=dR;
+                    tree_Hemi_Strack_dR_dRcut.push_back(dR);
                 }
 
                 if (iLLPrec1==1 && isFromLLP==2)
                 {
                     Match=2;//good matching on 2
-                    tree_SignalTracks_Matching=Match;
-                    tree_STracks_Axis_Match_dR=dR;
+                    tree_SignalTracks_Matching.push_back(Match);
+                    tree_STracks_Axis_Match_dR.push_back(dR);
                 }
                 if (iLLPrec1==2 && isFromLLP==1)
                 {
                     Match=1;//good matching on 1
-                    tree_SignalTracks_Matching=Match;
-                    tree_STracks_Axis_Match_dR=dR;
+                    tree_SignalTracks_Matching.push_back(Match);
+                    tree_STracks_Axis_Match_dR.push_back(dR);
                 }
                 if (( iLLPrec1==1 && isFromLLP==1) || ( iLLPrec1==2 && isFromLLP==2 ))
                 {
                     Match=0;//missmatch
-                    tree_SignalTracks_Matching=Match;
-                    tree_STracks_Axis_MisMatch_dR=dR;
+                    tree_SignalTracks_Matching.push_back(Match);
+                    tree_STracks_Axis_MisMatch_dR.push_back(dR);
                 }
-                tree_Hemi_Strack_dR=dR;
+                tree_Hemi_Strack_dR.push_back(dR);
             }
             
             // if (bdtval < 0.0674  ) { //optimal cut for 10 cm, trained on 19k events, <s>=22 and <b>=240 //J�r�my
@@ -2932,28 +3001,28 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                     if( dR < dRcut_tracks )
                     {
                         displacedTracks_Hemi1_mva.push_back(theTransientTrackBuilder->build(*itTrack));
-                        tree_MVA_Hemi_Strack_dR_dRcut=dR;
+                        tree_MVA_Hemi_Strack_dR_dRcut.push_back(dR);
                     }
 
                     if (iLLPrec1==1 && isFromLLP==2)
                     {
                         Match=2;//good matching on 2
-                        tree_MVA_SignalTracks_Matching=Match;
-                        tree_MVA_STracks_Axis_Match_dR=dR;
+                        tree_MVA_SignalTracks_Matching.push_back(Match);
+                        tree_MVA_STracks_Axis_Match_dR.push_back(dR);
                     }
                     if (iLLPrec1==2 && isFromLLP==1)
                     {
                         Match=1;//good matching on 1
-                        tree_MVA_SignalTracks_Matching=Match;
-                        tree_MVA_STracks_Axis_Match_dR=dR;
+                        tree_MVA_SignalTracks_Matching.push_back(Match);
+                        tree_MVA_STracks_Axis_Match_dR.push_back(dR);
                     }
                     if (( iLLPrec1==1 && isFromLLP==1) || ( iLLPrec1==2 && isFromLLP==2 ))
                     {
                         Match=0;//missmatch 1-2
-                        tree_MVA_SignalTracks_Matching=Match;
-                        tree_MVA_STracks_Axis_MisMatch_dR=dR;
+                        tree_MVA_SignalTracks_Matching.push_back(Match);
+                        tree_MVA_STracks_Axis_MisMatch_dR.push_back(dR);
                     }
-                    tree_MVA_Hemi_Strack_dR=dR;
+                    tree_MVA_Hemi_Strack_dR.push_back(dR);
                 }
                 
                 if ( Tracks_axis == 2 )
@@ -2961,28 +3030,28 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                     if ( dR < dRcut_tracks )
                     {
                         displacedTracks_Hemi2_mva.push_back(theTransientTrackBuilder->build(*itTrack));
-                        tree_MVA_Hemi_Strack_dR_dRcut=dR;
+                        tree_MVA_Hemi_Strack_dR_dRcut.push_back(dR);
                     }
 
                     if (iLLPrec1==1 && isFromLLP==2)
                     {
                         Match=2;//good matching on 2
-                        tree_MVA_SignalTracks_Matching=Match;
-                        tree_MVA_STracks_Axis_Match_dR=dR;
+                        tree_MVA_SignalTracks_Matching.push_back(Match);
+                        tree_MVA_STracks_Axis_Match_dR.push_back(dR);
                     }
                     if (iLLPrec1==2 && isFromLLP==1)
                     {
                         Match=1;//good matching on 1
-                        tree_MVA_SignalTracks_Matching=Match;
-                        tree_MVA_STracks_Axis_Match_dR=dR;
+                        tree_MVA_SignalTracks_Matching.push_back(Match);
+                        tree_MVA_STracks_Axis_Match_dR.push_back(dR);
                     }
                     if (( iLLPrec1==1 && isFromLLP==1) || ( iLLPrec1==2 && isFromLLP==2 ))
                     {
                         Match=0;//missmatch
-                        tree_MVA_SignalTracks_Matching=Match;
-                        tree_MVA_STracks_Axis_MisMatch_dR=dR;
+                        tree_MVA_SignalTracks_Matching.push_back(Match);
+                        tree_MVA_STracks_Axis_MisMatch_dR.push_back(dR);
                     }
-                    tree_MVA_Hemi_Strack_dR=dR;
+                    tree_MVA_Hemi_Strack_dR.push_back(dR);
                 }
             }
         }
@@ -3011,7 +3080,13 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //////////////////////////////////
     
     int   Vtx_ntk;
+    // int  FVtx_ntk;
+    // int     LostHit = 0, ValidHits = 0, FLostHit = 0, FValidHits = 0;
     float Vtx_x, Vtx_y, Vtx_z, Vtx_chi;
+    // float FVtx_x, FVtx_y, FVtx_z, FVtx_chi ;
+    // float Tracks_chi = 0, FTracks_chi = 0;
+  
+    
     
     //--------------------------- FIRST LLP -------------------------------------//
     
@@ -3252,6 +3327,18 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     Vtx_z = -100.;
     Vtx_chi = -1.;
     
+    // FVtx_ntk = displacedTracks_Hemi1_mva.size();
+    // FVtx_x = -100;
+    // FVtx_y = -100;
+    // FVtx_z = -100;
+    // FVtx_chi = -1;
+
+	/*
+    std::vector<reco::TransientTrack> OriginalTracks1;
+    std::vector<reco::TransientTrack> OriginalTracks2;
+    std::vector<reco::TransientTrack> FOriginalTracks1;
+    std::vector<reco::TransientTrack> FOriginalTracks2;*/
+
     if ( Vtx_ntk > 1 )
     {
         TransientVertex displacedVertex_Hemi1_mva = theFitter_Vertex_Hemi1_mva.vertex(displacedTracks_Hemi1_mva); // fitted vertex
@@ -3262,6 +3349,44 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             Vtx_y = displacedVertex_Hemi1_mva.position().y();
             Vtx_z = displacedVertex_Hemi1_mva.position().z();
             Vtx_chi = displacedVertex_Hemi1_mva.normalisedChiSquared();
+            /*OriginalTracks1= displacedVertex_Hemi1_mva.originalTracks();
+            if (OriginalTracks1.size()>0)
+                {
+                    for (unsigned int i=0; i<OriginalTracks1.size(); i++)
+                        {
+                            Tracks_chi = OriginalTracks1[i].normalizedChi2();
+                            LostHit = OriginalTracks1[i].numberOfLostHits();
+                            ValidHits = OriginalTracks1[i].numberOfValidHits();
+                            tree_Vtx_Hemi1_mva_Tracks_NChi2 =  Tracks_chi;
+                            tree_Vtx_Hemi1_mva_Tracks_LostHit = LostHit;
+                            tree_Vtx_Hemi1_mva_Tracks_ValidHits = ValidHits; 
+                        }
+
+                }*/
+        }
+
+        if(!displacedVertex_Hemi1_mva.isValid())
+        {
+            // FVtx_x = displacedVertex_Hemi1_mva.position().x();
+            // FVtx_y = displacedVertex_Hemi1_mva.position().y();
+            // FVtx_z = displacedVertex_Hemi1_mva.position().z();
+            // FVtx_chi = displacedVertex_Hemi1_mva.normalisedChiSquared();
+            /*FOriginalTracks1 = displacedVertex_Hemi1_mva.originalTracks();
+            if (FOriginalTracks1.size()>0)
+                {
+                    for (unsigned int i=0; i<FOriginalTracks1.size(); i++)
+                        {
+                            FTracks_chi = FOriginalTracks1[i].normalizedChi2();
+                            FLostHit = FOriginalTracks1[i].numberOfLostHits();
+                            FValidHits = FOriginalTracks1[i].numberOfValidHits();
+                            tree_Vtx_Hemi1_mva_Tracks_NChi2_F =  FTracks_chi;
+                            tree_Vtx_Hemi1_mva_Tracks_LostHit_F = FLostHit;
+                            tree_Vtx_Hemi1_mva_Tracks_ValidHits_F = FValidHits;
+                        }
+
+                } */           
+
+
         }
     }
     tree_Vtx_Hemi1_mva_nTrks = Vtx_ntk;
@@ -3269,7 +3394,14 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     tree_Vtx_Hemi1_mva_y = Vtx_y;
     tree_Vtx_Hemi1_mva_z = Vtx_z;
     tree_Vtx_Hemi1_mva_NChi2 = Vtx_chi;
-    
+
+
+    // tree_Vtx_Hemi1_mva_nTrks_F = FVtx_ntk;
+    // tree_Vtx_Hemi1_mva_x_F = FVtx_x;
+    // tree_Vtx_Hemi1_mva_y_F = FVtx_y;
+    // tree_Vtx_Hemi1_mva_z_F = FVtx_z;
+    // tree_Vtx_Hemi1_mva_NChi2_F = FVtx_chi; 
+  
 //$$
     tree_Vtx_HemiLLP_mva_nTrks.push_back(Vtx_ntk);
     tree_Vtx_HemiLLP_mva_NChi2.push_back(Vtx_chi);
@@ -3295,6 +3427,12 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     Vtx_z = -100.;
     Vtx_chi = -1.;
     
+    // FVtx_ntk = displacedTracks_Hemi2_mva.size();
+    // FVtx_x = -100;
+    // FVtx_y = -100;
+    // FVtx_z = -100;
+    // FVtx_chi = -1;
+
     if ( Vtx_ntk > 1 )
     {
         TransientVertex displacedVertex_Hemi2_mva = theFitter_Vertex_Hemi2_mva.vertex(displacedTracks_Hemi2_mva); // fitted vertex
@@ -3305,6 +3443,44 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             Vtx_y = displacedVertex_Hemi2_mva.position().y();
             Vtx_z = displacedVertex_Hemi2_mva.position().z();
             Vtx_chi = displacedVertex_Hemi2_mva.normalisedChiSquared();
+            /*OriginalTracks2 = displacedVertex_Hemi2_mva.originalTracks();
+            if (FOriginalTracks2.size()>0)
+                {
+                    for (unsigned int i=0; i<FOriginalTracks2.size(); i++)
+                        {
+                            Tracks_chi = OriginalTracks2[i].normalizedChi2();
+                            LostHit = OriginalTracks2[i].numberOfLostHits();
+                            ValidHits = OriginalTracks2[i].numberOfValidHits();
+                            tree_Vtx_Hemi2_mva_Tracks_NChi2 =  Tracks_chi;
+                            tree_Vtx_Hemi2_mva_Tracks_LostHit = LostHit;
+                            tree_Vtx_Hemi2_mva_Tracks_ValidHits = ValidHits; 
+                        }
+
+                }*/            
+
+        }
+        if(!displacedVertex_Hemi2_mva.isValid())
+        {
+            // FVtx_x = displacedVertex_Hemi2_mva.position().x();
+            // FVtx_y = displacedVertex_Hemi2_mva.position().y();
+            // FVtx_z = displacedVertex_Hemi2_mva.position().z();
+            // FVtx_chi = displacedVertex_Hemi2_mva.normalisedChiSquared();
+            /*FOriginalTracks2 = displacedVertex_Hemi2_mva.originalTracks();
+            if (FOriginalTracks2.size()>0)
+                {
+                    for (unsigned int i=0; i<FOriginalTracks2.size(); i++)
+                        {
+
+                            FTracks_chi = FOriginalTracks2[i].normalizedChi2();
+                            FLostHit = FOriginalTracks2[i].numberOfLostHits();
+                            FValidHits = FOriginalTracks2[i].numberOfValidHits();
+                            tree_Vtx_Hemi2_mva_Tracks_NChi2_F =  FTracks_chi;
+                            tree_Vtx_Hemi2_mva_Tracks_LostHit_F = FLostHit;
+                            tree_Vtx_Hemi2_mva_Tracks_ValidHits_F = FValidHits; 
+                        }
+
+                }*/
+
         }
     }
     tree_Vtx_Hemi2_mva_nTrks = Vtx_ntk;
@@ -3312,6 +3488,13 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     tree_Vtx_Hemi2_mva_y = Vtx_y;
     tree_Vtx_Hemi2_mva_z = Vtx_z;
     tree_Vtx_Hemi2_mva_NChi2 = Vtx_chi;
+ 
+
+    // tree_Vtx_Hemi2_mva_nTrks_F = FVtx_ntk;
+    // tree_Vtx_Hemi2_mva_x_F = FVtx_x;
+    // tree_Vtx_Hemi2_mva_y_F = FVtx_y;
+    // tree_Vtx_Hemi2_mva_z_F = FVtx_z;
+    // tree_Vtx_Hemi2_mva_NChi2_F = FVtx_chi;
     
 //$$
     tree_Vtx_HemiLLP_mva_nTrks.push_back(Vtx_ntk);
@@ -4112,15 +4295,21 @@ void TrackingPerf::clearVariables() {
 //$$
     
     //added by Paul
+    tree_Hemi_tracks_dR.clear();
+    tree_Hemi_tracks_axis.clear();
+
+     tree_Hemi_Strack_dR.clear();
+     tree_MVA_Hemi_Strack_dR.clear();
     
-    // tree_simtrack_isRecoMatched_pt.clear();
-    
-    //   tree_DVertex_top1_nTrks.clear();
-    //   tree_DVertex_top2_nTrks.clear();
-    //   tree_DVertex_nTrks.clear();
-    
-//     tree_seedVtx_dz_top1.clear();
-//     tree_seedVtx_dz_top2.clear();
+     tree_MVA_SignalTracks_Matching.clear();
+     tree_SignalTracks_Matching.clear();
+     tree_Hemi_Strack_dR_dRcut.clear();
+    tree_MVA_Hemi_Strack_dR_dRcut.clear();
+     tree_STracks_Axis_Match_dR.clear();
+    tree_STracks_Axis_MisMatch_dR.clear();
+     tree_MVA_STracks_Axis_Match_dR.clear();
+    tree_MVA_STracks_Axis_MisMatch_dR.clear();
+  	tree_Hemi_track_dR1_2.clear();
 }
 
 
