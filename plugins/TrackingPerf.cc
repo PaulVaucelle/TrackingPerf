@@ -748,53 +748,53 @@ private:
     
     //---About the RecoVtx---//
     
-    int   tree_Vtx_Hemi1_nTrks = 0;
+    int  tree_Vtx_Hemi1_nTrks = 0;
     float tree_Vtx_Hemi1_x;
     float tree_Vtx_Hemi1_y;
     float tree_Vtx_Hemi1_z;
     float tree_Vtx_Hemi1_NChi2;
     
-    int   tree_Vtx_Hemi2_nTrks = 0;
+    int  tree_Vtx_Hemi2_nTrks = 0;
     float tree_Vtx_Hemi2_x;
     float tree_Vtx_Hemi2_y;
     float tree_Vtx_Hemi2_z;
     float tree_Vtx_Hemi2_NChi2;
     
-    int   tree_Vtx_Hemi1_mva_nTrks = 0;
+    std::vector<int>   tree_Vtx_Hemi1_mva_nTrks ;
     float tree_Vtx_Hemi1_mva_x;
     float tree_Vtx_Hemi1_mva_y;
     float tree_Vtx_Hemi1_mva_z;
     float tree_Vtx_Hemi1_mva_NChi2;
-    // float tree_Vtx_Hemi1_mva_Tracks_NChi2;
-    // int   tree_Vtx_Hemi1_mva_Tracks_LostHit;
-    // int   tree_Vtx_Hemi1_mva_Tracks_ValidHits;
+    std::vector<float> tree_Vtx_Hemi1_mva_Tracks_NChi2;
+    std::vector<int>   tree_Vtx_Hemi1_mva_Tracks_LostHit;
+    std::vector<int>   tree_Vtx_Hemi1_mva_Tracks_ValidHits;
 
-    // int   tree_Vtx_Hemi1_mva_nTrks_F=0;
-    // float tree_Vtx_Hemi1_mva_x_F;
-    // float tree_Vtx_Hemi1_mva_y_F;
-    // float tree_Vtx_Hemi1_mva_z_F;
-    // float tree_Vtx_Hemi1_mva_NChi2_F;
-    // float tree_Vtx_Hemi1_mva_Tracks_NChi2_F;
-    // int   tree_Vtx_Hemi1_mva_Tracks_LostHit_F;
-    // int   tree_Vtx_Hemi1_mva_Tracks_ValidHits_F;
+    std::vector<int>  tree_Vtx_Hemi1_mva_nTrks_F;
+    float tree_Vtx_Hemi1_mva_x_F;
+    float tree_Vtx_Hemi1_mva_y_F;
+    float tree_Vtx_Hemi1_mva_z_F;
+    float tree_Vtx_Hemi1_mva_NChi2_F;
+    std::vector<float> tree_Vtx_Hemi1_mva_Tracks_NChi2_F;
+    std::vector<int>   tree_Vtx_Hemi1_mva_Tracks_LostHit_F;
+    std::vector<int>   tree_Vtx_Hemi1_mva_Tracks_ValidHits_F;
     
-    int   tree_Vtx_Hemi2_mva_nTrks = 0;
+    std::vector<int>    tree_Vtx_Hemi2_mva_nTrks ;
     float tree_Vtx_Hemi2_mva_x;
     float tree_Vtx_Hemi2_mva_y;
     float tree_Vtx_Hemi2_mva_z;
     float tree_Vtx_Hemi2_mva_NChi2;
-    // float tree_Vtx_Hemi2_mva_Tracks_NChi2;
-    // int   tree_Vtx_Hemi2_mva_Tracks_LostHit;
-    // int   tree_Vtx_Hemi2_mva_Tracks_ValidHits;
+    std::vector<float> tree_Vtx_Hemi2_mva_Tracks_NChi2;
+    std::vector<int>   tree_Vtx_Hemi2_mva_Tracks_LostHit;
+    std::vector<int>   tree_Vtx_Hemi2_mva_Tracks_ValidHits;
     
-    // int   tree_Vtx_Hemi2_mva_nTrks_F = 0;
-    // float tree_Vtx_Hemi2_mva_x_F;
-    // float tree_Vtx_Hemi2_mva_y_F;
-    // float tree_Vtx_Hemi2_mva_z_F;
-    // float tree_Vtx_Hemi2_mva_NChi2_F;
-    // float tree_Vtx_Hemi2_mva_Tracks_NChi2_F;
-    // int   tree_Vtx_Hemi2_mva_Tracks_LostHit_F;
-    // int   tree_Vtx_Hemi2_mva_Tracks_ValidHits_F;
+    std::vector<int>    tree_Vtx_Hemi2_mva_nTrks_F ;
+    float tree_Vtx_Hemi2_mva_x_F;
+    float tree_Vtx_Hemi2_mva_y_F;
+    float tree_Vtx_Hemi2_mva_z_F;
+    float tree_Vtx_Hemi2_mva_NChi2_F;
+    std::vector<float> tree_Vtx_Hemi2_mva_Tracks_NChi2_F;
+    std::vector<int>   tree_Vtx_Hemi2_mva_Tracks_LostHit_F;
+    std::vector<int>   tree_Vtx_Hemi2_mva_Tracks_ValidHits_F;
 
 //$$
     std::vector< int >   tree_Vtx_HemiLLP_nTrks;
@@ -825,7 +825,10 @@ private:
     std::vector< float > tree_MVA_STracks_Axis_MisMatch_dR;
     std::vector< float > tree_Hemi_track_dR1_2;
     
-    // float
+    std::vector< int > tree_Vtx_HemiLLP_Valid;
+    std::vector< float > tree_genNeuNeu_dR;
+
+
     //     //First top analysis
     //
     //   std::vector<float>            tree_seedVtx_X_top1;
@@ -1247,42 +1250,42 @@ kvfPSet( iConfig.getParameter<edm::ParameterSet>("KVFParameters"))
     smalltree->Branch("tree_Vtx_Hemi2_NChi2",&tree_Vtx_Hemi2_NChi2);
     
     smalltree->Branch("tree_Vtx_Hemi1_mva_nTrks",&tree_Vtx_Hemi1_mva_nTrks);
-    smalltree->Branch("tree_Vtx_Hemi1_mva_x",&tree_Vtx_Hemi1_mva_x);
-    smalltree->Branch("tree_Vtx_Hemi1_mva_y",&tree_Vtx_Hemi1_mva_y);
-    smalltree->Branch("tree_Vtx_Hemi1_mva_z",&tree_Vtx_Hemi1_mva_z);
-    smalltree->Branch("tree_Vtx_Hemi1_mva_NChi2",&tree_Vtx_Hemi1_mva_NChi2);
-    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_NChi2",&tree_Vtx_Hemi1_mva_Tracks_NChi2);
-    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_LostHit",&tree_Vtx_Hemi1_mva_Tracks_LostHit);
-    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_ValidHits",&tree_Vtx_Hemi1_mva_Tracks_ValidHits); 
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_x",&tree_Vtx_Hemi1_mva_x);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_y",&tree_Vtx_Hemi1_mva_y);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_z",&tree_Vtx_Hemi1_mva_z);
+    // smalltree->Branch("tree_Vtx_Hemi1_mva_NChi2",&tree_Vtx_Hemi1_mva_NChi2);
+    smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_NChi2",&tree_Vtx_Hemi1_mva_Tracks_NChi2);
+    smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_LostHit",&tree_Vtx_Hemi1_mva_Tracks_LostHit);
+    smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_ValidHits",&tree_Vtx_Hemi1_mva_Tracks_ValidHits); 
 
 
-    // smalltree->Branch("tree_Vtx_Hemi1_mva_nTrks_F",&tree_Vtx_Hemi2_mva_nTrks_F);
+    smalltree->Branch("tree_Vtx_Hemi1_mva_nTrks_F",&tree_Vtx_Hemi1_mva_nTrks_F);
     // smalltree->Branch("tree_Vtx_Hemi1_mva_x_F",&tree_Vtx_Hemi2_mva_x_F);
     // smalltree->Branch("tree_Vtx_Hemi1_mva_y_F",&tree_Vtx_Hemi2_mva_y_F);
     // smalltree->Branch("tree_Vtx_Hemi1_mva_z_F",&tree_Vtx_Hemi2_mva_z_F);
     // smalltree->Branch("tree_Vtx_Hemi1_mva_NChi2_F",&tree_Vtx_Hemi2_mva_NChi2_F);
-    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_NChi2_F",&tree_Vtx_Hemi1_mva_Tracks_NChi2_F);
-    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_LostHit_F",&tree_Vtx_Hemi1_mva_Tracks_LostHit_F);
-    // smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_ValidHits_F",&tree_Vtx_Hemi1_mva_Tracks_ValidHits_F);  
+    smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_NChi2_F",&tree_Vtx_Hemi1_mva_Tracks_NChi2_F);
+    smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_LostHit_F",&tree_Vtx_Hemi1_mva_Tracks_LostHit_F);
+    smalltree->Branch("tree_Vtx_Hemi1_mva_Tracks_ValidHits_F",&tree_Vtx_Hemi1_mva_Tracks_ValidHits_F);  
 
 
     smalltree->Branch("tree_Vtx_Hemi2_mva_nTrks",&tree_Vtx_Hemi2_mva_nTrks);
-    smalltree->Branch("tree_Vtx_Hemi2_mva_x",&tree_Vtx_Hemi2_mva_x);
-    smalltree->Branch("tree_Vtx_Hemi2_mva_y",&tree_Vtx_Hemi2_mva_y);
-    smalltree->Branch("tree_Vtx_Hemi2_mva_z",&tree_Vtx_Hemi2_mva_z);
-    smalltree->Branch("tree_Vtx_Hemi2_mva_NChi2",&tree_Vtx_Hemi2_mva_NChi2);
-    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_NChi2",&tree_Vtx_Hemi2_mva_Tracks_NChi2);
-    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_LostHit",&tree_Vtx_Hemi2_mva_Tracks_LostHit);
-    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_ValidHits",&tree_Vtx_Hemi2_mva_Tracks_ValidHits);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_x",&tree_Vtx_Hemi2_mva_x);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_y",&tree_Vtx_Hemi2_mva_y);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_z",&tree_Vtx_Hemi2_mva_z);
+    // smalltree->Branch("tree_Vtx_Hemi2_mva_NChi2",&tree_Vtx_Hemi2_mva_NChi2);
+    smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_NChi2",&tree_Vtx_Hemi2_mva_Tracks_NChi2);
+    smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_LostHit",&tree_Vtx_Hemi2_mva_Tracks_LostHit);
+    smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_ValidHits",&tree_Vtx_Hemi2_mva_Tracks_ValidHits);
 
-    // smalltree->Branch("tree_Vtx_Hemi2_mva_nTrks_F",&tree_Vtx_Hemi2_mva_nTrks_F);
+    smalltree->Branch("tree_Vtx_Hemi2_mva_nTrks_F",&tree_Vtx_Hemi2_mva_nTrks_F);
     // smalltree->Branch("tree_Vtx_Hemi2_mva_x_F",&tree_Vtx_Hemi2_mva_x_F);
     // smalltree->Branch("tree_Vtx_Hemi2_mva_y_F",&tree_Vtx_Hemi2_mva_y_F);
     // smalltree->Branch("tree_Vtx_Hemi2_mva_z_F",&tree_Vtx_Hemi2_mva_z_F);
     // smalltree->Branch("tree_Vtx_Hemi2_mva_NChi2_F",&tree_Vtx_Hemi2_mva_NChi2_F);
-    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_NChi2_F",&tree_Vtx_Hemi2_mva_Tracks_NChi2_F);
-    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_LostHit_F",&tree_Vtx_Hemi2_mva_Tracks_LostHit_F);
-    // smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_ValidHits_F",&tree_Vtx_Hemi2_mva_Tracks_ValidHits_F); 
+    smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_NChi2_F",&tree_Vtx_Hemi2_mva_Tracks_NChi2_F);
+    smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_LostHit_F",&tree_Vtx_Hemi2_mva_Tracks_LostHit_F);
+    smalltree->Branch("tree_Vtx_Hemi2_mva_Tracks_ValidHits_F",&tree_Vtx_Hemi2_mva_Tracks_ValidHits_F); 
 
 
 //$$
@@ -1313,6 +1316,12 @@ kvfPSet( iConfig.getParameter<edm::ParameterSet>("KVFParameters"))
     smalltree->Branch("tree_Hemi_tracks_dR",&tree_Hemi_tracks_dR);
     smalltree->Branch("tree_Hemi_tracks_axis",&tree_Hemi_tracks_axis);
     smalltree->Branch("tree_Hemi_track_dR1_2",&tree_Hemi_track_dR1_2);
+
+    smalltree->Branch("tree_Vtx_HemiLLP_Valid",&tree_Vtx_HemiLLP_Valid);
+
+    smalltree->Branch("tree_genNeuNeu_dR",&tree_genNeuNeu_dR);
+
+
     //   //First top analysis
     //
     //   smalltree->Branch("tree_seedVtx_X_top1",&tree_seedVtx_X_top1);
@@ -1734,7 +1743,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     TLorentzVector vneu[2];
     TLorentzVector v1, v2, v;
     
-    //  float dRneuneu = 0.;
+     float dRneuneu = 0.;
     
     for (int k=0; k<2; k++) {
         neu[k] = -1;
@@ -1798,13 +1807,14 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 }
             }
             
-            // if ( nneu == 2 )
-            //   {
-            //     dRneuneu = Deltar( Gen_neu1_eta, Gen_neu1_phi, Gen_neu2_eta, Gen_neu2_phi );
-            //     // deltaPhi = Deltaphi( Gen_neu1_phi, Gen_neu2_phi );
-            //   }
+            if ( nneu == 2 )
+              {
+                dRneuneu = Deltar( Gen_neu1_eta, Gen_neu1_phi, Gen_neu2_eta, Gen_neu2_phi );
+                // deltaPhi = Deltaphi( Gen_neu1_phi, Gen_neu2_phi );
+              }
             
-            
+            tree_genNeuNeu_dR.push_back(dRneuneu);
+
             // quarks from neutralino
             if ( abs(pdgid) >= 1 && abs(pdgid) <= 6 ) {
                 const Candidate * mom = genParticle.mother();
@@ -2699,7 +2709,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     float dR, dR1 = 10., dR2 = 10.;
     
     float dRcut_hemis = (TMath::Pi())/2; //subjectif choice: pi/2 //iffrentiarte the cts pi/2 for this one the other could be changed
-    float dRcut_tracks =  0.7 ; //1 or (TMath::Pi())/2 or 2.2
+    float dRcut_tracks =  1 ; //1 or (TMath::Pi())/2 or 2.2
     for (int i=0; i<njetall; i++) // Loop on jet
     {
         if ( !isjet[i] ) continue;
@@ -2797,7 +2807,9 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     // float dptSig; /*!*/
     int jet; /*!*/
     float ntrk10, ntrk20, ntrk30; /*!*/
-    float firsthit_X, firsthit_Y, firsthit_Z, dxy, dxyError, pt, eta,phi, NChi2, nhits, algo, track_dR,track_dRmax ; /*!*/
+    float firsthit_X, firsthit_Y, firsthit_Z, dxy, dxyError, pt, eta,phi, NChi2, nhits, algo;
+    // float  track_dR;
+    // float track_dRmax ; /*!*/
     double bdtval = -100.;
     TMVA::Reader *reader = new TMVA::Reader( "!Color:!Silent" );
     
@@ -2817,11 +2829,11 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     reader->AddVariable( "mva_ntrk10", &ntrk10);
     reader->AddVariable( "mva_drSig", &drSig); /*!*/
     reader->AddVariable( "mva_track_isinjet", &isinjet); /*!*/
-    reader->AddVariable("mva_track_dR",&track_dR);
-    reader->AddVariable("mva_track_dRmax",&track_dRmax);
+    //reader->AddVariable("mva_track_dR",&track_dR);
+    // reader->AddVariable("mva_track_dRmax",&track_dRmax);
     reader->BookMVA( "BDTG", weightFile_ );
     
-    float bdtcut=0.4; // optimal value w/o track association to axis: -0.0401
+    float bdtcut=-0.0401; // optimal value w/o track association to axis: -0.0401
 
     int counter_track = -1;
 //     std::cout<< "size of tracks "<< trackRefs.size() << "pls help m edear god of physics" << std::endl;
@@ -2871,19 +2883,21 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 //++ you could have a track that belongs to the two hemispheres ...
             {
                 dR = dR2;
-		track_dR=dR2;
-		track_dRmax=dR1;
+		        //track_dR=dR2;
+		        // track_dRmax=dR1;
                 Tracks_axis = 2; // belongs to second axis
             }
             else
             {
                 dR = dR1;
-		track_dR=dR1;
-		track_dRmax=dR2;
+		       // track_dR=dR1;
+		        // track_dRmax=dR2;
                 Tracks_axis = 1; // belongs to first axis
             }
             tree_Hemi_track_dR1_2.push_back(dR1);
-	    tree_Hemi_track_dR1_2.push_back(dR2);
+	        tree_Hemi_track_dR1_2.push_back(dR2);
+
+
             //Computation of the distances needed for the BDT
             int counter_othertrack = -1; ///*!*/
             for (size_t iTrack2=0; iTrack2<trackRefs.size(); ++iTrack2)    // Loop on all the other Tracks/*!*/
@@ -3079,12 +3093,12 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //--------------------------------
     //////////////////////////////////
     
-    int   Vtx_ntk;
-    // int  FVtx_ntk;
-    // int     LostHit = 0, ValidHits = 0, FLostHit = 0, FValidHits = 0;
-    float Vtx_x, Vtx_y, Vtx_z, Vtx_chi;
-    // float FVtx_x, FVtx_y, FVtx_z, FVtx_chi ;
-    // float Tracks_chi = 0, FTracks_chi = 0;
+    int   Vtx_ntk = 0;
+    int   FVtx_ntk = 0;
+    int   LostHit = 0, ValidHits = 0, FLostHit = 0, FValidHits = 0;
+    float Vtx_x = 0., Vtx_y = 0., Vtx_z= 0., Vtx_chi = 0.;
+    // float FVtx_x = 0., FVtx_y = 0., FVtx_z= 0., FVtx_chi = 0.;
+    float Tracks_chi = 0., FTracks_chi = 0.;
   
     
     
@@ -3093,9 +3107,9 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     KalmanVertexFitter theFitter_vertex_llp1(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
     
     Vtx_ntk = displacedTracks_llp1.size();
-    Vtx_x = -100.;
-    Vtx_y = -100.;
-    Vtx_z = -100.;
+    Vtx_x = -1000.;
+    Vtx_y = -1000.;
+    Vtx_z = -1000.;
     Vtx_chi = -1.;
     
     if ( Vtx_ntk > 1 )
@@ -3121,9 +3135,9 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     KalmanVertexFitter theFitter_vertex_llp2(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
     
     Vtx_ntk = displacedTracks_llp2.size();
-    Vtx_x = -100.;
-    Vtx_y = -100.;
-    Vtx_z = -100.;
+    Vtx_x = -1000.;
+    Vtx_y = -1000.;
+    Vtx_z = -1000.;
     Vtx_chi = -1.;
     
     if ( Vtx_ntk > 1 )
@@ -3149,9 +3163,9 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     KalmanVertexFitter theFitter_Vertex_Hemi1(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
     
     Vtx_ntk = displacedTracks_Hemi1.size();
-    Vtx_x = -100.;
-    Vtx_y = -100.;
-    Vtx_z = -100.;
+    Vtx_x = -1000.;
+    Vtx_y = -1000.;
+    Vtx_z = -1000.;
     Vtx_chi = -1.;
     
     if ( Vtx_ntk > 1 )
@@ -3192,9 +3206,9 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     KalmanVertexFitter theFitter_Vertex_Hemi2(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
     
     Vtx_ntk = displacedTracks_Hemi2.size();
-    Vtx_x = -100.;
-    Vtx_y = -100.;
-    Vtx_z = -100.;
+    Vtx_x = -1000.;
+    Vtx_y = -1000.;
+    Vtx_z = -1000.;
     Vtx_chi = -1.;
     
     if ( Vtx_ntk > 1 )
@@ -3235,9 +3249,9 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     KalmanVertexFitter theFitter_vertex_llp1_mva(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
     
     Vtx_ntk = displacedTracks_llp1_mva.size();
-    Vtx_x = -100.;
-    Vtx_y = -100.;
-    Vtx_z = -100.;
+    Vtx_x = -1000.;
+    Vtx_y = -1000.;
+    Vtx_z = -1000.;
     Vtx_chi = -1.;
     
     if ( Vtx_ntk > 1 )
@@ -3294,9 +3308,9 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     KalmanVertexFitter theFitter_vertex_llp2_mva(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
     
     Vtx_ntk = displacedTracks_llp2_mva.size();
-    Vtx_x = -100.;
-    Vtx_y = -100.;
-    Vtx_z = -100.;
+    Vtx_x = -1000.;
+    Vtx_y = -1000.;
+    Vtx_z = -1000.;
     Vtx_chi = -1.;
     
     if ( Vtx_ntk > 1 )
@@ -3321,86 +3335,75 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     
     KalmanVertexFitter theFitter_Vertex_Hemi1_mva(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
     
-    Vtx_ntk = displacedTracks_Hemi1_mva.size();
-    Vtx_x = -100.;
-    Vtx_y = -100.;
-    Vtx_z = -100.;
+   Vtx_ntk = displacedTracks_Hemi1_mva.size();
+    Vtx_x = -1000.;
+    Vtx_y = -1000.;
+    Vtx_z = -1000.;
     Vtx_chi = -1.;
-    
-    // FVtx_ntk = displacedTracks_Hemi1_mva.size();
-    // FVtx_x = -100;
-    // FVtx_y = -100;
-    // FVtx_z = -100;
-    // FVtx_chi = -1;
-
-	/*
+	
     std::vector<reco::TransientTrack> OriginalTracks1;
     std::vector<reco::TransientTrack> OriginalTracks2;
-    std::vector<reco::TransientTrack> FOriginalTracks1;
-    std::vector<reco::TransientTrack> FOriginalTracks2;*/
 
+    int ValidVtx = -1; 
     if ( Vtx_ntk > 1 )
     {
         TransientVertex displacedVertex_Hemi1_mva = theFitter_Vertex_Hemi1_mva.vertex(displacedTracks_Hemi1_mva); // fitted vertex
-        
         if ( displacedVertex_Hemi1_mva.isValid() ) // NotValid if the max number of steps has been exceded or the fitted position is out of tracker bounds.
-        {
+        {   ValidVtx = 1;
+            tree_Vtx_HemiLLP_Valid.push_back(ValidVtx);
             Vtx_x = displacedVertex_Hemi1_mva.position().x();
             Vtx_y = displacedVertex_Hemi1_mva.position().y();
             Vtx_z = displacedVertex_Hemi1_mva.position().z();
             Vtx_chi = displacedVertex_Hemi1_mva.normalisedChiSquared();
-            /*OriginalTracks1= displacedVertex_Hemi1_mva.originalTracks();
+            Vtx_ntk = displacedTracks_Hemi1_mva.size();
+            OriginalTracks1= displacedVertex_Hemi1_mva.originalTracks();
             if (OriginalTracks1.size()>0)
                 {
+                    
                     for (unsigned int i=0; i<OriginalTracks1.size(); i++)
                         {
                             Tracks_chi = OriginalTracks1[i].normalizedChi2();
                             LostHit = OriginalTracks1[i].numberOfLostHits();
                             ValidHits = OriginalTracks1[i].numberOfValidHits();
-                            tree_Vtx_Hemi1_mva_Tracks_NChi2 =  Tracks_chi;
-                            tree_Vtx_Hemi1_mva_Tracks_LostHit = LostHit;
-                            tree_Vtx_Hemi1_mva_Tracks_ValidHits = ValidHits; 
+                            tree_Vtx_Hemi1_mva_Tracks_NChi2.push_back( Tracks_chi);
+                            tree_Vtx_Hemi1_mva_Tracks_LostHit.push_back(  LostHit);
+                            tree_Vtx_Hemi1_mva_Tracks_ValidHits.push_back(  ValidHits); 
                         }
 
-                }*/
+                }
+                tree_Vtx_Hemi1_mva_nTrks.push_back( Vtx_ntk);
         }
-
         if(!displacedVertex_Hemi1_mva.isValid())
         {
-            // FVtx_x = displacedVertex_Hemi1_mva.position().x();
-            // FVtx_y = displacedVertex_Hemi1_mva.position().y();
-            // FVtx_z = displacedVertex_Hemi1_mva.position().z();
-            // FVtx_chi = displacedVertex_Hemi1_mva.normalisedChiSquared();
-            /*FOriginalTracks1 = displacedVertex_Hemi1_mva.originalTracks();
-            if (FOriginalTracks1.size()>0)
+            ValidVtx = 0;
+            tree_Vtx_HemiLLP_Valid.push_back(ValidVtx);        
+            FVtx_ntk = displacedTracks_Hemi1_mva.size();
+            
+            if (displacedTracks_Hemi1_mva.size()>0)
                 {
-                    for (unsigned int i=0; i<FOriginalTracks1.size(); i++)
+                    
+                    for (unsigned int i=0; i<displacedTracks_Hemi1_mva.size(); i++)
                         {
-                            FTracks_chi = FOriginalTracks1[i].normalizedChi2();
-                            FLostHit = FOriginalTracks1[i].numberOfLostHits();
-                            FValidHits = FOriginalTracks1[i].numberOfValidHits();
-                            tree_Vtx_Hemi1_mva_Tracks_NChi2_F =  FTracks_chi;
-                            tree_Vtx_Hemi1_mva_Tracks_LostHit_F = FLostHit;
-                            tree_Vtx_Hemi1_mva_Tracks_ValidHits_F = FValidHits;
+                            
+                            
+                            FTracks_chi = displacedTracks_Hemi1_mva[i].normalizedChi2();
+                            FLostHit = displacedTracks_Hemi1_mva[i].numberOfLostHits();
+                            FValidHits = displacedTracks_Hemi1_mva[i].numberOfValidHits();
+                            tree_Vtx_Hemi1_mva_Tracks_NChi2_F.push_back( FTracks_chi);
+                            tree_Vtx_Hemi1_mva_Tracks_LostHit_F.push_back( FLostHit);
+                            tree_Vtx_Hemi1_mva_Tracks_ValidHits_F.push_back(  FValidHits); 
                         }
-
-                } */           
-
-
+                }
+                tree_Vtx_Hemi1_mva_nTrks_F.push_back(FVtx_ntk);
         }
     }
-    tree_Vtx_Hemi1_mva_nTrks = Vtx_ntk;
+    
+   
     tree_Vtx_Hemi1_mva_x = Vtx_x;
     tree_Vtx_Hemi1_mva_y = Vtx_y;
     tree_Vtx_Hemi1_mva_z = Vtx_z;
     tree_Vtx_Hemi1_mva_NChi2 = Vtx_chi;
 
-
-    // tree_Vtx_Hemi1_mva_nTrks_F = FVtx_ntk;
-    // tree_Vtx_Hemi1_mva_x_F = FVtx_x;
-    // tree_Vtx_Hemi1_mva_y_F = FVtx_y;
-    // tree_Vtx_Hemi1_mva_z_F = FVtx_z;
-    // tree_Vtx_Hemi1_mva_NChi2_F = FVtx_chi; 
   
 //$$
     tree_Vtx_HemiLLP_mva_nTrks.push_back(Vtx_ntk);
@@ -3422,16 +3425,11 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     KalmanVertexFitter theFitter_Vertex_Hemi2_mva(kvfPSet); //One or less vertex: either Valid or NotValid /*!*/
     
     Vtx_ntk = displacedTracks_Hemi2_mva.size();
-    Vtx_x = -100.;
-    Vtx_y = -100.;
-    Vtx_z = -100.;
+    Vtx_x = -1000.;
+    Vtx_y = -1000.;
+    Vtx_z = -1000.;
     Vtx_chi = -1.;
     
-    // FVtx_ntk = displacedTracks_Hemi2_mva.size();
-    // FVtx_x = -100;
-    // FVtx_y = -100;
-    // FVtx_z = -100;
-    // FVtx_chi = -1;
 
     if ( Vtx_ntk > 1 )
     {
@@ -3439,62 +3437,58 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         if ( displacedVertex_Hemi2_mva.isValid() ) // NotValid if the max number of steps has been exceded or the fitted position is out of tracker bounds.
         {
+            ValidVtx = 2;
+            tree_Vtx_HemiLLP_Valid.push_back(ValidVtx);
             Vtx_x = displacedVertex_Hemi2_mva.position().x();
             Vtx_y = displacedVertex_Hemi2_mva.position().y();
             Vtx_z = displacedVertex_Hemi2_mva.position().z();
             Vtx_chi = displacedVertex_Hemi2_mva.normalisedChiSquared();
-            /*OriginalTracks2 = displacedVertex_Hemi2_mva.originalTracks();
-            if (FOriginalTracks2.size()>0)
+            OriginalTracks2 = displacedVertex_Hemi2_mva.originalTracks();
+            if (OriginalTracks2.size()>0)
                 {
-                    for (unsigned int i=0; i<FOriginalTracks2.size(); i++)
+                    for (unsigned int i=0; i<OriginalTracks2.size(); i++)
                         {
                             Tracks_chi = OriginalTracks2[i].normalizedChi2();
                             LostHit = OriginalTracks2[i].numberOfLostHits();
                             ValidHits = OriginalTracks2[i].numberOfValidHits();
-                            tree_Vtx_Hemi2_mva_Tracks_NChi2 =  Tracks_chi;
-                            tree_Vtx_Hemi2_mva_Tracks_LostHit = LostHit;
-                            tree_Vtx_Hemi2_mva_Tracks_ValidHits = ValidHits; 
+                            tree_Vtx_Hemi2_mva_Tracks_NChi2.push_back( Tracks_chi);
+                            tree_Vtx_Hemi2_mva_Tracks_LostHit.push_back( LostHit);
+                            tree_Vtx_Hemi2_mva_Tracks_ValidHits.push_back( ValidHits); 
                         }
 
-                }*/            
-
+                }            
+            tree_Vtx_Hemi2_mva_nTrks.push_back( Vtx_ntk);
         }
+
         if(!displacedVertex_Hemi2_mva.isValid())
-        {
-            // FVtx_x = displacedVertex_Hemi2_mva.position().x();
-            // FVtx_y = displacedVertex_Hemi2_mva.position().y();
-            // FVtx_z = displacedVertex_Hemi2_mva.position().z();
-            // FVtx_chi = displacedVertex_Hemi2_mva.normalisedChiSquared();
-            /*FOriginalTracks2 = displacedVertex_Hemi2_mva.originalTracks();
-            if (FOriginalTracks2.size()>0)
+        {std::cout<<"help me"<<std::endl;
+            FVtx_ntk = displacedTracks_Hemi2_mva.size();
+            ValidVtx = 0;
+            tree_Vtx_HemiLLP_Valid.push_back(ValidVtx);
+            if (displacedTracks_Hemi2_mva.size()>0)
                 {
-                    for (unsigned int i=0; i<FOriginalTracks2.size(); i++)
+                    for (unsigned int i=0; i<displacedTracks_Hemi2_mva.size(); i++)
                         {
-
-                            FTracks_chi = FOriginalTracks2[i].normalizedChi2();
-                            FLostHit = FOriginalTracks2[i].numberOfLostHits();
-                            FValidHits = FOriginalTracks2[i].numberOfValidHits();
-                            tree_Vtx_Hemi2_mva_Tracks_NChi2_F =  FTracks_chi;
-                            tree_Vtx_Hemi2_mva_Tracks_LostHit_F = FLostHit;
-                            tree_Vtx_Hemi2_mva_Tracks_ValidHits_F = FValidHits; 
+                            
+                            FTracks_chi = displacedTracks_Hemi2_mva[i].normalizedChi2();
+                            FLostHit = displacedTracks_Hemi2_mva[i].numberOfLostHits();
+                            FValidHits = displacedTracks_Hemi2_mva[i].numberOfValidHits();
+                            tree_Vtx_Hemi2_mva_Tracks_NChi2_F.push_back( FTracks_chi);
+                            tree_Vtx_Hemi2_mva_Tracks_LostHit_F.push_back( FLostHit);
+                            tree_Vtx_Hemi2_mva_Tracks_ValidHits_F.push_back( FValidHits); 
                         }
+                }
 
-                }*/
-
+            tree_Vtx_Hemi2_mva_nTrks_F.push_back( FVtx_ntk);
         }
     }
-    tree_Vtx_Hemi2_mva_nTrks = Vtx_ntk;
+    
+    
     tree_Vtx_Hemi2_mva_x = Vtx_x;
     tree_Vtx_Hemi2_mva_y = Vtx_y;
     tree_Vtx_Hemi2_mva_z = Vtx_z;
     tree_Vtx_Hemi2_mva_NChi2 = Vtx_chi;
  
-
-    // tree_Vtx_Hemi2_mva_nTrks_F = FVtx_ntk;
-    // tree_Vtx_Hemi2_mva_x_F = FVtx_x;
-    // tree_Vtx_Hemi2_mva_y_F = FVtx_y;
-    // tree_Vtx_Hemi2_mva_z_F = FVtx_z;
-    // tree_Vtx_Hemi2_mva_NChi2_F = FVtx_chi;
     
 //$$
     tree_Vtx_HemiLLP_mva_nTrks.push_back(Vtx_ntk);
@@ -3510,7 +3504,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       tree_Vtx_HemiLLP_mva_dz.push_back(Vtx_z - tree_LLP2_z);
     }
 //$$
-    
     
     //Former version of the code (Jeremy)
     
@@ -4310,6 +4303,23 @@ void TrackingPerf::clearVariables() {
      tree_MVA_STracks_Axis_Match_dR.clear();
     tree_MVA_STracks_Axis_MisMatch_dR.clear();
   	tree_Hemi_track_dR1_2.clear();
+    tree_Vtx_HemiLLP_Valid.clear();
+
+    tree_Vtx_Hemi1_mva_Tracks_NChi2.clear();
+    tree_Vtx_Hemi1_mva_Tracks_LostHit.clear();
+    tree_Vtx_Hemi1_mva_Tracks_ValidHits.clear();
+    tree_Vtx_Hemi1_mva_Tracks_NChi2_F.clear();
+    tree_Vtx_Hemi1_mva_Tracks_LostHit_F.clear();
+    tree_Vtx_Hemi1_mva_Tracks_ValidHits_F.clear();
+
+    tree_Vtx_Hemi2_mva_Tracks_NChi2.clear();
+    tree_Vtx_Hemi2_mva_Tracks_LostHit.clear();
+    tree_Vtx_Hemi2_mva_Tracks_ValidHits.clear();
+    tree_Vtx_Hemi2_mva_Tracks_NChi2_F.clear();
+    tree_Vtx_Hemi2_mva_Tracks_LostHit_F.clear();
+    tree_Vtx_Hemi2_mva_Tracks_ValidHits_F.clear();
+
+    tree_genNeuNeu_dR.clear();
 }
 
 
