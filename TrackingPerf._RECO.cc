@@ -252,6 +252,30 @@
 
 #include "TrackingPerf/TrackingPerf/interface/Proto.h"
 #include "TrackingPerf/TrackingPerf/interface/DeltaFunc.h"
+
+//---------------------------------Paul-----------------------------//
+                      //-----------Transient Track/Vtx--------//
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+#include "TrackingTools/TransientTrackingRecHit/interface/TransientTrackingRecHitBuilder.h"
+#include "TrackingTools/TransientTrackingRecHit/interface/TransientTrackingRecHit.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+#include "TrackingTools/Records/interface/TransientRecHitRecord.h"
+#include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
+#include "FWCore/Framework/interface/ESTransientHandle.h"
+              //-------------Propagators------------//
+#include "TrackingTools/GeomPropagators/interface/Propagator.h"
+#include "TrackingTools/GeomPropagators/interface/SmartPropagator.h"
+#include "TrackingTools/GeomPropagators/interface/AnalyticalPropagator.h"
+#include "TrackingTools/GeomPropagators/interface/AnalyticalImpactPointExtrapolator.h"
+              //-------------Surfaces---------------//
+#include "DataFormats/GeometrySurface/interface/Cylinder.h"
+#include "DataFormats/GeometrySurface/interface/Plane.h"
+#include "DataFormats/GeometrySurface/interface/Surface.h"
+              //----------------?-----------------//
+#include "CondFormats/DataRecord/interface/EcalChannelStatusRcd.h"
+              //----------------BField--------------//
+#include "MagneticField/VolumeBasedEngine/interface/VolumeBasedMagneticField.h"
+//------------------------------End of Paul------------------------//
 //
 // class declaration
 //
@@ -427,6 +451,19 @@ private:
     std::vector<int>     tree_track_stripTIBLayersWithMeasurement;
     std::vector<int>     tree_track_stripTIDLayersWithMeasurement;
     std::vector<int>     tree_track_stripTOBLayersWithMeasurement;
+    std::vector<int>     tree_track_hitpattern;
+    std::vector<float>   tree_track_Prop_firsthit_x;
+    std::vector<float>   tree_track_Prop_firsthit_y;
+    std::vector<float>   tree_track_Prop_firsthit_z;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_x;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_y;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_z;
+    std::vector<float>   tree_track_AnaProp_firsthit_x;
+    std::vector<float>   tree_track_AnaProp_firsthit_y;
+    std::vector<float>   tree_track_AnaProp_firsthit_z;
+    std::vector<float>   tree_track_AnaRECOvsMINI_firsthit_x;
+    std::vector<float>   tree_track_AnaRECOvsMINI_firsthit_y;
+    std::vector<float>   tree_track_AnaRECOvsMINI_firsthit_z;
     //  std::vector<int>      tree_track_nPixel;
     //  std::vector<int>      tree_track_nStrip;
     
@@ -436,7 +473,6 @@ private:
     std::vector<float>    tree_track_firsthit_X;
     std::vector<float>    tree_track_firsthit_Y;
     std::vector<float>    tree_track_firsthit_Z;
-    std::vector<float>    tree_track_firsthit;
     std::vector<float>    tree_track_firsthit_phi;
     std::vector<float>    tree_track_ntrk10;
     std::vector<float>    tree_track_ntrk20;
@@ -993,7 +1029,20 @@ kvfPSet( iConfig.getParameter<edm::ParameterSet>("KVFParameters"))//,
     smalltree->Branch("tree_track_stripTIBLayersWithMeasurement", &tree_track_stripTIBLayersWithMeasurement);
     smalltree->Branch("tree_track_stripTIDLayersWithMeasurement", &tree_track_stripTIDLayersWithMeasurement);
     smalltree->Branch("tree_track_stripTOBLayersWithMeasurement", &tree_track_stripTOBLayersWithMeasurement);
-    
+    smalltree->Branch("tree_track_hitpattern", &tree_track_hitpattern);
+    smalltree->Branch("tree_track_Prop_firsthit_x",&tree_track_Prop_firsthit_x);
+    smalltree->Branch("tree_track_Prop_firsthit_y",&tree_track_Prop_firsthit_y);
+    smalltree->Branch("tree_track_Prop_firsthit_z",&tree_track_Prop_firsthit_z);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_x",&tree_track_RECOvsMINI_firsthit_x);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_y",&tree_track_RECOvsMINI_firsthit_y);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_z",&tree_track_RECOvsMINI_firsthit_z);
+
+    smalltree->Branch("tree_track_AnaProp_firsthit_x",&tree_track_AnaProp_firsthit_x);
+    smalltree->Branch("tree_track_AnaProp_firsthit_y",&tree_track_AnaProp_firsthit_y);
+    smalltree->Branch("tree_track_AnaProp_firsthit_z",&tree_track_AnaProp_firsthit_z);
+    smalltree->Branch("tree_track_AnaRECOvsMINI_firsthit_x",&tree_track_AnaRECOvsMINI_firsthit_x);
+    smalltree->Branch("tree_track_AnaRECOvsMINI_firsthit_y",&tree_track_AnaRECOvsMINI_firsthit_y);
+    smalltree->Branch("tree_track_AnaRECOvsMINI_firsthit_z",&tree_track_AnaRECOvsMINI_firsthit_z);
     //  smalltree->Branch("tree_track_nPixel",       &tree_track_nPixel );
     //  smalltree->Branch("tree_track_nStrip",       &tree_track_nStrip );
     
@@ -1003,7 +1052,6 @@ kvfPSet( iConfig.getParameter<edm::ParameterSet>("KVFParameters"))//,
     smalltree->Branch("tree_track_firsthit_X",   &tree_track_firsthit_X);
     smalltree->Branch("tree_track_firsthit_Y",   &tree_track_firsthit_Y);
     smalltree->Branch("tree_track_firsthit_Z",   &tree_track_firsthit_Z);
-    smalltree->Branch("tree_track_firsthit",&tree_track_firsthit);
     smalltree->Branch("tree_track_firsthit_phi", &tree_track_firsthit_phi);
     smalltree->Branch("tree_track_ntrk10",&tree_track_ntrk10);
     smalltree->Branch("tree_track_ntrk20",&tree_track_ntrk20);
@@ -1578,16 +1626,16 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     std::map<size_t , int > trackToPFJetMap;
     
     ///// TRACK ASSOCIATION TO VERTICES AND JETS
-    
+
     //    int nRecoTracks = tracks.size();
-    for (edm::View<Track>::size_type i=0; i<tracks.size(); ++i)
+    for (unsigned i=0; i<tracks.size(); ++i)
     {
         //---------------------------
         //minimum selection on tracks
         if ( tracks[i].pt() < 0.9 || fabs(tracks[i].eta()) > 2.5 ) continue;
         //float trackpT = tracks[i].pt();
         trackRefs.push_back(tracks.refAt(i));
-        
+
         //---------------------------
         //loop on vertex to do track-vertex association
         //---------------------------
@@ -2066,13 +2114,16 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //    int nUnmatchTrack_fromPV = 0;
     //    int nUnmatchTrack= 0;
     //    int nPUTrack= 0;
-    
+    vector<reco::TransientTrack> BestTracks;
+    int count =0;
     //---------------
     //loops on tracks
     //---------------
     
     for (size_t iTrack = 0; iTrack<trackRefs.size(); ++iTrack) {
+        
         const auto& itTrack = trackRefs[iTrack];
+        
         //------------------------
         //general track properties
         //------------------------
@@ -2092,73 +2143,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         tree_track_firsthit_X.push_back(itTrack->innerPosition().X());
         tree_track_firsthit_Y.push_back(itTrack->innerPosition().Y());
         tree_track_firsthit_Z.push_back(itTrack->innerPosition().Z());
-
-        //----------------------------------Track firsthit information--------------//
-        reco::HitPattern::HitCategory category = reco::HitPattern::TRACK_HITS;
-        uint16_t pattern = itTrack->hitPattern().getHitPattern(category,0);
-
-        tree_track_firsthit.push_back(itTrack->hitPattern().getHitPattern(category,0));//(catgeroy==Tracks_HITS,0==hit rank)
-        // https://github.com/cms-sw/cmssw/blob/master/DataFormats/TrackReco/interface/HitPattern.h 
-                                                  
-// +------------+---------------+---------------------------+-----------------+----------------+
-// |  tk/mu/mtd | sub-structure |     sub-sub-structure     |     stereo      |    hit type    |
-// +------------+---------------+---------------------------+-----------------+----------------+
-// |    11-10   | 9   8    7    |  6     5     4     3      |        2        |    1        0  |  bit
-// +------------+---------------+---------------------------+-----------------+----------------|
-// | tk  = 1    |    PXB = 1    | layer = 1-3               |                 | hit type = 0-3 |
-// | tk  = 1    |    PXF = 2    | disk  = 1-2               |                 | hit type = 0-3 |
-// | tk  = 1    |    TIB = 3    | layer = 1-4               | 0=rphi,1=stereo | hit type = 0-3 |
-// | tk  = 1    |    TID = 4    | wheel = 1-3               | 0=rphi,1=stereo | hit type = 0-3 |
-// | tk  = 1    |    TOB = 5    | layer = 1-6               | 0=rphi,1=stereo | hit type = 0-3 |
-// | tk  = 1    |    TEC = 6    | wheel = 1-9               | 0=rphi,1=stereo | hit type = 0-3 |
-// | mu  = 0    |    DT  = 1    | 4*(stat-1)+superlayer     |                 | hit type = 0-3 |
-// | mu  = 0    |    CSC = 2    | 4*(stat-1)+(ring-1)       |                 | hit type = 0-3 |
-// | mu  = 0    |    RPC = 3    | 4*(stat-1)+2*layer+region |                 | hit type = 0-3 |
-// | mu  = 0    |    GEM = 4    | 1xxx=st0, 0yxx=st y-1 la x|                 | hit type = 0-3 |
-// | mu  = 0    |    ME0 = 5    | roll                      |                 | hit type = 0-3 |
-// | mtd = 2    |    BTL = 1    | moduleType = 1-3          |                 | hit type = 0-3 |
-// | mtd = 2    |    ETL = 2    | ring = 1-12               |                 | hit type = 0-3 |
-// +------------+---------------+---------------------------+-----------------+----------------+
-//
-//  hit type, see DataFormats/TrackingRecHit/interface/TrackingRecHit.h
-//      VALID    = valid hit                                     = 0
-//      MISSING  = detector is good, but no rec hit found        = 1
-//      INACTIVE = detector is off, so there was no hope         = 2
-//      BAD      = there were many bad strips within the ellipse = 3
-        std::cout<<"hitpattern: "<<itTrack->hitPattern().getHitPattern(category,0)<<std::endl;//this is what we get with miniaod
-        // std::cout<<"hitType: "<<itTrack->hitPattern().getHitType(pattern)<<std::endl;
-        // std::cout<<"hitSide: "<<itTrack->hitPattern().getSide(pattern)<<std::endl;
-        // std::cout<<"hitLayer: "<<itTrack->hitPattern().getLayer(pattern)<<std::endl;
-        // std::cout<<"hitSubSubstructure: "<<itTrack->hitPattern().getSubSubStructure(pattern)<<std::endl;
-        // std::cout<<"hitSubStructure: "<<itTrack->hitPattern().getSubStructure(pattern)<<std::endl;
-        // std::cout<<"hitSubDetector: "<<itTrack->hitPattern().getSubDetector(pattern)<<std::endl;
-        std::cout<<"RECO => X: "<<itTrack->innerPosition().X()<<"|Y: "<<itTrack->innerPosition().Y()<<"|Z"<<itTrack->innerPosition().Z()<<std::endl;
-        const reco::HitPattern &p = itTrack->hitPattern();
-        uint32_t hit = p.getHitPattern(HitPattern::TRACK_HITS, 0);
-        std::cout << "hit in 11-bit binary format = ";
-       for (int j = 10; j >= 0; j--){
-           int bit = (hit >> j) & 0x1;
-           std::cout << bit;
-       }
-       std::cout << endl;
-//    
-        
-        //---------------------------miniaod ::>
-        //Starting from this point, we only have access to the 4-digits code given by hitPattern (1160 :firstlayer of PXB)
-        if (impactPointStateAvailable())
-            {
-                //These 4 digits have to be given as an input somewhere
-                TrajectoryStateOnSurface IPS = <"insertTT">.impactPointState();
-                LocalPoint LP = IPS.localPosition();
-                GlobalPoint GP  = IPS.globalPosition();
-                std::cout<<"MINIAOD TT global position=> X: "<<GP.x()<<"|Y: "<<GP.y()<<"|Z"<<GP.z()<<std::endl;
-                std::cout<<"MINIAOD TT local position=> X: "<<LP.x()<<"|Y: "<<LP.y()<<"|Z"<<LP.z()<<std::endl;
-            }
-        
-
-
-        //------------------------------------------------------------------------------//
-
         tree_track_firsthit_phi.push_back(itTrack->innerPosition().phi());
         
         if( itTrack->quality(reco::TrackBase::highPurity) ){tree_track_isHighQuality.push_back(true);}
@@ -2213,7 +2197,83 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         if(hp.hasValidHitInPixelLayer(PixelSubdetector::SubDetector::PixelEndcap, 3) )  hitPixelLayer += 200;
         
         tree_track_hasValidHitInPixelLayer.push_back(hitPixelLayer);
-        
+        //----------------MINIAOD_RECO_COMPARISON--------------//
+
+        // const HitPattern hp = trackPc.hitPattern();
+        uint16_t firsthit = hp.getHitPattern(HitPattern::HitCategory::TRACK_HITS,0);
+        tree_track_hitpattern.push_back     (firsthit);
+        const reco::Track* RtBTracks = trackRefs[iTrack].get();
+        if (firsthit==1160)//test for tracks produced before first layer
+        {//firsthit
+          std::cout<< "New Track with HitPattern==1160"<<std::endl;
+          BestTracks.push_back(theTransientTrackBuilder->build(RtBTracks));//beforeif
+          const MagneticField* B = BestTracks[count].field();//beforeif
+          // std::cout<<"Bfilednominalvalue :"<<BestTracks[count].field()->nominalValue()<<std::endl;//Bfieldvalue in kGauss
+          reco::TransientTrack TT (*RtBTracks,BestTracks[count].field());//beforeif
+                  //-----------------IMPORTANT----------------//
+                  // BestTracks seems to be destructed somehow//
+                  // and therefore cannot be used after-------//
+                  // TSOS is said to be better for the -------//
+                  // propagators (see Propagator.h)...--------//
+                  //------------------------------------------//
+          const FreeTrajectoryState Freetraj = TT.initialFreeState();//beforeif
+          GlobalPoint vert (itTrack->vx(),itTrack->vy(),itTrack->vz());//not used
+          const TrajectoryStateOnSurface Surtraj = TT.stateOnSurface(vert);//notused
+          Cylinder Layer1 = Cylinder(3);//radius
+          //------------IMPROVEME :Change this by a method that would look for the position of the layer given by the hit pattern------------------//
+          
+          std::cout<<"---------Initial Global Position-------"<<std::endl;
+          std::cout<<"RECO TT FReeTRaj=> glob X: "<<Freetraj.position().x()<<"|Y: "<<Freetraj.position().y()<<"|Z"<<Freetraj.position().z()<<std::endl;
+          // std::cout<<"MINIAOD TT SurTRaj=> glob X: "<<Surtraj.globalPosition().x()<<"|Y: "<<Surtraj.globalPosition().y()<<"|Z"<<Surtraj.globalPosition().z()<<std::endl;
+          //Both give the same result
+          AnalyticalPropagator* Prop = new AnalyticalPropagator(B);
+          TrajectoryStateOnSurface tsos = Prop->propagate(Freetraj,Layer1);
+
+          if (tsos.isValid())
+            {
+              std::cout<<"------------Propagated state-------"<<std::endl;
+              std::cout<<"RECO TT Propagator=> tsos glob X: "<<tsos.globalPosition().x()<<"|Y: "<<tsos.globalPosition().y()<<"|Z"<<tsos.globalPosition().z()<<std::endl;
+              // std::cout<<"MINIAOD TT Propagator=> tsos local X: "<<tsos.localPosition().x()<<"|Y: "<<tsos.localPosition().y()<<"|Z"<<tsos.localPosition().z()<<std::endl;
+              //Local position gives back 0 when it reached the surface
+            //   float dxy_prop = sqrt(tsos.globalPosition().x()*tsos.globalPosition().x()+tsos.globalPosition().y()*tsos.globalPosition().y());
+            //   std::cout<<"Transverse distance: "<<dxy_prop<<std::endl;
+              tree_track_Prop_firsthit_x.push_back(tsos.globalPosition().x());
+              tree_track_Prop_firsthit_y.push_back(tsos.globalPosition().y());
+              tree_track_Prop_firsthit_z.push_back(tsos.globalPosition().z());
+              tree_track_RECOvsMINI_firsthit_x.push_back(abs(itTrack->innerPosition().X()-tsos.globalPosition().x()));
+              tree_track_RECOvsMINI_firsthit_y.push_back(abs(itTrack->innerPosition().Y()-tsos.globalPosition().y()));
+              tree_track_RECOvsMINI_firsthit_z.push_back(abs(itTrack->innerPosition().Z()-tsos.globalPosition().z()));
+            }
+        //gives the same result as above*...
+        //   AnalyticalPropagator* AnaProp = new AnalyticalPropagator(BestTracks[count].field());
+        //   TrajectoryStateOnSurface tsos2 = AnaProp->propagate(Surtraj,Layer1);//also a method with tsos=> Surtraj
+        //   if (tsos2.isValid())
+        //     {
+        //       std::cout<<"------------AnaPropagated state-------"<<std::endl;
+        //       std::cout<<"RECO TT Propagator=> tsos glob X: "<<tsos2.globalPosition().x()<<"|Y: "<<tsos2.globalPosition().y()<<"|Z"<<tsos2.globalPosition().z()<<std::endl;
+        //       // std::cout<<"MINIAOD TT Propagator=> tsos local X: "<<tsos.localPosition().x()<<"|Y: "<<tsos.localPosition().y()<<"|Z"<<tsos.localPosition().z()<<std::endl;
+        //       //Local position gives back 0 when it reached the surface
+        //       float dxy_prop = sqrt(tsos2.globalPosition().x()*tsos2.globalPosition().x()+tsos2.globalPosition().y()*tsos2.globalPosition().y());
+        //       std::cout<<"AnaTransverse distance: "<<dxy_prop<<std::endl;
+        //       tree_track_AnaProp_firsthit_x.push_back(tsos2.globalPosition().x());
+        //       tree_track_AnaProp_firsthit_y.push_back(tsos2.globalPosition().y());
+        //       tree_track_AnaProp_firsthit_z.push_back(tsos2.globalPosition().z());
+        //       tree_track_AnaRECOvsMINI_firsthit_x.push_back(abs(itTrack->innerPosition().X()-tsos2.globalPosition().x()));
+        //       tree_track_AnaRECOvsMINI_firsthit_y.push_back(abs(itTrack->innerPosition().Y()-tsos2.globalPosition().y()));
+        //       tree_track_AnaRECOvsMINI_firsthit_z.push_back(abs(itTrack->innerPosition().Z()-tsos2.globalPosition().z()));
+        //     }
+          
+          std::cout<<"------------End of Track-------"<<std::endl;
+          count+=1;
+        }      //firsthit
+        //----------------IMPORTANT-----------------//
+        //  The use of propagate will be different depending on the "initialfreestate" obtained above.
+        // Disk might get considered as plane, so the propagate method will change
+        //+ Cylinders and disk will have to be defined for each possible hitpattern (firsthit)
+        //----------------------------------------------------------------------------
+
+      //---------------------------End of paul--------------------------//
+
         //----------------------------
         //matching to simulated tracks
         //----------------------------
@@ -4214,14 +4274,25 @@ void TrackingPerf::clearVariables() {
     tree_track_stripTIBLayersWithMeasurement.clear();
     tree_track_stripTIDLayersWithMeasurement.clear();
     tree_track_stripTOBLayersWithMeasurement.clear();
-    
+    tree_track_hitpattern.clear();
+    tree_track_Prop_firsthit_x.clear();
+    tree_track_Prop_firsthit_y.clear();
+    tree_track_Prop_firsthit_z.clear();
+    tree_track_RECOvsMINI_firsthit_x.clear();
+    tree_track_RECOvsMINI_firsthit_y.clear();
+    tree_track_RECOvsMINI_firsthit_z.clear();
+    tree_track_AnaProp_firsthit_x.clear();
+    tree_track_AnaProp_firsthit_y.clear();
+    tree_track_AnaProp_firsthit_z.clear();
+    tree_track_AnaRECOvsMINI_firsthit_x.clear();
+    tree_track_AnaRECOvsMINI_firsthit_y.clear();
+    tree_track_AnaRECOvsMINI_firsthit_z.clear();
     tree_track_vx.clear();
     tree_track_vy.clear();
     tree_track_vz.clear();
     tree_track_firsthit_X.clear();
     tree_track_firsthit_Y.clear();
     tree_track_firsthit_Z.clear();
-    tree_track_firsthit.clear();
     tree_track_firsthit_phi.clear();
     tree_track_ntrk10.clear();
     tree_track_ntrk20.clear();
@@ -4489,4 +4560,3 @@ void TrackingPerf::fillTriggerBits(std::vector<std::string>& HLTPathsByName_, ed
         }
     }
 }
-
