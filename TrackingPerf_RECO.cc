@@ -280,7 +280,7 @@
               //----------------BField--------------//
 #include "MagneticField/VolumeBasedEngine/interface/VolumeBasedMagneticField.h"
               //----------------New inner class-----//
-#include "TrackingPerf/TrackingPerf/interface/PropaHitPattern.h"
+//#include "TrackingPerf/TrackingPerf/interface/PropaHitPattern.h"
 
 //------------------------------End of Paul------------------------//
 //
