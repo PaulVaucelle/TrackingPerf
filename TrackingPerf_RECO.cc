@@ -267,14 +267,21 @@
 #include "TrackingTools/GeomPropagators/interface/SmartPropagator.h"
 #include "TrackingTools/GeomPropagators/interface/AnalyticalPropagator.h"
 #include "TrackingTools/GeomPropagators/interface/AnalyticalImpactPointExtrapolator.h"
+#include  "TrackingTools/GeomPropagators/interface/StraightLineCylinderCrossing.h"
+#include  "TrackingTools/GeomPropagators/interface/StraightLineBarrelCylinderCrossing.h"
+#include "TrackingTools/GeomPropagators/interface/StraightLinePlaneCrossing.h"
               //-------------Surfaces---------------//
 #include "DataFormats/GeometrySurface/interface/Cylinder.h"
 #include "DataFormats/GeometrySurface/interface/Plane.h"
 #include "DataFormats/GeometrySurface/interface/Surface.h"
+#include "DataFormats/GeometryVector/interface/Point3DBase.h"
               //----------------?-----------------//
 #include "CondFormats/DataRecord/interface/EcalChannelStatusRcd.h"
               //----------------BField--------------//
 #include "MagneticField/VolumeBasedEngine/interface/VolumeBasedMagneticField.h"
+              //----------------New inner class-----//
+#include "TrackingPerf/TrackingPerf/interface/PropaHitPattern.h"
+
 //------------------------------End of Paul------------------------//
 //
 // class declaration
@@ -452,18 +459,76 @@ private:
     std::vector<int>     tree_track_stripTIDLayersWithMeasurement;
     std::vector<int>     tree_track_stripTOBLayersWithMeasurement;
     std::vector<int>     tree_track_hitpattern;
+    std::vector<float>   tree_track_radius;
+    std::vector<float>   tree_track_radius_Prop;
+    std::vector<float>   tree_track_theta;
+    std::vector<float>   tree_track_phierror;
+    std::vector<float>   tree_track_globalphi;
+    std::vector<int>     tree_track_surf;
     std::vector<float>   tree_track_Prop_firsthit_x;
     std::vector<float>   tree_track_Prop_firsthit_y;
     std::vector<float>   tree_track_Prop_firsthit_z;
     std::vector<float>   tree_track_RECOvsMINI_firsthit_x;
     std::vector<float>   tree_track_RECOvsMINI_firsthit_y;
     std::vector<float>   tree_track_RECOvsMINI_firsthit_z;
-    std::vector<float>   tree_track_AnaProp_firsthit_x;
-    std::vector<float>   tree_track_AnaProp_firsthit_y;
-    std::vector<float>   tree_track_AnaProp_firsthit_z;
-    std::vector<float>   tree_track_AnaRECOvsMINI_firsthit_x;
-    std::vector<float>   tree_track_AnaRECOvsMINI_firsthit_y;
-    std::vector<float>   tree_track_AnaRECOvsMINI_firsthit_z;
+    std::vector<float>   tree_track_Prop_firsthit_x_L2;
+    std::vector<float>   tree_track_Prop_firsthit_y_L2;
+    std::vector<float>   tree_track_Prop_firsthit_z_L2;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_x_L2;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_y_L2;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_z_L2;
+    std::vector<float>   tree_track_Prop_firsthit_x_L2_opti;
+    std::vector<float>   tree_track_Prop_firsthit_y_L2_opti;
+    std::vector<float>   tree_track_Prop_firsthit_z_L2_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_x_L2_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_y_L2_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_z_L2_opti;
+
+
+    std::vector<float>   tree_track_Prop_firsthit_x_L3;
+    std::vector<float>   tree_track_Prop_firsthit_y_L3;
+    std::vector<float>   tree_track_Prop_firsthit_z_L3;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_x_L3;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_y_L3;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_z_L3;
+
+    std::vector<float>   tree_track_Prop_firsthit_x_L3_opti;
+    std::vector<float>   tree_track_Prop_firsthit_y_L3_opti;
+    std::vector<float>   tree_track_Prop_firsthit_z_L3_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_x_L3_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_y_L3_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_z_L3_opti;
+
+
+    std::vector<float>   tree_track_Prop_firsthit_x_L4;
+    std::vector<float>   tree_track_Prop_firsthit_y_L4;
+    std::vector<float>   tree_track_Prop_firsthit_z_L4;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_x_L4;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_y_L4;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_z_L4;
+    std::vector<float>   tree_track_Prop_path;
+
+    std::vector<float>   tree_track_Prop_firsthit_x_L4_opti;
+    std::vector<float>   tree_track_Prop_firsthit_y_L4_opti;
+    std::vector<float>   tree_track_Prop_firsthit_z_L4_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_x_L4_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_y_L4_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_z_L4_opti;
+
+    std::vector<float>   tree_track_Prop_firsthit_x_L5;
+    std::vector<float>   tree_track_Prop_firsthit_y_L5;
+    std::vector<float>   tree_track_Prop_firsthit_z_L5;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_x_L5;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_y_L5;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_z_L5;
+
+    std::vector<float>   tree_track_Prop_firsthit_x_L5_opti;
+    std::vector<float>   tree_track_Prop_firsthit_y_L5_opti;
+    std::vector<float>   tree_track_Prop_firsthit_z_L5_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_x_L5_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_y_L5_opti;
+    std::vector<float>   tree_track_RECOvsMINI_firsthit_z_L5_opti;
+    
     //  std::vector<int>      tree_track_nPixel;
     //  std::vector<int>      tree_track_nStrip;
     
@@ -1030,6 +1095,12 @@ kvfPSet( iConfig.getParameter<edm::ParameterSet>("KVFParameters"))//,
     smalltree->Branch("tree_track_stripTIDLayersWithMeasurement", &tree_track_stripTIDLayersWithMeasurement);
     smalltree->Branch("tree_track_stripTOBLayersWithMeasurement", &tree_track_stripTOBLayersWithMeasurement);
     smalltree->Branch("tree_track_hitpattern", &tree_track_hitpattern);
+    smalltree->Branch("tree_track_radius",&tree_track_radius);
+    smalltree->Branch("tree_track_radius_Prop",&tree_track_radius_Prop);
+    smalltree->Branch("tree_track_theta",&tree_track_theta);
+    smalltree->Branch("tree_track_phierror",&tree_track_phierror);
+    smalltree->Branch("tree_track_globalphi",&tree_track_globalphi);
+    smalltree->Branch("tree_track_surf",&tree_track_surf);
     smalltree->Branch("tree_track_Prop_firsthit_x",&tree_track_Prop_firsthit_x);
     smalltree->Branch("tree_track_Prop_firsthit_y",&tree_track_Prop_firsthit_y);
     smalltree->Branch("tree_track_Prop_firsthit_z",&tree_track_Prop_firsthit_z);
@@ -1037,15 +1108,65 @@ kvfPSet( iConfig.getParameter<edm::ParameterSet>("KVFParameters"))//,
     smalltree->Branch("tree_track_RECOvsMINI_firsthit_y",&tree_track_RECOvsMINI_firsthit_y);
     smalltree->Branch("tree_track_RECOvsMINI_firsthit_z",&tree_track_RECOvsMINI_firsthit_z);
 
-    smalltree->Branch("tree_track_AnaProp_firsthit_x",&tree_track_AnaProp_firsthit_x);
-    smalltree->Branch("tree_track_AnaProp_firsthit_y",&tree_track_AnaProp_firsthit_y);
-    smalltree->Branch("tree_track_AnaProp_firsthit_z",&tree_track_AnaProp_firsthit_z);
-    smalltree->Branch("tree_track_AnaRECOvsMINI_firsthit_x",&tree_track_AnaRECOvsMINI_firsthit_x);
-    smalltree->Branch("tree_track_AnaRECOvsMINI_firsthit_y",&tree_track_AnaRECOvsMINI_firsthit_y);
-    smalltree->Branch("tree_track_AnaRECOvsMINI_firsthit_z",&tree_track_AnaRECOvsMINI_firsthit_z);
+    smalltree->Branch("tree_track_Prop_firsthit_x_L2",&tree_track_Prop_firsthit_x_L2);
+    smalltree->Branch("tree_track_Prop_firsthit_y_L2",&tree_track_Prop_firsthit_y_L2);
+    smalltree->Branch("tree_track_Prop_firsthit_z_L2",&tree_track_Prop_firsthit_z_L2);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_x_L2",&tree_track_RECOvsMINI_firsthit_x_L2);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_y_L2",&tree_track_RECOvsMINI_firsthit_y_L2);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_z_L2",&tree_track_RECOvsMINI_firsthit_z_L2);
+
+    smalltree->Branch("tree_track_Prop_firsthit_x_L2_opti",&tree_track_Prop_firsthit_x_L2_opti);
+    smalltree->Branch("tree_track_Prop_firsthit_y_L2_opti",&tree_track_Prop_firsthit_y_L2_opti);
+    smalltree->Branch("tree_track_Prop_firsthit_z_L2_opti",&tree_track_Prop_firsthit_z_L2_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_x_L2_opti",&tree_track_RECOvsMINI_firsthit_x_L2_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_y_L2_opti",&tree_track_RECOvsMINI_firsthit_y_L2_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_z_L2_opti",&tree_track_RECOvsMINI_firsthit_z_L2_opti);
+
+    smalltree->Branch("tree_track_Prop_firsthit_x_L3",&tree_track_Prop_firsthit_x_L3);
+    smalltree->Branch("tree_track_Prop_firsthit_y_L3",&tree_track_Prop_firsthit_y_L3);
+    smalltree->Branch("tree_track_Prop_firsthit_z_L3",&tree_track_Prop_firsthit_z_L3);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_x_L3",&tree_track_RECOvsMINI_firsthit_x_L3);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_y_L3",&tree_track_RECOvsMINI_firsthit_y_L3);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_z_L3",&tree_track_RECOvsMINI_firsthit_z_L3);
+
+        smalltree->Branch("tree_track_Prop_firsthit_x_L3_opti",&tree_track_Prop_firsthit_x_L3_opti);
+    smalltree->Branch("tree_track_Prop_firsthit_y_L3_opti",&tree_track_Prop_firsthit_y_L3_opti);
+    smalltree->Branch("tree_track_Prop_firsthit_z_L3_opti",&tree_track_Prop_firsthit_z_L3_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_x_L3_opti",&tree_track_RECOvsMINI_firsthit_x_L3_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_y_L3_opti",&tree_track_RECOvsMINI_firsthit_y_L3_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_z_L3_opti",&tree_track_RECOvsMINI_firsthit_z_L3_opti);
+
+    smalltree->Branch("tree_track_Prop_firsthit_x_L4",&tree_track_Prop_firsthit_x_L4);
+    smalltree->Branch("tree_track_Prop_firsthit_y_L4",&tree_track_Prop_firsthit_y_L4);
+    smalltree->Branch("tree_track_Prop_firsthit_z_L4",&tree_track_Prop_firsthit_z_L4);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_x_L4",&tree_track_RECOvsMINI_firsthit_x_L4);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_y_L4",&tree_track_RECOvsMINI_firsthit_y_L4);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_z_L4",&tree_track_RECOvsMINI_firsthit_z_L4);
+
+    smalltree->Branch("tree_track_Prop_firsthit_x_L4_opti",&tree_track_Prop_firsthit_x_L4_opti);
+    smalltree->Branch("tree_track_Prop_firsthit_y_L4_opti",&tree_track_Prop_firsthit_y_L4_opti);
+    smalltree->Branch("tree_track_Prop_firsthit_z_L4_opti",&tree_track_Prop_firsthit_z_L4_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_x_L4_opti",&tree_track_RECOvsMINI_firsthit_x_L4_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_y_L4_opti",&tree_track_RECOvsMINI_firsthit_y_L4_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_z_L4_opti",&tree_track_RECOvsMINI_firsthit_z_L4_opti);
+
+    smalltree->Branch("tree_track_Prop_firsthit_x_L5",&tree_track_Prop_firsthit_x_L5);
+    smalltree->Branch("tree_track_Prop_firsthit_y_L5",&tree_track_Prop_firsthit_y_L5);
+    smalltree->Branch("tree_track_Prop_firsthit_z_L5",&tree_track_Prop_firsthit_z_L5);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_x_L5",&tree_track_RECOvsMINI_firsthit_x_L5);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_y_L5",&tree_track_RECOvsMINI_firsthit_y_L5);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_z_L5",&tree_track_RECOvsMINI_firsthit_z_L5);
+
+    smalltree->Branch("tree_track_Prop_firsthit_x_L5_opti",&tree_track_Prop_firsthit_x_L5_opti);
+    smalltree->Branch("tree_track_Prop_firsthit_y_L5_opti",&tree_track_Prop_firsthit_y_L5_opti);
+    smalltree->Branch("tree_track_Prop_firsthit_z_L5_opti",&tree_track_Prop_firsthit_z_L5_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_x_L5_opti",&tree_track_RECOvsMINI_firsthit_x_L5_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_y_L5_opti",&tree_track_RECOvsMINI_firsthit_y_L5_opti);
+    smalltree->Branch("tree_track_RECOvsMINI_firsthit_z_L5_opti",&tree_track_RECOvsMINI_firsthit_z_L5_opti);
+    
     //  smalltree->Branch("tree_track_nPixel",       &tree_track_nPixel );
     //  smalltree->Branch("tree_track_nStrip",       &tree_track_nStrip );
-    
+    smalltree->Branch("tree_track_Prop_path", &tree_track_Prop_path);
     smalltree->Branch("tree_track_vx",           &tree_track_vx );
     smalltree->Branch("tree_track_vy",           &tree_track_vy );
     smalltree->Branch("tree_track_vz",           &tree_track_vz );
@@ -1454,7 +1575,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
     clearVariables();
 //$$
-    bool showlog = true;
+    bool showlog = false;
 //$$
     using namespace edm;
     using namespace reco;
@@ -1463,7 +1584,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     runNumber = iEvent.id().run();
     //std::cout << "runNumber = " << runNumber << std::endl;
     eventNumber = iEvent.id().event();
-    //std::cout << "eventNumber = "<< eventNumber <<std::endl;
+    // std::cout << "eventNumber = "<< eventNumber <<std::endl;
     lumiBlock = iEvent.luminosityBlock();
     
 
@@ -2098,7 +2219,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     mueta2 = tree_slimmedmuon_eta[imu2];
     muphi2 = tree_slimmedmuon_phi[imu2];
     
-    
+        
     //reco::BeamSpot vertexBeamSpot= *recoBeamSpotHandle;
     edm::ESHandle<TransientTrackBuilder> theTransientTrackBuilder;
     iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",theTransientTrackBuilder);
@@ -2119,7 +2240,41 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //---------------
     //loops on tracks
     //---------------
-    
+            std::vector<std::pair<uint16_t,float> > Players;
+        Players.push_back(make_pair(1160,2.959));//PIXBL1
+        Players.push_back(make_pair(1168,6.778));//PIXBL2
+        Players.push_back(make_pair(1176,10.89));//PIXBL3
+        Players.push_back(make_pair(1184,16));//PIXBL4
+        Players.push_back(make_pair(1416,23.83));//TIBL1
+        Players.push_back(make_pair(1420,27.02));//TIBL1stereo
+        Players.push_back(make_pair(1424,32.23));//TIBL2
+        Players.push_back(make_pair(1428,35.41));//TIBL2stereo
+        Players.push_back(make_pair(1432,41.75));//TIBL3
+        Players.push_back(make_pair(1440,49.71));//TIBL4
+        Players.push_back(make_pair(1672,60.43));//TOBL1
+        Players.push_back(make_pair(1288,32.35));//PXFdisk1
+        Players.push_back(make_pair(1296,39.41));//PXFdisk2
+        Players.push_back(make_pair(1304,48.96));//PXFdisk3
+        Players.push_back(make_pair(1544,77.9));//TIDWHeel1
+        Players.push_back(make_pair(1548,80.71));//TIDWHeel1stereo
+        Players.push_back(make_pair(1552,90.4));//TIDWHeel2
+        Players.push_back(make_pair(1556,94.02));//TIDWHeel2stereo
+        Players.push_back(make_pair(1560,102.7));//TIDWHeel3
+        Players.push_back(make_pair(1564,107.0));//TIDWHeel3stereo
+        Players.push_back(make_pair(1800,131.6));//TECWHeel1
+        Players.push_back(make_pair(1804,129.4));//TECWHeel1stereo
+        Players.push_back(make_pair(1808,145.5));//TECWHeel2
+        Players.push_back(make_pair(1812,142.8));//TECWHeel2stereo
+        Players.push_back(make_pair(1816,160.1));//TECWHeel3
+        Players.push_back(make_pair(1820,157.1));//TECWHeel3stereo
+        Players.push_back(make_pair(1824,174.2));//TECWHeel4
+        Players.push_back(make_pair(1828,172.7));//TECWHeel4stereo
+        Players.push_back(make_pair(1832,188.4));//TECWHeel5
+        Players.push_back(make_pair(1836,186.3));//TECWHeel5stereo
+        Players.push_back(make_pair(1840,203.2));//TECWHeel6
+        Players.push_back(make_pair(1844,203.8));//TECWHeel6stereo
+        Players.push_back(make_pair(1848,222.2));//TECWHeel7
+        
     for (size_t iTrack = 0; iTrack<trackRefs.size(); ++iTrack) {
         
         const auto& itTrack = trackRefs[iTrack];
@@ -2134,6 +2289,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         tree_track_ptError.push_back(itTrack->ptError());
         tree_track_eta.push_back(itTrack->eta());
         tree_track_phi.push_back(itTrack->phi());
+        tree_track_phierror.push_back(itTrack->phiError());
         tree_track_nhits.push_back(itTrack->numberOfValidHits());
         tree_track_NChi2.push_back(itTrack->normalizedChi2());
         tree_track_outerPt.push_back(itTrack->outerPt());
@@ -2197,80 +2353,266 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         if(hp.hasValidHitInPixelLayer(PixelSubdetector::SubDetector::PixelEndcap, 3) )  hitPixelLayer += 200;
         
         tree_track_hasValidHitInPixelLayer.push_back(hitPixelLayer);
-        //----------------MINIAOD_RECO_COMPARISON--------------//
 
-        // const HitPattern hp = trackPc.hitPattern();
-        uint16_t firsthit = hp.getHitPattern(HitPattern::HitCategory::TRACK_HITS,0);
-        tree_track_hitpattern.push_back     (firsthit);
-        const reco::Track* RtBTracks = trackRefs[iTrack].get();
-        if (firsthit==1160)//test for tracks produced before first layer
-        {//firsthit
-          std::cout<< "New Track with HitPattern==1160"<<std::endl;
-          BestTracks.push_back(theTransientTrackBuilder->build(RtBTracks));//beforeif
-          const MagneticField* B = BestTracks[count].field();//beforeif
-          // std::cout<<"Bfilednominalvalue :"<<BestTracks[count].field()->nominalValue()<<std::endl;//Bfieldvalue in kGauss
-          reco::TransientTrack TT (*RtBTracks,BestTracks[count].field());//beforeif
+
+        //----------------MINIAOD_RECO_COMPARISON--------------//
                   //-----------------IMPORTANT----------------//
                   // BestTracks seems to be destructed somehow//
                   // and therefore cannot be used after-------//
                   // TSOS is said to be better for the -------//
                   // propagators (see Propagator.h)...--------//
                   //------------------------------------------//
-          const FreeTrajectoryState Freetraj = TT.initialFreeState();//beforeif
-          GlobalPoint vert (itTrack->vx(),itTrack->vy(),itTrack->vz());//not used
-          const TrajectoryStateOnSurface Surtraj = TT.stateOnSurface(vert);//notused
-          Cylinder Layer1 = Cylinder(3);//radius
-          //------------IMPROVEME :Change this by a method that would look for the position of the layer given by the hit pattern------------------//
-          
-          std::cout<<"---------Initial Global Position-------"<<std::endl;
-          std::cout<<"RECO TT FReeTRaj=> glob X: "<<Freetraj.position().x()<<"|Y: "<<Freetraj.position().y()<<"|Z"<<Freetraj.position().z()<<std::endl;
-          // std::cout<<"MINIAOD TT SurTRaj=> glob X: "<<Surtraj.globalPosition().x()<<"|Y: "<<Surtraj.globalPosition().y()<<"|Z"<<Surtraj.globalPosition().z()<<std::endl;
-          //Both give the same result
-          AnalyticalPropagator* Prop = new AnalyticalPropagator(B);
-          TrajectoryStateOnSurface tsos = Prop->propagate(Freetraj,Layer1);
+        uint16_t firsthit = hp.getHitPattern(HitPattern::HitCategory::TRACK_HITS,0);
+        tree_track_hitpattern.push_back     (firsthit);
+    //     std::cout<<"HitPattern : "<<firsthit<<std::endl;
+    //            for (int j = 10; j >= 0; j--){
+    //        int bit = (firsthit >> j) & 0x1;
+    //        cout << bit ;
+    //    }
 
-          if (tsos.isValid())
+        //---Creating State to propagate from  TT---//
+        const reco::Track* RtBTracks = trackRefs[iTrack].get();
+        BestTracks.push_back(theTransientTrackBuilder->build(RtBTracks));
+        const MagneticField* B = BestTracks[count].field();//3.8T
+        reco::TransientTrack TT (*RtBTracks,BestTracks[count].field());
+        // const FreeTrajectoryState Freetraj = TT.initialFreeState();
+        GlobalPoint vert (itTrack->vx(),itTrack->vy(),itTrack->vz());
+        const TrajectoryStateOnSurface Surtraj = TT.stateOnSurface(vert);
+        AnalyticalPropagator* Prop = new AnalyticalPropagator(B);
+        // AnalyticalPropagator* PropPlane = new AnalyticalPropagator(B);
+
+
+
+        float radius = sqrt(itTrack->innerPosition().X()*itTrack->innerPosition().X()+itTrack->innerPosition().Y()*itTrack->innerPosition().Y());
+        tree_track_radius.push_back(radius);
+        // float PVradius = sqrt(itTrack->vx()*itTrack->vx()+itTrack->vy()*itTrack->vy());
+        // std::cout<<count<<std::endl;
+        // std::cout<<firsthit<<std::endl;
+        // PropaHitPattern PHP; // see ../interface/PropaHitPattern
+        // PHP.PropaHitInit();
+
+        //----------Initialitsation for the propagtion------------------//
+
+        float rad = 0;
+        float theta=2*atan(exp(-itTrack->eta()));
+        tree_track_theta.push_back(theta);
+        float Propradius1=0;
+        float zlayers=0;
+        TkRotation<float> rot(1,0,0,0,1,0,0,0,1);
+        TrajectoryStateOnSurface PropTSOS;
+        TrajectoryStateOnSurface PropTSOStrueR;
+        TrajectoryStateOnSurface PropTSOSPlane;
+
+        //Define global phi------------//
+        GlobalVector transvert (itTrack->vx()+itTrack->px(),itTrack->vy()+itTrack->py(),0);//define new phi
+        float norm = sqrt((itTrack->vx()+itTrack->px())*(itTrack->vx()+itTrack->px())+(itTrack->vy()+itTrack->py())*(itTrack->vy()+itTrack->py()));
+        GlobalVector NormTransvert = transvert/norm;
+        const GlobalVector xaxis (1,0,0);
+        float globalphi = acos(NormTransvert.dot(xaxis));
+        tree_track_globalphi.push_back(globalphi);//WARNING : global phi is always positive => acos
+
+        //--------------SLCC--------------------------//
+        GlobalVector GVp (itTrack->vx()+itTrack->px(),itTrack->vy()+itTrack->py(),itTrack->vz()+itTrack->pz());
+        GlobalPoint GPv (itTrack->vx(),itTrack->vy(),itTrack->vz());
+        LocalVector LVp (itTrack->px(),itTrack->py(),itTrack->pz());
+        LocalPoint LPv (0,0,0);
+        StraightLineCylinderCrossing SLCC(LPv,LVp, PropagationDirection::alongMomentum);//(localPoint, localvector, )
+        GloballyPositioned<float>::PositionType P3D(0.,0.,0.);
+        std::pair<bool,double> spair;
+        std::pair<bool,double> spair2;
+        std::pair<bool,Basic3DVector<float>> spairPlane;
+        std::pair<bool,Basic3DVector<float>> spairPlanetrue;
+        //------------------------------------------//
+//-----------------------------------------------------Propagation----------------------------------------------//
+if (firsthit==1288 || firsthit==1296 || firsthit==1304 || firsthit==1544 || firsthit==1548 || firsthit==1552 || firsthit==1556 || firsthit==1560 || firsthit==1564 || firsthit==1800 || firsthit==1804 || firsthit==1808 || firsthit==1812 || firsthit==1816 || firsthit==1820 || firsthit==1824 || firsthit==1828 || firsthit==1832 || firsthit==1836 || firsthit==1840 ||firsthit== 1844 || firsthit==1848)//supposed to be plane
+ { tree_track_surf.push_back(0);}//plane
+else
+{ tree_track_surf.push_back(1);}//cylinder
+//------------------------------------------------------------------------------------//
+         for (int i=0; i<33;i++)
             {
-              std::cout<<"------------Propagated state-------"<<std::endl;
-              std::cout<<"RECO TT Propagator=> tsos glob X: "<<tsos.globalPosition().x()<<"|Y: "<<tsos.globalPosition().y()<<"|Z"<<tsos.globalPosition().z()<<std::endl;
-              // std::cout<<"MINIAOD TT Propagator=> tsos local X: "<<tsos.localPosition().x()<<"|Y: "<<tsos.localPosition().y()<<"|Z"<<tsos.localPosition().z()<<std::endl;
-              //Local position gives back 0 when it reached the surface
-            //   float dxy_prop = sqrt(tsos.globalPosition().x()*tsos.globalPosition().x()+tsos.globalPosition().y()*tsos.globalPosition().y());
-            //   std::cout<<"Transverse distance: "<<dxy_prop<<std::endl;
-              tree_track_Prop_firsthit_x.push_back(tsos.globalPosition().x());
-              tree_track_Prop_firsthit_y.push_back(tsos.globalPosition().y());
-              tree_track_Prop_firsthit_z.push_back(tsos.globalPosition().z());
-              tree_track_RECOvsMINI_firsthit_x.push_back(abs(itTrack->innerPosition().X()-tsos.globalPosition().x()));
-              tree_track_RECOvsMINI_firsthit_y.push_back(abs(itTrack->innerPosition().Y()-tsos.globalPosition().y()));
-              tree_track_RECOvsMINI_firsthit_z.push_back(abs(itTrack->innerPosition().Z()-tsos.globalPosition().z()));
+            if (Players[i].first==firsthit )//layers
+                {
+//------------------------------------------------Cylinder----------------------------------------------------------//
+                    rad = Players[i].second;
+                    Cylinder Cylind(rad);
+                    PropTSOS = Prop->propagate(Surtraj,Cylind);//works well for barrel
+                    Cylinder CylindtrueR(radius);
+                    PropTSOStrueR = Prop->propagate(Surtraj,CylindtrueR);//works well for barrel
+                    if (i<11 && firsthit!=0 )//cylinder
+                        {   
+                            float z0 = (rad+itTrack->vz()*tan(theta))/tan(theta);
+                            float x0 = rad*cos(itTrack->phi());//itTrack->phi() or globalphi
+                            float y0 = rad*sin(itTrack->phi());    //itTrack->phi() or globalphi   
+                            Propradius1 = sqrt(x0*x0+y0*y0);
+                            tree_track_radius_Prop.push_back(Propradius1);
+                            //--------------With geom vectors-is a little bit worse than with TSOS => worse case : ~std dev *2----------------------------------//
+                            tree_track_Prop_firsthit_x.push_back(x0);
+                            tree_track_Prop_firsthit_y.push_back(y0);
+                            tree_track_Prop_firsthit_z.push_back(z0);
+                            tree_track_RECOvsMINI_firsthit_x.push_back(itTrack->innerPosition().X()-x0);
+                            tree_track_RECOvsMINI_firsthit_y.push_back(itTrack->innerPosition().Y()-y0);
+                            tree_track_RECOvsMINI_firsthit_z.push_back(itTrack->innerPosition().Z()-z0);
+                            //-----------------------With Propagator TSOS-mean R-----------------------//
+                            if (PropTSOS.isValid())
+                                {
+                            tree_track_Prop_firsthit_x_L2.push_back(PropTSOS.globalPosition().x());
+                            tree_track_Prop_firsthit_y_L2.push_back(PropTSOS.globalPosition().y());
+                            tree_track_Prop_firsthit_z_L2.push_back(PropTSOS.globalPosition().z());
+                            tree_track_RECOvsMINI_firsthit_x_L2.push_back(itTrack->innerPosition().X()-PropTSOS.globalPosition().x());
+                            tree_track_RECOvsMINI_firsthit_y_L2.push_back(itTrack->innerPosition().Y()-PropTSOS.globalPosition().y());
+                            tree_track_RECOvsMINI_firsthit_z_L2.push_back(itTrack->innerPosition().Z()-PropTSOS.globalPosition().z());
+                                }
+
+                            if(PropTSOStrueR.isValid())
+                            {
+                            //-----------------------With Propagator TSOStrueR-----------------------------//
+                            tree_track_Prop_firsthit_x_L2_opti.push_back(PropTSOStrueR.globalPosition().x());
+                            tree_track_Prop_firsthit_y_L2_opti.push_back(PropTSOStrueR.globalPosition().y());
+                            tree_track_Prop_firsthit_z_L2_opti.push_back(PropTSOStrueR.globalPosition().z());
+                            tree_track_RECOvsMINI_firsthit_x_L2_opti.push_back(itTrack->innerPosition().X()-PropTSOStrueR.globalPosition().x());
+                            tree_track_RECOvsMINI_firsthit_y_L2_opti.push_back(itTrack->innerPosition().Y()-PropTSOStrueR.globalPosition().y());
+                            tree_track_RECOvsMINI_firsthit_z_L2_opti.push_back(itTrack->innerPosition().Z()-PropTSOStrueR.globalPosition().z());
+                            }
+
+                        }
+ //-------------------------------------------------disks/wheel-------------------------------------------------------//
+                            //------------With geom aspects (mean Z)----------------------------//
+                            zlayers = Players[i].second;
+                            if (itTrack->vz()<0){zlayers=-zlayers;}
+                            float deltaZ =itTrack->innerPosition().Z()-zlayers;
+                            if (abs(deltaZ)>30 ){zlayers=-zlayers;}//30 being a arbitrary value, could be mini~5, max ~55
+
+                            float R = (zlayers-itTrack->vz())*tan(theta);//FIXME: +sqrt(itTrack->vx()*itTrack->vx()+itTrack->vy()*itTrack->vy())
+                            float Rreal =  sqrt(itTrack->innerPosition().X()*itTrack->innerPosition().X()+itTrack->innerPosition().Y()+itTrack->innerPosition().Y());
+                            if (itTrack->phi()<0){globalphi=-globalphi;}
+                            float x0 = R*cos(itTrack->phi());//itTrack->phi() or globalphi
+                            float y0 = R*sin(itTrack->phi() );   //itTrack->phi() or globalphi, here is a biais here since all y are positive due to globalphi being positive
+                            float x0real = Rreal*cos(itTrack->phi());//itTrack->phi() or globalphi
+                            float y0real = Rreal*sin(itTrack->phi() );   //itTrack->phi() or globalphi, here is a biais here since all y are positive due to globalphi being positive
+                            float zreal = (Rreal+itTrack->vz()*tan(theta))/tan(theta);
+                            
+                            tree_track_radius_Prop.push_back(R);
+
+                            tree_track_Prop_firsthit_x_L3.push_back(x0);
+                            tree_track_Prop_firsthit_y_L3.push_back(y0);
+                            tree_track_Prop_firsthit_z_L3.push_back(zlayers);
+                            tree_track_RECOvsMINI_firsthit_x_L3.push_back(itTrack->innerPosition().X()-x0);
+                            tree_track_RECOvsMINI_firsthit_y_L3.push_back(itTrack->innerPosition().Y()-y0);
+                            tree_track_RECOvsMINI_firsthit_z_L3.push_back(itTrack->innerPosition().Z()-zlayers);
+                            
+                            tree_track_Prop_firsthit_x_L3_opti.push_back(x0real);
+                            tree_track_Prop_firsthit_y_L3_opti.push_back(y0real);
+                            tree_track_Prop_firsthit_z_L3_opti.push_back(zreal);
+                            tree_track_RECOvsMINI_firsthit_x_L3_opti.push_back(itTrack->innerPosition().X()-x0real);
+                            tree_track_RECOvsMINI_firsthit_y_L3_opti.push_back(itTrack->innerPosition().Y()-y0real);
+                            tree_track_RECOvsMINI_firsthit_z_L3_opti.push_back(itTrack->innerPosition().Z()-zreal);
+
+                            //------------------WIth Propagators mean Z SLCC // true R with
+                            //------------------SLCC Mean Z------------------------------//
+                            SimpleCylinderBounds SCB(0.,R,-zlayers,zlayers);
+                            Cylinder CylindBounds(P3D,rot,SCB);
+                            spair = SLCC.pathLength(CylindBounds);
+                            
+                            //     Versus the Optimal resolution for this method   //
+                            //------------------SLCC true R-----------------------------//
+                            float Ropti = sqrt(itTrack->innerPosition().X()*itTrack->innerPosition().X()+itTrack->innerPosition().Y()*itTrack->innerPosition().Y());
+                            SimpleCylinderBounds SCB2(0.,Ropti,-abs(itTrack->innerPosition().Z()),abs(itTrack->innerPosition().Z()));
+                            Cylinder CylindBounds2(P3D,rot,SCB2);
+                            spair2 = SLCC.pathLength(CylindBounds2);
+
+                            double s  = spair.second;
+                            double s2 = spair2.second;
+                            // std::cout<<"spair valid : "<<spair.first<<" \\ path length : "<<s<<" \\ hitpattern : "<<firsthit<<std::endl;
+                            // Basic3DVector<float> GP = SLPC.position(s);
+                            LocalPoint GP = SLCC.position(s);
+                            LocalPoint GPopti = SLCC.position(s2);
+                            tree_track_Prop_path.push_back(s);
+
+                            // LocalPoint GPfh = SLCC.position(s);
+                            //------------------SLPC with mean Z from hitpattern----------------------://
+                            GloballyPositioned<float>::PositionType P3D_(0.,0.,zlayers);
+                            Plane P(P3D_,rot);
+                            Basic3DVector<float> P3D2(itTrack->vx(),itTrack->vy(),itTrack->vz());//global
+                            Basic3DVector<float> B3DV (itTrack->px(),itTrack->py(),itTrack->pz());//global
+                            // Basic3DVector<float> P3D2(1,1,1);//test
+                            // Basic3DVector<float> B3DV (0,0,1);//test
+                            StraightLinePlaneCrossing SLPC(P3D2,B3DV);
+                            spairPlane = SLPC.position(P);
+                            Basic3DVector<float> sPlane(-1000.,-1000.,-1000.);
+                            if (spairPlane.first){ sPlane = spairPlane.second;}
+
+                            //------------------SLPC with true Z from reco----------------------://
+                            GloballyPositioned<float>::PositionType P3D_true(0.,0.,itTrack->innerPosition().Z());
+                            Plane Ptrue(P3D_true,rot);
+                            Basic3DVector<float> P3D2true(itTrack->vx(),itTrack->vy(),itTrack->vz());//global
+                            Basic3DVector<float> B3DVtrue (itTrack->px(),itTrack->py(),itTrack->pz());//global
+                            StraightLinePlaneCrossing SLPCtrue(P3D2true,B3DVtrue);
+                            spairPlanetrue = SLPCtrue.position(Ptrue);
+                            Basic3DVector<float> sPlanetrue (-1000.,-1000.,-1000.);
+                            if (spairPlanetrue.first){sPlanetrue = spairPlanetrue.second;}
+
+                            //----------------Propagateur----------------------//
+                            // PropTSOSPlane = PropPlane->propagate(Surtraj,P);//crash : seg fault
+                            //----------------------------------------//
+
+
+                            // if (spair.first)//check valdity of propagation
+                            // // if (PropTSOSPlane.isValid())
+                            // {
+
+                                            //-------SLCC with miniaod data-------------//
+                                tree_track_Prop_firsthit_x_L4.push_back(2*(GP.x()+itTrack->vx()/2));//Go t GLobal Coordiantes coordiantes... +itTrack->vx()
+                                tree_track_Prop_firsthit_y_L4.push_back(2*(GP.y()+itTrack->vy()/2));//local coordiantes...  +itTrack->vy()
+                                tree_track_Prop_firsthit_z_L4.push_back(2*(GP.z()+itTrack->vz()/2));//local coordiantes... +itTrack->vz()
+                                tree_track_RECOvsMINI_firsthit_x_L4.push_back(itTrack->innerPosition().X()-2*GP.x()-itTrack->vx());//-itTrack->vx()
+                                tree_track_RECOvsMINI_firsthit_y_L4.push_back(itTrack->innerPosition().Y()-2*GP.y()-itTrack->vy());//-itTrack->vy()
+                                tree_track_RECOvsMINI_firsthit_z_L4.push_back(itTrack->innerPosition().Z()-2*GP.z()-itTrack->vz());//-itTrack->vz()
+                                            //----SLCC with REOC data-----//
+                                tree_track_Prop_firsthit_x_L4_opti.push_back(2*(GPopti.x()+itTrack->vx()/2));//Go to GLobal Coordiantes coordiantes... The transformation is not well understood atm
+                                tree_track_Prop_firsthit_y_L4_opti.push_back(2*(GPopti.y()+itTrack->vy()/2));//local coordiantes...  +itTrack->vy()
+                                tree_track_Prop_firsthit_z_L4_opti.push_back(2*(GPopti.z()+itTrack->vz()/2));//local coordiantes... +itTrack->vz()
+                                tree_track_RECOvsMINI_firsthit_x_L4_opti.push_back(itTrack->innerPosition().X()-2*GPopti.x()-itTrack->vx());//-itTrack->vx()
+                                tree_track_RECOvsMINI_firsthit_y_L4_opti.push_back(itTrack->innerPosition().Y()-2*GPopti.y()-itTrack->vy());//-itTrack->vy()
+                                tree_track_RECOvsMINI_firsthit_z_L4_opti.push_back(itTrack->innerPosition().Z()-2*GPopti.z()-itTrack->vz());//-itTrack->vz()
+
+                                // tree_track_Prop_firsthit_x_L4.push_back(GPfh.x());
+                                // tree_track_Prop_firsthit_y_L4.push_back(GPfh.y());
+                                // tree_track_Prop_firsthit_z_L4.push_back(GPfh.z());
+                                // tree_track_RECOvsMINI_firsthit_x_L4.push_back(itTrack->innerPosition().X()-GPfh.x());
+                                // tree_track_RECOvsMINI_firsthit_y_L4.push_back(itTrack->innerPosition().Y()-GPfh.y());
+                                // tree_track_RECOvsMINI_firsthit_z_L4.push_back(itTrack->innerPosition().Z()-GPfh.z());
+
+                                                //---------------Propagator-------------------//
+                                // tree_track_Prop_firsthit_x_L4.push_back(PropTSOSPlane.globalPosition().x());
+                                // tree_track_Prop_firsthit_y_L4.push_back(PropTSOSPlane.globalPosition().y());
+                                // tree_track_Prop_firsthit_z_L4.push_back(PropTSOSPlane.globalPosition().z());
+                                // tree_track_RECOvsMINI_firsthit_x_L4.push_back(itTrack->innerPosition().X()-PropTSOSPlane.globalPosition().x());
+                                // tree_track_RECOvsMINI_firsthit_y_L4.push_back(itTrack->innerPosition().Y()-PropTSOSPlane.globalPosition().y());
+                                // tree_track_RECOvsMINI_firsthit_z_L4.push_back(itTrack->innerPosition().Z()-PropTSOSPlane.globalPosition().z());
+
+                                //-----------------SLPC--------------------//
+                                tree_track_Prop_firsthit_x_L5.push_back(sPlane.x());
+                                tree_track_Prop_firsthit_y_L5.push_back(sPlane.y());
+                                tree_track_Prop_firsthit_z_L5.push_back(sPlane.z());
+                                tree_track_RECOvsMINI_firsthit_x_L5.push_back(itTrack->innerPosition().X()-sPlane.x());
+                                tree_track_RECOvsMINI_firsthit_y_L5.push_back(itTrack->innerPosition().Y()-sPlane.y());
+                                tree_track_RECOvsMINI_firsthit_z_L5.push_back(itTrack->innerPosition().Z()-sPlane.z());
+
+                                tree_track_Prop_firsthit_x_L5_opti.push_back(sPlanetrue.x());
+                                tree_track_Prop_firsthit_y_L5_opti.push_back(sPlanetrue.y());
+                                tree_track_Prop_firsthit_z_L5_opti.push_back(sPlanetrue.z());
+                                tree_track_RECOvsMINI_firsthit_x_L5_opti.push_back(itTrack->innerPosition().X()-sPlanetrue.x());
+                                tree_track_RECOvsMINI_firsthit_y_L5_opti.push_back(itTrack->innerPosition().Y()-sPlanetrue.y());
+                                tree_track_RECOvsMINI_firsthit_z_L5_opti.push_back(itTrack->innerPosition().Z()-sPlanetrue.z());
+                            // }
+                            
+                }
             }
-        //gives the same result as above*...
-        //   AnalyticalPropagator* AnaProp = new AnalyticalPropagator(BestTracks[count].field());
-        //   TrajectoryStateOnSurface tsos2 = AnaProp->propagate(Surtraj,Layer1);//also a method with tsos=> Surtraj
-        //   if (tsos2.isValid())
-        //     {
-        //       std::cout<<"------------AnaPropagated state-------"<<std::endl;
-        //       std::cout<<"RECO TT Propagator=> tsos glob X: "<<tsos2.globalPosition().x()<<"|Y: "<<tsos2.globalPosition().y()<<"|Z"<<tsos2.globalPosition().z()<<std::endl;
-        //       // std::cout<<"MINIAOD TT Propagator=> tsos local X: "<<tsos.localPosition().x()<<"|Y: "<<tsos.localPosition().y()<<"|Z"<<tsos.localPosition().z()<<std::endl;
-        //       //Local position gives back 0 when it reached the surface
-        //       float dxy_prop = sqrt(tsos2.globalPosition().x()*tsos2.globalPosition().x()+tsos2.globalPosition().y()*tsos2.globalPosition().y());
-        //       std::cout<<"AnaTransverse distance: "<<dxy_prop<<std::endl;
-        //       tree_track_AnaProp_firsthit_x.push_back(tsos2.globalPosition().x());
-        //       tree_track_AnaProp_firsthit_y.push_back(tsos2.globalPosition().y());
-        //       tree_track_AnaProp_firsthit_z.push_back(tsos2.globalPosition().z());
-        //       tree_track_AnaRECOvsMINI_firsthit_x.push_back(abs(itTrack->innerPosition().X()-tsos2.globalPosition().x()));
-        //       tree_track_AnaRECOvsMINI_firsthit_y.push_back(abs(itTrack->innerPosition().Y()-tsos2.globalPosition().y()));
-        //       tree_track_AnaRECOvsMINI_firsthit_z.push_back(abs(itTrack->innerPosition().Z()-tsos2.globalPosition().z()));
-        //     }
-          
-          std::cout<<"------------End of Track-------"<<std::endl;
-          count+=1;
-        }      //firsthit
-        //----------------IMPORTANT-----------------//
-        //  The use of propagate will be different depending on the "initialfreestate" obtained above.
-        // Disk might get considered as plane, so the propagate method will change
-        //+ Cylinders and disk will have to be defined for each possible hitpattern (firsthit)
-        //----------------------------------------------------------------------------
+
+
+
+        count+=1;
 
       //---------------------------End of paul--------------------------//
 
@@ -2408,7 +2750,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         tree_track_reco08Jet_idx.push_back(trackTo08JetMap[iTrack]);
         tree_track_recoCaloJet_idx.push_back(trackToCaloJetMap[iTrack]);
         //     tree_track_reco08CaloJet_idx.push_back(trackTo08CaloJetMap[iTrack]);
-        
+        // std::cout<<"end loop on tracks"<<std::endl;
     } //end loop on tracks
     
     /*std::cout << "---------------------"  << std::endl;
@@ -3079,7 +3421,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             //cout << "BDT VAL " << bdtval <<endl;
             tree_Hemi_tracks_axis.push_back(Tracks_axis);
             tree_Hemi_tracks_dR.push_back(dR);
-	    
+            
             if ( Tracks_axis == 1 )
             {
                 if ( dR < dRcut_tracks )
@@ -3655,7 +3997,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         }
 
         if(!displacedVertex_Hemi2_mva.isValid())
-        {std::cout<<"help me"<<std::endl;
+        {
+            // std::cout<<"help me"<<std::endl;
             FVtx_ntk = displacedTracks_Hemi2_mva.size();
             ValidVtx = 0;
             tree_Vtx_HemiLLP_Valid.push_back(ValidVtx);
@@ -4188,6 +4531,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if ( HT_val > 180. && MuonSup10GeV && MuonSup28GeV && invMassGood ) filter += 2;
     tree_Vtx_HemiLLP_filter.push_back(filter);
     tree_Vtx_HemiLLP_filter.push_back(filter);
+
 //$$
     
     smalltree->Fill();
@@ -4275,18 +4619,79 @@ void TrackingPerf::clearVariables() {
     tree_track_stripTIDLayersWithMeasurement.clear();
     tree_track_stripTOBLayersWithMeasurement.clear();
     tree_track_hitpattern.clear();
+    tree_track_radius.clear();
+    tree_track_radius_Prop.clear();
+    tree_track_theta.clear();
+    tree_track_phierror.clear();
+    tree_track_globalphi.clear();
+
+    tree_track_surf.clear();
     tree_track_Prop_firsthit_x.clear();
     tree_track_Prop_firsthit_y.clear();
     tree_track_Prop_firsthit_z.clear();
     tree_track_RECOvsMINI_firsthit_x.clear();
     tree_track_RECOvsMINI_firsthit_y.clear();
     tree_track_RECOvsMINI_firsthit_z.clear();
-    tree_track_AnaProp_firsthit_x.clear();
-    tree_track_AnaProp_firsthit_y.clear();
-    tree_track_AnaProp_firsthit_z.clear();
-    tree_track_AnaRECOvsMINI_firsthit_x.clear();
-    tree_track_AnaRECOvsMINI_firsthit_y.clear();
-    tree_track_AnaRECOvsMINI_firsthit_z.clear();
+
+    tree_track_Prop_firsthit_x_L2.clear();
+    tree_track_Prop_firsthit_y_L2.clear();
+    tree_track_Prop_firsthit_z_L2.clear();
+    tree_track_RECOvsMINI_firsthit_x_L2.clear();
+    tree_track_RECOvsMINI_firsthit_y_L2.clear();
+    tree_track_RECOvsMINI_firsthit_z_L2.clear();
+
+
+    tree_track_Prop_firsthit_x_L2_opti.clear();
+    tree_track_Prop_firsthit_y_L2_opti.clear();
+    tree_track_Prop_firsthit_z_L2_opti.clear();
+    tree_track_RECOvsMINI_firsthit_x_L2_opti.clear();
+    tree_track_RECOvsMINI_firsthit_y_L2_opti.clear();
+    tree_track_RECOvsMINI_firsthit_z_L2_opti.clear();
+
+        tree_track_Prop_firsthit_x_L3.clear();
+    tree_track_Prop_firsthit_y_L3.clear();
+    tree_track_Prop_firsthit_z_L3.clear();
+    tree_track_RECOvsMINI_firsthit_x_L3.clear();
+    tree_track_RECOvsMINI_firsthit_y_L3.clear();
+    tree_track_RECOvsMINI_firsthit_z_L3.clear();
+
+            tree_track_Prop_firsthit_x_L3_opti.clear();
+    tree_track_Prop_firsthit_y_L3_opti.clear();
+    tree_track_Prop_firsthit_z_L3_opti.clear();
+    tree_track_RECOvsMINI_firsthit_x_L3_opti.clear();
+    tree_track_RECOvsMINI_firsthit_y_L3_opti.clear();
+    tree_track_RECOvsMINI_firsthit_z_L3_opti.clear();
+
+        tree_track_Prop_firsthit_x_L4.clear();
+    tree_track_Prop_firsthit_y_L4.clear();
+    tree_track_Prop_firsthit_z_L4.clear();
+    tree_track_RECOvsMINI_firsthit_x_L4.clear();
+    tree_track_RECOvsMINI_firsthit_y_L4.clear();
+    tree_track_RECOvsMINI_firsthit_z_L4.clear();
+
+    tree_track_Prop_firsthit_x_L4_opti.clear();
+    tree_track_Prop_firsthit_y_L4_opti.clear();
+    tree_track_Prop_firsthit_z_L4_opti.clear();
+    tree_track_RECOvsMINI_firsthit_x_L4_opti.clear();
+    tree_track_RECOvsMINI_firsthit_y_L4_opti.clear();
+    tree_track_RECOvsMINI_firsthit_z_L4_opti.clear();
+
+    tree_track_Prop_firsthit_x_L5.clear();
+    tree_track_Prop_firsthit_y_L5.clear();
+    tree_track_Prop_firsthit_z_L5.clear();
+    tree_track_RECOvsMINI_firsthit_x_L5.clear();
+    tree_track_RECOvsMINI_firsthit_y_L5.clear();
+    tree_track_RECOvsMINI_firsthit_z_L5.clear();
+
+    tree_track_Prop_firsthit_x_L5_opti.clear();
+    tree_track_Prop_firsthit_y_L5_opti.clear();
+    tree_track_Prop_firsthit_z_L5_opti.clear();
+    tree_track_RECOvsMINI_firsthit_x_L5_opti.clear();
+    tree_track_RECOvsMINI_firsthit_y_L5_opti.clear();
+    tree_track_RECOvsMINI_firsthit_z_L5_opti.clear();
+    
+
+    tree_track_Prop_path.clear();
     tree_track_vx.clear();
     tree_track_vy.clear();
     tree_track_vz.clear();
