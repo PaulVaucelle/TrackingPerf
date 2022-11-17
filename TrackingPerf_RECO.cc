@@ -2872,7 +2872,7 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         // ttree->Draw("tree_track_RECOvsMINI_GeoDisk_firsthit_y","tree_track_surf==1 && abs(tree_track_RECOvsMINI_GeoDisk_firsthit_y)<20 && tree_track_sim_LLP>0")
         //ttree->Draw("tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_x","tree_track_surf==1 && abs(tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_x)<20 && tree_track_sim_LLP>0")
         //ttree->Draw("tree_track_RECOvsMINI_GeoBarrel_firsthit_opti_z","tree_track_surf==0 && abs(tree_track_RECOvsMINI_GeoBarrel_firsthit_opti_z)<20 && tree_track_sim_LLP>0")
-
+        // surf==0 : barrel and 1 is for plane, keep in mnd the shape :D
 
 
         count+=1;
