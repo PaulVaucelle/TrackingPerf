@@ -12,8 +12,8 @@ A MiniAOD version is available @: https://github.com/Threshic/FlyingTop/tree/mas
 For the RECO Version : 
 Look for the _RECO version or "Version-05_10_2022-AVF (Pour présentation TPS)" of TrackingPerf.cc (in plugins) on the history version of the repo.
 Finally, since some data is lost due to MINIAOD format, a comparison is made for the firsthit in the tracker between RECO and MINIAOD on the version 
-of 16/11/2022.
-+ Don't pay attention to the _MINIAOD since these files are a mix of RECO and MINIAOD have a high chanc eof crashing when running on MINIAOD files
+of 16/11/2022 (Paul version: kind of a draft) or 17/11/2022 (Daniel's version : less of a draft).
++ Don't pay attention to the _MINIAOD since these files are a mix of RECO and MINIAOD have a high chance of crashing when running on MINIAOD files
 
 For people @IPHC that want access to the code:
 
