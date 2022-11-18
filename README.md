@@ -17,7 +17,7 @@ of 16/11/2022 (Paul version: kind of a draft) or 17/11/2022 (Daniel's version : 
 
 For people @IPHC that want access to the code:
 
-# Release 10_6_20_FLY : 
+# Release 10_6_20_LLP : 
 
 ###
 ### création du répertoire :
@@ -39,8 +39,8 @@ eval  `scramv1 r -sh`
 
 git cms-init
 
-# cp -r /opt/sbg/cms/ui2_data1/blochd/CMSSW_10_6_20_FLY_pourPaul/src/TrackingPerf . 
-cp -r /opt/sbg/cms/ui2_data1/pvaucell/CMSSW_10_6_20_FLY/src/TrackingPerf .
+# cp -r /opt/sbg/cms/ui2_data1/blochd/CMSSW_10_6_20_LLP/src/TrackingPerf . 
+cp -r /opt/sbg/cms/ui2_data1/pvaucell/CMSSW_10_6_20_LLP/src/TrackingPerf .
 
 # just for information for the very first time:
 # mkdir TrackingPerf
