@@ -194,7 +194,8 @@
 #include "CondFormats/DataRecord/interface/EcalChannelStatusRcd.h"
               //----------------BField--------------//
 #include "MagneticField/VolumeBasedEngine/interface/VolumeBasedMagneticField.h"
-
+              //-----------Specific interface--------//
+#include "TrackingPerf/TrackingPerf/interface/PropaHitPattern.h"
 //------------------------------!!!!------------------------//
 
 //
@@ -467,30 +468,17 @@ private:
     std::vector<float>   tree_track_firstHit_x;
     std::vector<float>   tree_track_firstHit_y;
     std::vector<float>   tree_track_firstHit_z;
+        std::vector<float>   tree_track_firstHit_x_MINI;
+    std::vector<float>   tree_track_firstHit_y_MINI;
+    std::vector<float>   tree_track_firstHit_z_MINI;
     std::vector<float>   tree_track_firstHit_phi;
     //
-    std::vector<float>   tree_track_ddxy;
-    std::vector<float>   tree_track_ddxyError;
-    std::vector<float>                    tree_track_dpt;
-     std::vector<float>     tree_track_deta;
-    std::vector<float>                tree_track_dphi;
-     std::vector<float>     tree_track_dNChi2;
-     std::vector<float>               tree_track_dvx;
-     std::vector<float>     tree_track_dvy;
-      std::vector<float>              tree_track_dvz;
-      std::vector<float>    tree_track_ddz;
-       std::vector<float>             tree_track_ddzError;
+
 //$$$$
-    std::vector<float>   tree_track_extraTrue_dx;
-    std::vector<float>   tree_track_extraTrue_dy;
-    std::vector<float>   tree_track_extraTrue_dz;
-    std::vector<float>   tree_track_extraTrue_dphi;
-    std::vector<float>   tree_track_fromLayer_dx;
-    std::vector<float>   tree_track_fromLayer_dy;
-    std::vector<float>   tree_track_fromLayer_dz;
-    std::vector<float>   tree_track_fromLayer_dphi;
+
 //$$$$
     std::vector<int>     tree_track_iJet;
+    std::vector<float>   tree_track_region;
     std::vector<float>   tree_track_ntrk10;
     std::vector<float>   tree_track_ntrk20;
     std::vector<float>   tree_track_ntrk30;
@@ -521,69 +509,6 @@ private:
     std::vector<float>   tree_track_drSig;
 //!!!!
 
-    std::vector<float>   tree_track_GeoBarrel_firsthit_x;
-    std::vector<float>   tree_track_GeoBarrel_firsthit_y;
-    std::vector<float>   tree_track_GeoBarrel_firsthit_z;
-    std::vector<float>   tree_track_RECOvsMINI_GeoBarrel_firsthit_x;
-    std::vector<float>   tree_track_RECOvsMINI_GeoBarrel_firsthit_y;
-    std::vector<float>   tree_track_RECOvsMINI_GeoBarrel_firsthit_z;
-
-    std::vector<float>                         tree_track_PropBarrel_firsthit_x;
-    std::vector<float>                         tree_track_PropBarrel_firsthit_y;
-    std::vector<float>                         tree_track_PropBarrel_firsthit_z;
-    std::vector<float>                         tree_track_RECOvsMINI_PropBarrel_firsthit_x;
-    std::vector<float>                         tree_track_RECOvsMINI_PropBarrel_firsthit_y;
-    std::vector<float>                         tree_track_RECOvsMINI_PropBarrel_firsthit_z;
-
-    std::vector<float>                         tree_track_PropBarrel_firsthit_opti_x;
-    std::vector<float>                         tree_track_PropBarrel_firsthit_opti_y;
-    std::vector<float>                         tree_track_PropBarrel_firsthit_opti_z;
-    std::vector<float>                         tree_track_RECOvsMINI_PropBarrel_firsthit_opti_x;
-    std::vector<float>                         tree_track_RECOvsMINI_PropBarrel_firsthit_opti_y;
-    std::vector<float>                         tree_track_RECOvsMINI_PropBarrel_firsthit_opti_z;
-
-    std::vector<float>                         tree_track_GeoDisk_firsthit_x;
-    std::vector<float>                         tree_track_GeoDisk_firsthit_y;
-    std::vector<float>                         tree_track_GeoDisk_firsthit_z;
-    std::vector<float>                         tree_track_RECOvsMINI_GeoDisk_firsthit_x;
-    std::vector<float>                         tree_track_RECOvsMINI_GeoDisk_firsthit_y;
-    std::vector<float>                         tree_track_RECOvsMINI_GeoDisk_firsthit_z;
-                            
-    std::vector<float>                         tree_track_GeoDisk_firsthit_opti_x;
-    std::vector<float>                         tree_track_GeoDisk_firsthit_opti_y;
-    std::vector<float>                         tree_track_GeoDisk_firsthit_opti_z;
-    std::vector<float>                         tree_track_RECOvsMINI_GeoDisk_firsthit_opti_x;
-    std::vector<float>                         tree_track_RECOvsMINI_GeoDisk_firsthit_opti_y;
-    std::vector<float>                         tree_track_RECOvsMINI_GeoDisk_firsthit_opti_z;
-
-    std::vector<float>                         tree_track_PropDisk_SLCC_firsthit_x;
-    std::vector<float>                         tree_track_PropDisk_SLCC_firsthit_y;
-    std::vector<float>                         tree_track_PropDisk_SLCC_firsthit_z;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_x;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_y;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_z;
-                                            
-    std::vector<float>                         tree_track_PropDisk_SLCC_firsthit_opti_x;
-    std::vector<float>                         tree_track_PropDisk_SLCC_firsthit_opti_y;
-    std::vector<float>                         tree_track_PropDisk_SLCC_firsthit_opti_z;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_x;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_y;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_z;
-
-                                
-    std::vector<float>                         tree_track_PropDisk_SLPC_firsthit_x;
-    std::vector<float>                         tree_track_PropDisk_SLPC_firsthit_y;
-    std::vector<float>                         tree_track_PropDisk_SLPC_firsthit_z;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_x;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_y;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_z;
-
-    std::vector<float>                         tree_track_PropDisk_SLPC_firsthit_opti_x;
-    std::vector<float>                         tree_track_PropDisk_SLPC_firsthit_opti_y;
-    std::vector<float>                         tree_track_PropDisk_SLPC_firsthit_opti_z;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_x;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_y;
-    std::vector<float>                         tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_z;
 
     std::vector<float>   tree_track_theta;
     std::vector<int>     tree_track_surf;
@@ -956,32 +881,18 @@ kvfPSet( iConfig.getParameter<edm::ParameterSet>("KVFParameters"))
     smalltree->Branch("tree_track_firstHit_x",   &tree_track_firstHit_x);
     smalltree->Branch("tree_track_firstHit_y",   &tree_track_firstHit_y);
     smalltree->Branch("tree_track_firstHit_z",   &tree_track_firstHit_z);
+        smalltree->Branch("tree_track_firstHit_x_MINI",   &tree_track_firstHit_x_MINI);
+    smalltree->Branch("tree_track_firstHit_y_MINI",   &tree_track_firstHit_y_MINI);
+    smalltree->Branch("tree_track_firstHit_z_MINI",   &tree_track_firstHit_z_MINI);
     smalltree->Branch("tree_track_firstHit_phi", &tree_track_firstHit_phi);
 
-    //
-    smalltree->Branch("tree_track_ddxy", &tree_track_ddxy);
-    smalltree->Branch("tree_track_ddxyError", &tree_track_ddxyError);
-    smalltree->Branch("tree_track_dpt",&tree_track_dpt);
-    smalltree->Branch("tree_track_deta",&tree_track_deta);
-    smalltree->Branch("tree_track_dphi",&tree_track_dphi);
-    smalltree->Branch("tree_track_dNChi2",&tree_track_dNChi2);
-    smalltree->Branch("tree_track_dvx",&tree_track_dvx);
-    smalltree->Branch("tree_track_dvy",&tree_track_dvy);
-    smalltree->Branch("tree_track_dvz",&tree_track_dvz);
-    smalltree->Branch("tree_track_ddz",&tree_track_ddz);
-    smalltree->Branch("tree_track_ddzError",&tree_track_ddzError);
+
     
 //$$$$
-    smalltree->Branch("tree_track_extraTrue_dx",  &tree_track_extraTrue_dx);
-    smalltree->Branch("tree_track_extraTrue_dy",  &tree_track_extraTrue_dy);
-    smalltree->Branch("tree_track_extraTrue_dz",  &tree_track_extraTrue_dz);
-    smalltree->Branch("tree_track_extraTrue_dphi",&tree_track_extraTrue_dphi);
-    smalltree->Branch("tree_track_fromLayer_dx",  &tree_track_fromLayer_dx);
-    smalltree->Branch("tree_track_fromLayer_dy",  &tree_track_fromLayer_dy);
-    smalltree->Branch("tree_track_fromLayer_dz",  &tree_track_fromLayer_dz);
-    smalltree->Branch("tree_track_fromLayer_dphi",&tree_track_fromLayer_dphi);
+
 //$$$$
     smalltree->Branch("tree_track_iJet",         &tree_track_iJet);
+    smalltree->Branch("tree_track_region",       &tree_track_region);
     smalltree->Branch("tree_track_ntrk10",       &tree_track_ntrk10);
     smalltree->Branch("tree_track_ntrk20",       &tree_track_ntrk20);
     smalltree->Branch("tree_track_ntrk30",       &tree_track_ntrk30);
@@ -1010,70 +921,7 @@ kvfPSet( iConfig.getParameter<edm::ParameterSet>("KVFParameters"))
     smalltree->Branch("tree_track_recoCaloJet_idx",   &tree_track_recoCaloJet_idx);
     smalltree->Branch("tree_track_drSig",              &tree_track_drSig );
     //!!!!
-    smalltree->Branch("tree_track_GeoBarrel_firsthit_x",&tree_track_GeoBarrel_firsthit_x);
-    smalltree->Branch("tree_track_GeoBarrel_firsthit_y",&tree_track_GeoBarrel_firsthit_y);
-    smalltree->Branch("tree_track_GeoBarrel_firsthit_z",&tree_track_GeoBarrel_firsthit_z);
-    smalltree->Branch("tree_track_RECOvsMINI_GeoBarrel_firsthit_x",&tree_track_RECOvsMINI_GeoBarrel_firsthit_x);
-    smalltree->Branch("tree_track_RECOvsMINI_GeoBarrel_firsthit_y",&tree_track_RECOvsMINI_GeoBarrel_firsthit_y);
-    smalltree->Branch("tree_track_RECOvsMINI_GeoBarrel_firsthit_z",&tree_track_RECOvsMINI_GeoBarrel_firsthit_z);
-
-    smalltree->Branch("tree_track_PropBarrel_firsthit_x",&tree_track_PropBarrel_firsthit_x);
-    smalltree->Branch("tree_track_PropBarrel_firsthit_y",&tree_track_PropBarrel_firsthit_y);
-    smalltree->Branch("tree_track_PropBarrel_firsthit_z",&tree_track_PropBarrel_firsthit_z);
-    smalltree->Branch("tree_track_RECOvsMINI_PropBarrel_firsthit_x",&tree_track_RECOvsMINI_PropBarrel_firsthit_x);
-    smalltree->Branch("tree_track_RECOvsMINI_PropBarrel_firsthit_y",&tree_track_RECOvsMINI_PropBarrel_firsthit_y);
-    smalltree->Branch("tree_track_RECOvsMINI_PropBarrel_firsthit_z",&tree_track_RECOvsMINI_PropBarrel_firsthit_z);
-
-    smalltree->Branch("tree_track_PropBarrel_firsthit_opti_x",&tree_track_PropBarrel_firsthit_opti_x);
-    smalltree->Branch("tree_track_PropBarrel_firsthit_opti_y",&tree_track_PropBarrel_firsthit_opti_y);
-    smalltree->Branch("tree_track_PropBarrel_firsthit_opti_z",&tree_track_PropBarrel_firsthit_opti_z);
-    smalltree->Branch("tree_track_RECOvsMINI_PropBarrel_firsthit_opti_x",&tree_track_RECOvsMINI_PropBarrel_firsthit_opti_x);
-    smalltree->Branch("tree_track_RECOvsMINI_PropBarrel_firsthit_opti_y",&tree_track_RECOvsMINI_PropBarrel_firsthit_opti_y);
-    smalltree->Branch("tree_track_RECOvsMINI_PropBarrel_firsthit_opti_z",&tree_track_RECOvsMINI_PropBarrel_firsthit_opti_z);
-
-    smalltree->Branch("tree_track_GeoDisk_firsthit_x",&tree_track_GeoDisk_firsthit_x);
-    smalltree->Branch("tree_track_GeoDisk_firsthit_y",&tree_track_GeoDisk_firsthit_y);
-    smalltree->Branch("tree_track_GeoDisk_firsthit_z",&tree_track_GeoDisk_firsthit_z);
-    smalltree->Branch("tree_track_RECOvsMINI_GeoDisk_firsthit_x",&tree_track_RECOvsMINI_GeoDisk_firsthit_x);
-    smalltree->Branch("tree_track_RECOvsMINI_GeoDisk_firsthit_y",&tree_track_RECOvsMINI_GeoDisk_firsthit_y);
-    smalltree->Branch("tree_track_RECOvsMINI_GeoDisk_firsthit_z",&tree_track_RECOvsMINI_GeoDisk_firsthit_z);
-                            
-    smalltree->Branch("tree_track_GeoDisk_firsthit_opti_x",&tree_track_GeoDisk_firsthit_opti_x);
-    smalltree->Branch("tree_track_GeoDisk_firsthit_opti_y",&tree_track_GeoDisk_firsthit_opti_y);
-    smalltree->Branch("tree_track_GeoDisk_firsthit_opti_z",&tree_track_GeoDisk_firsthit_opti_z);
-    smalltree->Branch("tree_track_RECOvsMINI_GeoDisk_firsthit_opti_x",&tree_track_RECOvsMINI_GeoDisk_firsthit_opti_x);
-    smalltree->Branch("tree_track_RECOvsMINI_GeoDisk_firsthit_opti_y",&tree_track_RECOvsMINI_GeoDisk_firsthit_opti_y);
-    smalltree->Branch("tree_track_RECOvsMINI_GeoDisk_firsthit_opti_z",&tree_track_RECOvsMINI_GeoDisk_firsthit_opti_z);
-
-    smalltree->Branch("tree_track_PropDisk_SLCC_firsthit_x",&tree_track_PropDisk_SLCC_firsthit_x);
-    smalltree->Branch("tree_track_PropDisk_SLCC_firsthit_y",&tree_track_PropDisk_SLCC_firsthit_y);
-    smalltree->Branch("tree_track_PropDisk_SLCC_firsthit_z",&tree_track_PropDisk_SLCC_firsthit_z);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_x",&tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_x);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_y",&tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_y);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_z",&tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_z);
-                                            
-    smalltree->Branch("tree_track_PropDisk_SLCC_firsthit_opti_x",&tree_track_PropDisk_SLCC_firsthit_opti_x);
-    smalltree->Branch("tree_track_PropDisk_SLCC_firsthit_opti_y",&tree_track_PropDisk_SLCC_firsthit_opti_y);
-    smalltree->Branch("tree_track_PropDisk_SLCC_firsthit_opti_z",&tree_track_PropDisk_SLCC_firsthit_opti_z);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_x",&tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_x);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_y",&tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_y);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_z",&tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_z);
-
-                                
-    smalltree->Branch("tree_track_PropDisk_SLPC_firsthit_x",&tree_track_PropDisk_SLPC_firsthit_x);
-    smalltree->Branch("tree_track_PropDisk_SLPC_firsthit_y",&tree_track_PropDisk_SLPC_firsthit_y);
-    smalltree->Branch("tree_track_PropDisk_SLPC_firsthit_z",&tree_track_PropDisk_SLPC_firsthit_z);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_x",&tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_x);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_y",&tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_y);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_z",&tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_z);
-
-    smalltree->Branch("tree_track_PropDisk_SLPC_firsthit_opti_x",&tree_track_PropDisk_SLPC_firsthit_opti_x);
-    smalltree->Branch("tree_track_PropDisk_SLPC_firsthit_opti_y",&tree_track_PropDisk_SLPC_firsthit_opti_y);
-    smalltree->Branch("tree_track_PropDisk_SLPC_firsthit_opti_z",&tree_track_PropDisk_SLPC_firsthit_opti_z);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_x",&tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_x);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_y",&tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_y);
-    smalltree->Branch("tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_z",&tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_z);
-
+    
     smalltree->Branch("tree_track_theta",&tree_track_theta);
     smalltree->Branch("tree_track_surf",&tree_track_surf);
     smalltree->Branch("tree_track_hitpattern", &tree_track_hitpattern);
@@ -1271,57 +1119,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   //std::cout << "eventNumber = "<< eventNumber <<std::endl;
   lumiBlock = iEvent.luminosityBlock();
   
-//$$$$
-    bool Central[2000];
-    float Layer[2000];
-    for (unsigned int i = 0; i<2000; i++) {
-      Central[i] = false;
-      Layer[i] = 0;
-    }  
-    Central[1160] = true;
-    Central[1168] = true;
-    Central[1176] = true;
-    Central[1184] = true;
-    Central[1416] = true;
-    Central[1420] = true;
-    Central[1424] = true;
-    Central[1428] = true;
-    Central[1432] = true;
-    Central[1440] = true;
-    Central[1672] = true;
-    Layer[1160] =   3.0;
-    Layer[1168] =   6.8;
-    Layer[1176] =  10.9;
-    Layer[1184] =  16.0;
-    Layer[1288] =  32.3;
-    Layer[1296] =  39.3;
-    Layer[1304] =  48.9;
-    Layer[1416] =  24.0;
-    Layer[1420] =  27.0;
-    Layer[1424] =  32.4;
-    Layer[1428] =  35.3;
-    Layer[1432] =  41.7;
-    Layer[1440] =  49.7;
-    Layer[1544] =  77.9;
-    Layer[1548] =  80.8;
-    Layer[1552] =  90.4;
-    Layer[1556] =  94.2;
-    Layer[1560] = 102.7;
-    Layer[1564] = 107.2;
-    Layer[1672] =  60.5;
-    Layer[1800] = 131.6;
-    Layer[1804] = 129.5;
-    Layer[1808] = 145.7;
-    Layer[1812] = 143.0;
-    Layer[1816] = 160.2;
-    Layer[1820] = 157.8;
-    Layer[1824] = 174.4;
-    Layer[1828] = 173.1;
-    Layer[1832] = 188.7;
-    Layer[1836] = 186.0;
-//$$$$
-
-
   //// HANDLES /////
   // Triggers
   edm::Handle<edm::TriggerResults> triggerBits;
@@ -2476,43 +2273,6 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     vector<reco::TransientTrack> BestTracks;
     int count =0;//can be useful if a TT cannot be created out of a pat:candidate
     std::vector<std::pair<uint16_t,float> > Players;
-
-    //----------------DataBase for the layers of the tracker that are cocnerned by the analysis--//
-    //-uint16_t is the hit pattern information and the float is the mean radius/z of the corresponding layer-//
-        Players.push_back(make_pair(1160,2.959));//PIXBL1
-        Players.push_back(make_pair(1168,6.778));//PIXBL2
-        Players.push_back(make_pair(1176,10.89));//PIXBL3
-        Players.push_back(make_pair(1184,16));//PIXBL4
-        Players.push_back(make_pair(1416,23.83));//TIBL1
-        Players.push_back(make_pair(1420,27.02));//TIBL1stereo
-        Players.push_back(make_pair(1424,32.23));//TIBL2
-        Players.push_back(make_pair(1428,35.41));//TIBL2stereo
-        Players.push_back(make_pair(1432,41.75));//TIBL3
-        Players.push_back(make_pair(1440,49.71));//TIBL4
-        Players.push_back(make_pair(1672,60.43));//TOBL1
-        Players.push_back(make_pair(1288,32.35));//PXFdisk1
-        Players.push_back(make_pair(1296,39.41));//PXFdisk2
-        Players.push_back(make_pair(1304,48.96));//PXFdisk3
-        Players.push_back(make_pair(1544,77.9));//TIDWHeel1
-        Players.push_back(make_pair(1548,80.71));//TIDWHeel1stereo
-        Players.push_back(make_pair(1552,90.4));//TIDWHeel2
-        Players.push_back(make_pair(1556,94.02));//TIDWHeel2stereo
-        Players.push_back(make_pair(1560,102.7));//TIDWHeel3
-        Players.push_back(make_pair(1564,107.0));//TIDWHeel3stereo
-        Players.push_back(make_pair(1800,131.6));//TECWHeel1
-        Players.push_back(make_pair(1804,129.4));//TECWHeel1stereo
-        Players.push_back(make_pair(1808,145.5));//TECWHeel2
-        Players.push_back(make_pair(1812,142.8));//TECWHeel2stereo
-        Players.push_back(make_pair(1816,160.1));//TECWHeel3
-        Players.push_back(make_pair(1820,157.1));//TECWHeel3stereo
-        Players.push_back(make_pair(1824,174.2));//TECWHeel4
-        Players.push_back(make_pair(1828,172.7));//TECWHeel4stereo
-        Players.push_back(make_pair(1832,188.4));//TECWHeel5
-        Players.push_back(make_pair(1836,186.3));//TECWHeel5stereo
-        Players.push_back(make_pair(1840,203.2));//TECWHeel6
-        Players.push_back(make_pair(1844,203.8));//TECWHeel6stereo
-        Players.push_back(make_pair(1848,222.2));//TECWHeel7   
-    //-----------------------------------------------------------------//
     //----!!!!-----//
     tree_nTracks = 0; 
 
@@ -2571,8 +2331,8 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       //general hit properties of tracks
       //--------------------------------
       
-      const reco::HitPattern& hp = itTrack->hitPattern();
-      
+      // const reco::HitPattern& hp = itTrack->hitPattern();
+      const HitPattern hp = itTrack->hitPattern();
       tree_track_nHit.push_back(         itTrack->numberOfValidHits());
       tree_track_nHitPixel.push_back(    hp.numberOfValidPixelHits());
 //       tree_track_numberOfValidStripHits.push_back(hp.numberOfValidStripHits());
@@ -2608,216 +2368,35 @@ TrackingPerf::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                   // TSOS is said to be better for the -------//
                   // propagators (see Propagator.h)...--------//
                   //------------------------------------------//
-      //-----hitpattern -> Database ---/
+ //-----hitpattern -> Database ---/
+      
       uint16_t firsthit = hp.getHitPattern(HitPattern::HitCategory::TRACK_HITS,0);
-      tree_track_hitpattern.push_back(firsthit);
+      tree_track_hitpattern.push_back(firsthit); // defined for any track pT
 
       //---Creating State to propagate from  TT---//
       const reco::Track* RtBTracks = trackRefs[iTrack].get();
       BestTracks.push_back(theTransientTrackBuilder->build(RtBTracks));
-      const MagneticField* B = BestTracks[count].field();//3.8T
+      const MagneticField* B = BestTracks[count].field(); // 3.8T
       reco::TransientTrack TT (*RtBTracks,BestTracks[count].field());
-      // const FreeTrajectoryState Freetraj = TT.initialFreeState();//Propagator in the barrel can also use FTS
-      GlobalPoint vert (itTrack->vx(),itTrack->vy(),itTrack->vz());//Point where the propagation will start
-      const TrajectoryStateOnSurface Surtraj = TT.stateOnSurface(vert);//TSOS of this point
-      AnalyticalPropagator* Prop = new AnalyticalPropagator(B);//Propagator that will be used for barrel, crashes in the disks when using Plane
-
-      float radius = sqrt(itTrack->innerPosition().X()*itTrack->innerPosition().X()+itTrack->innerPosition().Y()*itTrack->innerPosition().Y());
-      //needed for the comparison
-      
-              //----------Initialitsation for the propagtion------------------//
-
-      float rad = 0;
-      float theta_prop=2*atan(exp(-itTrack->eta()));//=> needed for propagation
-      tree_track_theta.push_back(theta_prop);
-      float zlayers=0;
-      TkRotation<float> rot(1,0,0,0,1,0,0,0,1);//Cylinder/Plane are already well-orientated => along/normal to the z-axis
-      TrajectoryStateOnSurface PropTSOS;//TSOS for the Barrel
-      TrajectoryStateOnSurface PropTSOStrueR;//TSOS for the Barrel for the comparison 
-
-              //---------------------------------------------------------------//
-
-              //--------------StraightLineCylinderCrossing (Propagator) for disks--------------------------//
-        GlobalVector GVp (itTrack->vx()+itTrack->px(),itTrack->vy()+itTrack->py(),itTrack->vz()+itTrack->pz());
-        GlobalPoint GPv (itTrack->vx(),itTrack->vy(),itTrack->vz());
-        LocalVector LVp (itTrack->px(),itTrack->py(),itTrack->pz());
-        LocalPoint LPv (0,0,0);
-        StraightLineCylinderCrossing SLCC(LPv,LVp, PropagationDirection::alongMomentum);//(localPoint, localvector, )
-        GloballyPositioned<float>::PositionType P3D(0.,0.,0.);//GLobal 0
-        std::pair<bool,double> spair;
-        std::pair<bool,double> spair2;
-        std::pair<bool,Basic3DVector<float>> spairPlane;
-        std::pair<bool,Basic3DVector<float>> spairPlanetrue;
-            //--------------------------------------------------------------------------------------------//
-     
-            //-------------------------------------------Ease the use for TBrowser----------------------------------------------//
-      if (firsthit==1288 || firsthit==1296 || firsthit==1304 || firsthit==1544 || firsthit==1548 || firsthit==1552 || firsthit==1556 || firsthit==1560 || firsthit==1564 || firsthit==1800 || firsthit==1804 || firsthit==1808 || firsthit==1812 || firsthit==1816 || firsthit==1820 || firsthit==1824 || firsthit==1828 || firsthit==1832 || firsthit==1836 || firsthit==1840 ||firsthit== 1844 || firsthit==1848)//supposed to be plane
-      { tree_track_surf.push_back(1);}//plane
-      else
-      { tree_track_surf.push_back(0);}//cylinder
-            //------------------------------------------------------------------------------------//    
-
-            //-----------------------------------------Propagation----------------------------------------------//
-     
- for (int i=0; i<33;i++)
-            {
-            if (Players[i].first==firsthit )//layers
-                {
-//------------------------------------------------Cylinder----------------------------------------------------------//
-                    rad = Players[i].second;
-                    Cylinder Cylind(rad);//miniaod case
-                    PropTSOS = Prop->propagate(Surtraj,Cylind);//works well for barrel
-                    Cylinder CylindtrueR(radius);//best case
-                    PropTSOStrueR = Prop->propagate(Surtraj,CylindtrueR);//works well for barrel
-                    if (i<11 && firsthit!=0 )//cylinder
-                        {   
-                          //--------------With geom vectors-is a little bit worse than with TSOS => worse case : ~std dev *2----------------------------------//
-                            float z0 = (rad+itTrack->vz()*tan(theta_prop))/tan(theta_prop);
-                            float x0 = rad*cos(itTrack->phi());
-                            float y0 = rad*sin(itTrack->phi());  
-                            tree_track_GeoBarrel_firsthit_x.push_back(x0);
-                            tree_track_GeoBarrel_firsthit_y.push_back(y0);
-                            tree_track_GeoBarrel_firsthit_z.push_back(z0);
-                            tree_track_RECOvsMINI_GeoBarrel_firsthit_x.push_back(itTrack->innerPosition().X()-x0);
-                            tree_track_RECOvsMINI_GeoBarrel_firsthit_y.push_back(itTrack->innerPosition().Y()-y0);
-                            tree_track_RECOvsMINI_GeoBarrel_firsthit_z.push_back(itTrack->innerPosition().Z()-z0);
-                            //-----------------------With Propagator TSOS-mean R-----------------------//
-                            if (PropTSOS.isValid())
-                                {
-                            tree_track_PropBarrel_firsthit_x.push_back(PropTSOS.globalPosition().x());
-                            tree_track_PropBarrel_firsthit_y.push_back(PropTSOS.globalPosition().y());
-                            tree_track_PropBarrel_firsthit_z.push_back(PropTSOS.globalPosition().z());
-                            tree_track_RECOvsMINI_PropBarrel_firsthit_x.push_back(itTrack->innerPosition().X()-PropTSOS.globalPosition().x());
-                            tree_track_RECOvsMINI_PropBarrel_firsthit_y.push_back(itTrack->innerPosition().Y()-PropTSOS.globalPosition().y());
-                            tree_track_RECOvsMINI_PropBarrel_firsthit_z.push_back(itTrack->innerPosition().Z()-PropTSOS.globalPosition().z());
-                                }
-
-                            if(PropTSOStrueR.isValid())
-                            {
-                            //-----------------------With Propagator TSOStrueR-----------------------------//
-                            tree_track_PropBarrel_firsthit_opti_x.push_back(PropTSOStrueR.globalPosition().x());
-                            tree_track_PropBarrel_firsthit_opti_y.push_back(PropTSOStrueR.globalPosition().y());
-                            tree_track_PropBarrel_firsthit_opti_z.push_back(PropTSOStrueR.globalPosition().z());
-                            tree_track_RECOvsMINI_PropBarrel_firsthit_opti_x.push_back(itTrack->innerPosition().X()-PropTSOStrueR.globalPosition().x());
-                            tree_track_RECOvsMINI_PropBarrel_firsthit_opti_y.push_back(itTrack->innerPosition().Y()-PropTSOStrueR.globalPosition().y());
-                            tree_track_RECOvsMINI_PropBarrel_firsthit_opti_z.push_back(itTrack->innerPosition().Z()-PropTSOStrueR.globalPosition().z());
-                            }
-
-                        }
- //-------------------------------------------------disks/wheel-------------------------------------------------------//
-                            //------------With geom aspects (mean Z)----------------------------//
-                            zlayers = Players[i].second;
-                            if (itTrack->pz()<0){zlayers=-zlayers;}
-                            float deltaZ =itTrack->innerPosition().Z()-zlayers;
-                            
-                            if (abs(deltaZ)>30 ){zlayers=-zlayers;}//30 being a arbitrary value, could be mini~5, max ~55
-
-                            float R = (zlayers-itTrack->vz())*tan(theta_prop);
-                            float Rreal =  sqrt(itTrack->innerPosition().X()*itTrack->innerPosition().X()+itTrack->innerPosition().Y()+itTrack->innerPosition().Y());
-                            float x0 = R*cos(itTrack->phi()); 
-                            float y0 = R*sin(itTrack->phi() );  
-                            float x0real = Rreal*cos(itTrack->phi());
-                            float y0real = Rreal*sin(itTrack->phi());    
-                            float zreal = (Rreal+itTrack->vz()*tan(theta_prop))/tan(theta_prop);
-
-                            tree_track_GeoDisk_firsthit_x.push_back(x0);
-                            tree_track_GeoDisk_firsthit_y.push_back(y0);
-                            tree_track_GeoDisk_firsthit_z.push_back(zlayers);
-                            tree_track_RECOvsMINI_GeoDisk_firsthit_x.push_back(itTrack->innerPosition().X()-x0);
-                            tree_track_RECOvsMINI_GeoDisk_firsthit_y.push_back(itTrack->innerPosition().Y()-y0);
-                            tree_track_RECOvsMINI_GeoDisk_firsthit_z.push_back(itTrack->innerPosition().Z()-zlayers);
-                            
-                            tree_track_GeoDisk_firsthit_opti_x.push_back(x0real);
-                            tree_track_GeoDisk_firsthit_opti_y.push_back(y0real);
-                            tree_track_GeoDisk_firsthit_opti_z.push_back(zreal);
-                            tree_track_RECOvsMINI_GeoDisk_firsthit_opti_x.push_back(itTrack->innerPosition().X()-x0real);
-                            tree_track_RECOvsMINI_GeoDisk_firsthit_opti_y.push_back(itTrack->innerPosition().Y()-y0real);
-                            tree_track_RECOvsMINI_GeoDisk_firsthit_opti_z.push_back(itTrack->innerPosition().Z()-zreal);
-
-                            //------------------WIth Propagators mean Z SLCC // true R
-                            //------------------SLCC Mean Z------------------------------//
-                            SimpleCylinderBounds SCB(0.,R,-zlayers,zlayers);
-                            Cylinder CylindBounds(P3D,rot,SCB);
-                            spair = SLCC.pathLength(CylindBounds);
-                            
-                            //     Versus the Optimal resolution for this method   //
-                            //------------------SLCC true R-----------------------------//
-                            float Ropti = sqrt(itTrack->innerPosition().X()*itTrack->innerPosition().X()+itTrack->innerPosition().Y()*itTrack->innerPosition().Y());
-                            SimpleCylinderBounds SCB2(0.,Ropti,-abs(itTrack->innerPosition().Z()),abs(itTrack->innerPosition().Z()));
-                            Cylinder CylindBounds2(P3D,rot,SCB2);
-                            spair2 = SLCC.pathLength(CylindBounds2);
-                            //---------------------------Positions-------------------------------//
-
-                            double s  = spair.second;
-                            double s2 = spair2.second;
-                            LocalPoint GP = SLCC.position(s);
-                            LocalPoint GPopti = SLCC.position(s2);
-
-                            //------------------SLPC with mean Z from hitpattern----------------------://
-                            GloballyPositioned<float>::PositionType P3D_(0.,0.,zlayers);
-                            Plane P(P3D_,rot);
-                            Basic3DVector<float> P3D2(itTrack->vx(),itTrack->vy(),itTrack->vz());//global frame
-                            Basic3DVector<float> B3DV (itTrack->px(),itTrack->py(),itTrack->pz());//global frame 
-                            StraightLinePlaneCrossing SLPC(P3D2,B3DV);
-                            spairPlane = SLPC.position(P);
-                            Basic3DVector<float> sPlane(-1000.,-1000.,-1000.);
-                            if (spairPlane.first){ sPlane = spairPlane.second;}
-
-                            //------------------SLPC with true Z from reco----------------------://
-                            GloballyPositioned<float>::PositionType P3D_true(0.,0.,itTrack->innerPosition().Z());
-                            Plane Ptrue(P3D_true,rot);
-                            Basic3DVector<float> P3D2true(itTrack->vx(),itTrack->vy(),itTrack->vz());//global frame
-                            Basic3DVector<float> B3DVtrue (itTrack->px(),itTrack->py(),itTrack->pz());//global frame => both vectors have to be given in the same frame
-                            StraightLinePlaneCrossing SLPCtrue(P3D2true,B3DVtrue);
-                            spairPlanetrue = SLPCtrue.position(Ptrue);
-                            Basic3DVector<float> sPlanetrue (-1000.,-1000.,-1000.);
-                            if (spairPlanetrue.first){sPlanetrue = spairPlanetrue.second;}
-
-
-                                            //-------SLCC with miniaod data-------------//
-                                            //The trasnformation in the "push_back" is used to go from local to global frame as GP is given in local coordinates
-                                tree_track_PropDisk_SLCC_firsthit_x.push_back(2*(GP.x()+itTrack->vx()/2));
-                                tree_track_PropDisk_SLCC_firsthit_y.push_back(2*(GP.y()+itTrack->vy()/2));
-                                tree_track_PropDisk_SLCC_firsthit_z.push_back(2*(GP.z()+itTrack->vz()/2));
-                                tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_x.push_back(itTrack->innerPosition().X()-2*GP.x()-itTrack->vx());//-itTrack->vx()
-                                tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_y.push_back(itTrack->innerPosition().Y()-2*GP.y()-itTrack->vy());//-itTrack->vy()
-                                tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_z.push_back(itTrack->innerPosition().Z()-2*GP.z()-itTrack->vz());//-itTrack->vz()
-                                            //----SLCC with RECO data-----//
-                                tree_track_PropDisk_SLCC_firsthit_opti_x.push_back(2*(GPopti.x()+itTrack->vx()/2));//Go to GLobal Coordiantes coordiantes... The transformation is not well understood atm
-                                tree_track_PropDisk_SLCC_firsthit_opti_y.push_back(2*(GPopti.y()+itTrack->vy()/2));
-                                tree_track_PropDisk_SLCC_firsthit_opti_z.push_back(2*(GPopti.z()+itTrack->vz()/2));
-                                tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_x.push_back(itTrack->innerPosition().X()-2*GPopti.x()-itTrack->vx());
-                                tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_y.push_back(itTrack->innerPosition().Y()-2*GPopti.y()-itTrack->vy());
-                                tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_z.push_back(itTrack->innerPosition().Z()-2*GPopti.z()-itTrack->vz());
-
-                                //-----------------SLPC--------------------//
-                                tree_track_PropDisk_SLPC_firsthit_x.push_back(sPlane.x());
-                                tree_track_PropDisk_SLPC_firsthit_y.push_back(sPlane.y());
-                                tree_track_PropDisk_SLPC_firsthit_z.push_back(sPlane.z());
-                                tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_x.push_back(itTrack->innerPosition().X()-sPlane.x());
-                                tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_y.push_back(itTrack->innerPosition().Y()-sPlane.y());
-                                tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_z.push_back(itTrack->innerPosition().Z()-sPlane.z());
-
-                                tree_track_PropDisk_SLPC_firsthit_opti_x.push_back(sPlanetrue.x());
-                                tree_track_PropDisk_SLPC_firsthit_opti_y.push_back(sPlanetrue.y());
-                                tree_track_PropDisk_SLPC_firsthit_opti_z.push_back(sPlanetrue.z());
-                                tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_x.push_back(itTrack->innerPosition().X()-sPlanetrue.x());
-                                tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_y.push_back(itTrack->innerPosition().Y()-sPlanetrue.y());
-                                tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_z.push_back(itTrack->innerPosition().Z()-sPlanetrue.z());
-                            // }        
-                }
-            }
-        //TBrowser example of lines to compare REOC and MINIAOD information, pt, NChi2 and drSig cut can also be added but don't chage much when the LLP flag is given:
-        // ttree->Draw("tree_track_RECOvsMINI_GeoDisk_firsthit_y","tree_track_surf==1 && abs(tree_track_RECOvsMINI_GeoDisk_firsthit_y)<20 && tree_track_sim_LLP>0")
-        //ttree->Draw("tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_x","tree_track_surf==1 && abs(tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_x)<20 && tree_track_sim_LLP>0")
-        //ttree->Draw("tree_track_RECOvsMINI_GeoBarrel_firsthit_opti_z","tree_track_surf==0 && abs(tree_track_RECOvsMINI_GeoBarrel_firsthit_opti_z)<20 && tree_track_sim_LLP>0")
-
-
-
-        count+=1;
-
-
-      //----!!!!-----//
+      // const FreeTrajectoryState Freetraj = TT.initialFreeState(); // Propagator in the barrel can also use FTS (WARNING: the so-called reference point (where the propagation starts might be different from the first vtx, a check should be done))
+      GlobalPoint vert (itTrack->vx(),itTrack->vy(),itTrack->vz()); // Point where the propagation will start (Reference Point)
+      const TrajectoryStateOnSurface Surtraj = TT.stateOnSurface(vert); // TSOS of this point
+      AnalyticalPropagator* Prop = new AnalyticalPropagator(B); // Propagator that will be used for barrel, crashes in the disks when using Plane
+      Basic3DVector<float> P3D2(itTrack->vx(),itTrack->vy(),itTrack->vz());  // global frame
+      Basic3DVector<float> B3DV (itTrack->px(),itTrack->py(),itTrack->pz()); // global frame 
+      float Eta = itTrack->eta();
+      float Phi = itTrack->phi();
+      float vz  = itTrack->vz();
+      // double pz = itTrack->pz();
+      //------Propagation with new interface --> See ../interface/PropaHitPattern.h-----//
+      PropaHitPattern* PHP = new PropaHitPattern();
+      std::pair<int,GloballyPositioned<float>::PositionType> FHPosition = PHP->Main(firsthit,Prop,Surtraj,Eta,Phi,vz,P3D2,B3DV);
+      tree_track_firstHit_x_MINI.push_back(FHPosition.second.x());
+      tree_track_firstHit_y_MINI.push_back(FHPosition.second.y());
+      tree_track_firstHit_z_MINI.push_back(FHPosition.second.z());
+      tree_track_region.push_back(FHPosition.first);
+      count+=1;
+      //-----------------------END OF MINIAOD firsthit-----------------------//
 
       //----------------------------
       //matching to simulated tracks
@@ -3863,30 +3442,16 @@ void TrackingPerf::clearVariables() {
     tree_track_firstHit_x.clear();
     tree_track_firstHit_y.clear();
     tree_track_firstHit_z.clear();
+    tree_track_firstHit_x_MINI.clear();
+    tree_track_firstHit_y_MINI.clear();
+    tree_track_firstHit_z_MINI.clear();
     tree_track_firstHit_phi.clear();
+   tree_track_region.clear();
+    //
 
     //
-    tree_track_ddxy.clear();
-    tree_track_ddxyError.clear();
-                        tree_track_dpt.clear();
-          tree_track_deta.clear();
-                    tree_track_dphi.clear();
-          tree_track_dNChi2.clear();
-                    tree_track_dvx.clear();
-          tree_track_dvy.clear();
-                    tree_track_dvz.clear();
-          tree_track_ddz.clear();
-                    tree_track_ddzError.clear();
-    //
 //$$$$
-    tree_track_extraTrue_dx.clear();
-    tree_track_extraTrue_dy.clear();
-    tree_track_extraTrue_dz.clear();
-    tree_track_extraTrue_dphi.clear();
-    tree_track_fromLayer_dx.clear();
-    tree_track_fromLayer_dy.clear();
-    tree_track_fromLayer_dz.clear();
-    tree_track_fromLayer_dphi.clear();
+
 //$$$$
     tree_track_iJet.clear();
     tree_track_ntrk10.clear();
@@ -3918,70 +3483,6 @@ void TrackingPerf::clearVariables() {
     tree_track_theta.clear();
     tree_track_surf.clear();
     tree_track_hitpattern.clear();
-
-    tree_track_GeoBarrel_firsthit_x.clear();
-    tree_track_GeoBarrel_firsthit_y.clear();
-    tree_track_GeoBarrel_firsthit_z.clear();
-    tree_track_RECOvsMINI_GeoBarrel_firsthit_x.clear();
-    tree_track_RECOvsMINI_GeoBarrel_firsthit_y.clear();
-    tree_track_RECOvsMINI_GeoBarrel_firsthit_z.clear();
-
-    tree_track_PropBarrel_firsthit_x.clear();
-    tree_track_PropBarrel_firsthit_y.clear();
-    tree_track_PropBarrel_firsthit_z.clear();
-    tree_track_RECOvsMINI_PropBarrel_firsthit_x.clear();
-    tree_track_RECOvsMINI_PropBarrel_firsthit_y.clear();
-    tree_track_RECOvsMINI_PropBarrel_firsthit_z.clear();
-
-    tree_track_PropBarrel_firsthit_opti_x.clear();
-    tree_track_PropBarrel_firsthit_opti_y.clear();
-    tree_track_PropBarrel_firsthit_opti_z.clear();
-    tree_track_RECOvsMINI_PropBarrel_firsthit_opti_x.clear();
-    tree_track_RECOvsMINI_PropBarrel_firsthit_opti_y.clear();
-    tree_track_RECOvsMINI_PropBarrel_firsthit_opti_z.clear();
-
-    tree_track_GeoDisk_firsthit_x.clear();
-    tree_track_GeoDisk_firsthit_y.clear();
-    tree_track_GeoDisk_firsthit_z.clear();
-    tree_track_RECOvsMINI_GeoDisk_firsthit_x.clear();
-    tree_track_RECOvsMINI_GeoDisk_firsthit_y.clear();
-    tree_track_RECOvsMINI_GeoDisk_firsthit_z.clear();
-      
-    tree_track_GeoDisk_firsthit_opti_x.clear();
-    tree_track_GeoDisk_firsthit_opti_y.clear();
-    tree_track_GeoDisk_firsthit_opti_z.clear();
-    tree_track_RECOvsMINI_GeoDisk_firsthit_opti_x.clear();
-    tree_track_RECOvsMINI_GeoDisk_firsthit_opti_y.clear();
-    tree_track_RECOvsMINI_GeoDisk_firsthit_opti_z.clear();
-
-    tree_track_PropDisk_SLCC_firsthit_x.clear();
-    tree_track_PropDisk_SLCC_firsthit_y.clear();
-    tree_track_PropDisk_SLCC_firsthit_z.clear();
-    tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_x.clear();
-    tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_y.clear();
-    tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_z.clear();
-
-    tree_track_PropDisk_SLCC_firsthit_opti_x.clear();
-    tree_track_PropDisk_SLCC_firsthit_opti_y.clear();
-    tree_track_PropDisk_SLCC_firsthit_opti_z.clear();
-    tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_x.clear();
-    tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_y.clear();
-    tree_track_RECOvsMINI_PropDisk_SLCC_firsthit_opti_z.clear();
-
-          
-    tree_track_PropDisk_SLPC_firsthit_x.clear();
-    tree_track_PropDisk_SLPC_firsthit_y.clear();
-    tree_track_PropDisk_SLPC_firsthit_z.clear();
-    tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_x.clear();
-    tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_y.clear();
-    tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_z.clear();
-
-    tree_track_PropDisk_SLPC_firsthit_opti_x.clear();
-    tree_track_PropDisk_SLPC_firsthit_opti_y.clear();
-    tree_track_PropDisk_SLPC_firsthit_opti_z.clear();
-    tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_x.clear();
-    tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_y.clear();
-    tree_track_RECOvsMINI_PropDisk_SLPC_firsthit_opti_z.clear();
 
     tree_track_sim_LLP.clear();
     tree_track_sim_isFromB.clear();
